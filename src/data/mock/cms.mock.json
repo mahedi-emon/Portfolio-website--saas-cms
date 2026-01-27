@@ -1,0 +1,23 @@
+{
+  "singletons": {
+    "siteSettings": {},
+    "hero": {},
+    "about": {},
+    "contactInfo": {},
+    "footer": {},
+    "resume": {}
+  },
+  "collections": {
+    "education": [],
+    "skills": [],
+    "services": [],
+    "projects": [],
+    "publications": [],
+    "certifications": [],
+    "experience": [],
+    "blogs": [],
+    "testimonials": [],
+    "achievements": [],
+    "clients": []
+  }
+}
