@@ -186,6 +186,35 @@
       }
     ],
     "achievements": [],
-    "clients": []
+    "clients": [],
+    "contactMessages": [
+      {
+        "id": "msg-1",
+        "name": "Jordan Wells",
+        "email": "jordan.wells@example.com",
+        "subject": "Project inquiry",
+        "message": "Hi Alex, I'd love to discuss a potential SaaS build for our team. Are you available next week?",
+        "status": "new",
+        "createdAt": "2024-11-12T09:30:00Z"
+      },
+      {
+        "id": "msg-2",
+        "name": "Priya Raman",
+        "email": "priya.raman@example.com",
+        "subject": "Conference collaboration",
+        "message": "Your recent paper on multi-tenant systems was great. Interested in a joint workshop submission?",
+        "status": "read",
+        "createdAt": "2024-11-08T14:05:00Z"
+      },
+      {
+        "id": "msg-3",
+        "name": "Sofia Patel",
+        "email": "sofia.patel@example.com",
+        "subject": "Speaking opportunity",
+        "message": "We are organizing a frontend performance summit and would love you to speak about observability.",
+        "status": "archived",
+        "createdAt": "2024-10-29T18:45:00Z"
+      }
+    ]
   }
 }
