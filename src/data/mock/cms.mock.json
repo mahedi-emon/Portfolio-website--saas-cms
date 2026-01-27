@@ -1,22 +1,190 @@
 {
   "singletons": {
-    "siteSettings": {},
-    "hero": {},
-    "about": {},
+    "siteSettings": {
+      "siteName": "Alex Morgan",
+      "tagline": "Full-stack engineer building reliable SaaS platforms"
+    },
+    "hero": {
+      "headline": "Hi, I'm Alex — I build scalable web apps",
+      "subheadline": "Senior full-stack engineer specializing in React, TypeScript, and cloud-native systems.",
+      "ctaPrimaryLabel": "View Projects",
+      "ctaPrimaryHref": "/projects",
+      "ctaSecondaryLabel": "Contact",
+      "ctaSecondaryHref": "/contact"
+    },
+    "about": {
+      "title": "About Me",
+      "bio": "I design and ship production-grade web platforms with a focus on performance, accessibility, and maintainability. Over the last 10+ years I've led teams building SaaS products, internal tools, and public-facing apps.",
+      "highlights": [
+        "10+ years building SaaS and enterprise tools",
+        "React, TypeScript, Node.js, Postgres",
+        "Design systems, performance, and DX"
+      ]
+    },
     "contactInfo": {},
     "footer": {},
     "resume": {}
   },
   "collections": {
     "education": [],
-    "skills": [],
-    "services": [],
-    "projects": [],
-    "publications": [],
+    "skills": [
+      { "id": "skill-1", "name": "TypeScript", "level": 5 },
+      { "id": "skill-2", "name": "React", "level": 5 },
+      { "id": "skill-3", "name": "Node.js", "level": 4 },
+      { "id": "skill-4", "name": "PostgreSQL", "level": 4 },
+      { "id": "skill-5", "name": "AWS", "level": 3 }
+    ],
+    "services": [
+      {
+        "id": "service-1",
+        "title": "SaaS Architecture",
+        "summary": "System design, multi-tenant architecture, and scalable API design."
+      },
+      {
+        "id": "service-2",
+        "title": "Frontend Engineering",
+        "summary": "Design systems, performance optimization, and complex React apps."
+      },
+      {
+        "id": "service-3",
+        "title": "Backend & APIs",
+        "summary": "Node.js services, Postgres modeling, and integrations."
+      },
+      {
+        "id": "service-4",
+        "title": "Product Engineering",
+        "summary": "MVP to scale, roadmap execution, and engineering leadership."
+      }
+    ],
+    "projects": [
+      {
+        "id": "project-1",
+        "title": "SaaS Analytics Platform",
+        "slug": "saas-analytics-platform",
+        "summary": "Multi-tenant analytics dashboard with role-based access and live metrics.",
+        "featured": true
+      },
+      {
+        "id": "project-2",
+        "title": "Design System Toolkit",
+        "slug": "design-system-toolkit",
+        "summary": "Reusable React component library with theming and accessibility audits.",
+        "featured": true
+      },
+      {
+        "id": "project-3",
+        "title": "DevOps Cost Optimizer",
+        "slug": "devops-cost-optimizer",
+        "summary": "Automated cloud cost optimization with scheduled reports and alerts.",
+        "featured": false
+      },
+      {
+        "id": "project-4",
+        "title": "Customer Success Portal",
+        "slug": "customer-success-portal",
+        "summary": "B2B portal with ticketing, knowledge base, and account insights.",
+        "featured": false
+      }
+    ],
+    "publications": [
+      {
+        "id": "pub-1",
+        "title": "Scalable Multi-Tenant Architectures for Data-Intensive SaaS",
+        "publisher": "Proceedings of the ACM on Cloud Computing Systems",
+        "publishedDate": "2023-06-15",
+        "authors": ["Alex Morgan", "Priya Raman", "Hannah Lee"],
+        "doi": "10.0000/placeholder.saas.2023.001",
+        "pdfUrl": "https://example.com/papers/saas-multi-tenant-2023.pdf"
+      },
+      {
+        "id": "pub-2",
+        "title": "Observability-Driven Development in Distributed Product Teams",
+        "publisher": "International Conference on Software Engineering (ICSE)",
+        "publishedDate": "2022-05-21",
+        "authors": ["Alex Morgan", "Miguel Santos"],
+        "doi": "10.0000/placeholder.icse.2022.045",
+        "pdfUrl": "https://example.com/papers/observability-icse-2022.pdf"
+      },
+      {
+        "id": "pub-3",
+        "title": "Latency Budgets for Frontend Platforms at Scale",
+        "publisher": "IEEE Software",
+        "publishedDate": "2021-09-01",
+        "authors": ["Alex Morgan", "Nadia Kim"],
+        "doi": "10.0000/placeholder.ieee.2021.112",
+        "pdfUrl": "https://example.com/papers/latency-budgets-2021.pdf"
+      },
+      {
+        "id": "pub-4",
+        "title": "Design System Governance: A Case Study in Enterprise UI Consistency",
+        "publisher": "CHI Conference on Human Factors in Computing Systems",
+        "publishedDate": "2020-04-25",
+        "authors": ["Alex Morgan", "Sofia Patel", "Jordan Wells"],
+        "doi": "10.0000/placeholder.chi.2020.210",
+        "pdfUrl": "https://example.com/papers/design-system-governance-2020.pdf"
+      }
+    ],
     "certifications": [],
-    "experience": [],
-    "blogs": [],
-    "testimonials": [],
+    "experience": [
+      {
+        "id": "exp-1",
+        "company": "Nimbus Labs",
+        "role": "Senior Full-Stack Engineer",
+        "startDate": "2022-04-01",
+        "endDate": "2025-12-01"
+      },
+      {
+        "id": "exp-2",
+        "company": "Vantage Health",
+        "role": "Lead Frontend Engineer",
+        "startDate": "2019-02-01",
+        "endDate": "2022-03-01"
+      },
+      {
+        "id": "exp-3",
+        "company": "Northwind Analytics",
+        "role": "Software Engineer",
+        "startDate": "2016-06-01",
+        "endDate": "2019-01-01"
+      }
+    ],
+    "blogs": [
+      {
+        "id": "blog-1",
+        "title": "Scaling React Apps Without the Pain",
+        "slug": "scaling-react-apps",
+        "excerpt": "Patterns for structure, state management, and performance as your app grows."
+      },
+      {
+        "id": "blog-2",
+        "title": "A Practical Guide to Multi-Tenant SaaS",
+        "slug": "multi-tenant-saas-guide",
+        "excerpt": "Trade-offs, data isolation strategies, and operational considerations."
+      },
+      {
+        "id": "blog-3",
+        "title": "Observability Basics for Product Teams",
+        "slug": "observability-basics",
+        "excerpt": "How to ship features faster with logs, metrics, and traces."
+      }
+    ],
+    "testimonials": [
+      {
+        "id": "testi-1",
+        "author": "Priya Raman",
+        "quote": "Alex consistently ships high-quality features and raises the bar for code quality across the team."
+      },
+      {
+        "id": "testi-2",
+        "author": "Miguel Santos",
+        "quote": "A thoughtful engineer with strong product instincts. Helped us scale our platform without losing velocity."
+      },
+      {
+        "id": "testi-3",
+        "author": "Hannah Lee",
+        "quote": "Excellent collaborator and mentor. The new design system improved delivery speed by 30%."
+      }
+    ],
     "achievements": [],
     "clients": []
   }
