@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { z } from 'zod';
 import type { FieldSchema } from '../cms/cmsSchemas';
 
 export type EntityFormProps = {
@@ -54,7 +55,13 @@ function buildInitial(fields: FieldSchema[], initialValues?: Record<string, unkn
         base[field.name] = [];
         break;
       default:
-        base[field.name] = '';
+        if (field.name === 'status') {
+          base[field.name] = 'draft';
+        } else if (field.name === 'orderIndex') {
+          base[field.name] = 0;
+        } else {
+          base[field.name] = '';
+        }
         break;
     }
   }
@@ -62,9 +69,44 @@ function buildInitial(fields: FieldSchema[], initialValues?: Record<string, unkn
   return base;
 }
 
+const isEmptyValue = (value: unknown) => {
+  if (value === null || value === undefined) return true;
+  if (typeof value === 'string') return value.trim().length === 0;
+  if (Array.isArray(value)) return value.length === 0;
+  return false;
+};
+
+const validateValues = (fields: FieldSchema[], values: Record<string, unknown>) => {
+  const errors: Record<string, string> = {};
+
+  fields.forEach((field) => {
+    const value = getNested(values, field.name);
+
+    if (field.required && isEmptyValue(value)) {
+      errors[field.name] = 'Required';
+      return;
+    }
+
+    const isUrlField = field.name.toLowerCase().includes('url');
+    if (!isEmptyValue(value) && isUrlField) {
+      if (Array.isArray(value)) {
+        const invalid = value.some((item) => !z.string().url().safeParse(String(item)).success);
+        if (invalid) {
+          errors[field.name] = 'Invalid URL';
+        }
+      } else if (!z.string().url().safeParse(String(value)).success) {
+        errors[field.name] = 'Invalid URL';
+      }
+    }
+  });
+
+  return errors;
+};
+
 export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLabel }: EntityFormProps) {
   const initial = useMemo(() => buildInitial(fields, initialValues), [fields, initialValues]);
   const [values, setValues] = useState<Record<string, unknown>>(initial);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     setValues(initial);
@@ -78,6 +120,9 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
     <form
       onSubmit={(event) => {
         event.preventDefault();
+        const nextErrors = validateValues(fields, values);
+        setErrors(nextErrors);
+        if (Object.keys(nextErrors).length > 0) return;
         onSubmit(values);
       }}
     >
@@ -118,6 +163,21 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
               />
             )}
           </label>
+          {errors[field.name] && <div className="text-xs">{errors[field.name]}</div>}
+          {field.type === 'image' && typeof getNested(values, field.name) === 'string' && (
+            <img
+              src={String(getNested(values, field.name) ?? '')}
+              alt="Preview"
+              className="mt-2 h-16 w-24 rounded border object-cover"
+            />
+          )}
+          {field.type === 'file' && typeof getNested(values, field.name) === 'string' && (
+            <div className="mt-2 text-sm">
+              <a href={String(getNested(values, field.name) ?? '')} target="_blank" rel="noreferrer">
+                Download
+              </a>
+            </div>
+          )}
         </div>
       ))}
       <div>

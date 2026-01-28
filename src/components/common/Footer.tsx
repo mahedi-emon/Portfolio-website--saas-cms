@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Mail, Phone, MapPin, Linkedin, Github, Twitter, Send, MessageCircle } from 'lucide-react';
 import { useCms } from '../../hooks/useCms';
 
@@ -7,7 +8,7 @@ type SocialLink = {
   iconKey: string;
 };
 
-const iconMap: Record<string, React.ReactNode> = {
+const iconMap: Record<string, ReactNode> = {
   linkedin: <Linkedin size={18} />,
   github: <Github size={18} />,
   twitter: <Twitter size={18} />,

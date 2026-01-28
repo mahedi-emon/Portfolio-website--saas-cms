@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
-import React, { createContext, useCallback, useMemo, useState } from 'react';
+import React, { createContext, useMemo, useState } from 'react';
 import cmsMock from '../data/mock/cms.mock.json';
+import { createCmsRepository } from '../services/cmsRepository';
 
 export type CmsData = typeof cmsMock;
 export type SingletonKey = keyof CmsData['singletons'];
@@ -18,87 +19,21 @@ type CmsContextValue = {
 
 export const CmsContext = createContext<CmsContextValue | null>(null);
 
-const createId = () => `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-
 export function CmsProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<CmsData>(() => cmsMock);
 
-  const updateSingleton = useCallback(
-    (key: SingletonKey, values: Record<string, unknown>) => {
-      setData((prev) => ({
-        ...prev,
-        singletons: {
-          ...prev.singletons,
-          [key]: {
-            ...(prev.singletons[key] as Record<string, unknown>),
-            ...values,
-          },
-        },
-      }));
-    },
-    []
-  );
-
-  const createItem = useCallback(
-    (key: CollectionKey, values: Record<string, unknown>) => {
-      setData((prev) => ({
-        ...prev,
-        collections: {
-          ...prev.collections,
-          [key]: [
-            ...prev.collections[key],
-            {
-              id: createId(),
-              ...values,
-            },
-          ],
-        },
-      }));
-    },
-    []
-  );
-
-  const updateItem = useCallback(
-    (key: CollectionKey, id: string, values: Record<string, unknown>) => {
-      setData((prev) => ({
-        ...prev,
-        collections: {
-          ...prev.collections,
-          [key]: prev.collections[key].map((item) =>
-            (item as CollectionItem).id === id ? { ...(item as CollectionItem), ...values } : item
-          ),
-        },
-      }));
-    },
-    []
-  );
-
-  const deleteItem = useCallback(
-    (key: CollectionKey, id: string) => {
-      setData((prev) => ({
-        ...prev,
-        collections: {
-          ...prev.collections,
-          [key]: prev.collections[key].filter((item) => (item as CollectionItem).id !== id),
-        },
-      }));
-    },
-    []
-  );
-
-  const replaceCollection = useCallback((key: CollectionKey, items: CollectionItem[]) => {
-    setData((prev) => ({
-      ...prev,
-      collections: {
-        ...prev.collections,
-        [key]: items,
-      },
-    }));
-  }, []);
+  const repo = useMemo(() => createCmsRepository(setData), [setData]);
 
   const value = useMemo<CmsContextValue>(
-    () => ({ data, updateSingleton, createItem, updateItem, deleteItem, replaceCollection }),
-    [data, updateSingleton, createItem, updateItem, deleteItem, replaceCollection]
+    () => ({
+      data,
+      updateSingleton: repo.updateSingleton,
+      createItem: repo.createItem,
+      updateItem: repo.updateItem,
+      deleteItem: repo.deleteItem,
+      replaceCollection: repo.replaceCollection,
+    }),
+    [data, repo]
   );
   return <CmsContext.Provider value={value}>{children}</CmsContext.Provider>;
 }

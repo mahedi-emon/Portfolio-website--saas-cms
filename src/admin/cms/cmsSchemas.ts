@@ -1,9 +1,10 @@
-export type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'date' | 'list';
+export type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'date' | 'list' | 'image' | 'file';
 
 export type FieldSchema = {
   name: string;
   label: string;
   type?: FieldType;
+  required?: boolean;
 };
 
 export type SectionSchema = {
@@ -19,7 +20,7 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Site Settings',
     kind: 'singleton',
     fields: [
-      { name: 'siteName', label: 'Site Name' },
+      { name: 'siteName', label: 'Site Name', required: true },
       { name: 'tagline', label: 'Tagline' },
     ],
   },
@@ -28,8 +29,8 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Hero',
     kind: 'singleton',
     fields: [
-      { name: 'fullName', label: 'Full Name' },
-      { name: 'headline', label: 'Headline' },
+      { name: 'fullName', label: 'Full Name', required: true },
+      { name: 'headline', label: 'Headline', required: true },
       { name: 'subheadline', label: 'Subheadline', type: 'textarea' },
     ],
   },
@@ -38,9 +39,9 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'About',
     kind: 'singleton',
     fields: [
-      { name: 'title', label: 'Title' },
-      { name: 'bio', label: 'Bio', type: 'textarea' },
-      { name: 'profileImageUrl', label: 'Profile Image URL' },
+      { name: 'title', label: 'Title', required: true },
+      { name: 'bio', label: 'Bio', type: 'textarea', required: true },
+      { name: 'profileImageUrl', label: 'Profile Image URL', type: 'image' },
       { name: 'currentRole', label: 'Current Role' },
       { name: 'researchInterest', label: 'Research Interest' },
     ],
@@ -50,7 +51,7 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Contact Info',
     kind: 'singleton',
     fields: [
-      { name: 'email', label: 'Email' },
+      { name: 'email', label: 'Email', required: true },
       { name: 'phone', label: 'Phone' },
       { name: 'location', label: 'Location' },
     ],
@@ -60,13 +61,13 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Footer',
     kind: 'singleton',
     fields: [
-      { name: 'title', label: 'Title' },
-      { name: 'description', label: 'Description', type: 'textarea' },
-      { name: 'contact.email', label: 'Contact Email' },
+      { name: 'title', label: 'Title', required: true },
+      { name: 'description', label: 'Description', type: 'textarea', required: true },
+      { name: 'contact.email', label: 'Contact Email', required: true },
       { name: 'contact.phone', label: 'Contact Phone' },
       { name: 'contact.location', label: 'Contact Location' },
       { name: 'contact.directMessageUrl', label: 'Direct Message URL' },
-      { name: 'copyrightText', label: 'Copyright Text' },
+      { name: 'copyrightText', label: 'Copyright Text', required: true },
     ],
   },
   resume: {
@@ -74,8 +75,8 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Resume',
     kind: 'singleton',
     fields: [
-      { name: 'resumeFileUrl', label: 'Resume File URL' },
-      { name: 'resumePreviewUrl', label: 'Resume Preview URL' },
+      { name: 'resumeFileUrl', label: 'Resume File URL', type: 'file', required: true },
+      { name: 'resumePreviewUrl', label: 'Resume Preview URL', type: 'file' },
     ],
   },
   education: {
@@ -83,9 +84,11 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Education',
     kind: 'collection',
     fields: [
-      { name: 'institution', label: 'Institution' },
-      { name: 'degree', label: 'Degree' },
-      { name: 'field', label: 'Field' },
+      { name: 'status', label: 'Status', required: true },
+      { name: 'orderIndex', label: 'Order Index', type: 'number' },
+      { name: 'institution', label: 'Institution', required: true },
+      { name: 'degree', label: 'Degree', required: true },
+      { name: 'field', label: 'Field', required: true },
       { name: 'startDate', label: 'Start Date', type: 'date' },
       { name: 'endDate', label: 'End Date', type: 'date' },
     ],
@@ -95,7 +98,9 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Skills',
     kind: 'collection',
     fields: [
-      { name: 'name', label: 'Skill Name' },
+      { name: 'status', label: 'Status', required: true },
+      { name: 'orderIndex', label: 'Order Index', type: 'number' },
+      { name: 'name', label: 'Skill Name', required: true },
       { name: 'level', label: 'Level', type: 'number' },
     ],
   },
@@ -104,7 +109,9 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Services',
     kind: 'collection',
     fields: [
-      { name: 'title', label: 'Title' },
+      { name: 'status', label: 'Status', required: true },
+      { name: 'orderIndex', label: 'Order Index', type: 'number' },
+      { name: 'title', label: 'Title', required: true },
       { name: 'summary', label: 'Summary', type: 'textarea' },
     ],
   },
@@ -113,10 +120,13 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Projects',
     kind: 'collection',
     fields: [
-      { name: 'title', label: 'Title' },
-      { name: 'summary', label: 'Summary', type: 'textarea' },
+      { name: 'status', label: 'Status', required: true },
+      { name: 'orderIndex', label: 'Order Index', type: 'number' },
+      { name: 'slug', label: 'Slug', required: true },
+      { name: 'title', label: 'Title', required: true },
+      { name: 'summary', label: 'Summary', type: 'textarea', required: true },
       { name: 'description', label: 'Description', type: 'textarea' },
-      { name: 'coverImageUrl', label: 'Cover Image URL' },
+      { name: 'coverImageUrl', label: 'Cover Image URL', type: 'image' },
       { name: 'galleryImages', label: 'Gallery Images (comma separated)', type: 'list' },
       { name: 'githubUrl', label: 'GitHub URL' },
       { name: 'liveDemoUrl', label: 'Live Demo URL' },
@@ -129,14 +139,17 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Publications',
     kind: 'collection',
     fields: [
-      { name: 'title', label: 'Title' },
-      { name: 'authors', label: 'Authors (comma separated)', type: 'list' },
-      { name: 'venue', label: 'Venue' },
-      { name: 'year', label: 'Year' },
+      { name: 'status', label: 'Status', required: true },
+      { name: 'orderIndex', label: 'Order Index', type: 'number' },
+      { name: 'slug', label: 'Slug', required: true },
+      { name: 'title', label: 'Title', required: true },
+      { name: 'authors', label: 'Authors (comma separated)', type: 'list', required: true },
+      { name: 'venue', label: 'Venue', required: true },
+      { name: 'year', label: 'Year', required: true },
       { name: 'abstract', label: 'Abstract', type: 'textarea' },
       { name: 'paperUrl', label: 'Paper URL' },
-      { name: 'pdfUrl', label: 'PDF URL' },
-      { name: 'coverImageUrl', label: 'Cover Image URL' },
+      { name: 'pdfUrl', label: 'PDF URL', type: 'file' },
+      { name: 'coverImageUrl', label: 'Cover Image URL', type: 'image' },
       { name: 'citation', label: 'Citation', type: 'textarea' },
     ],
   },
@@ -145,14 +158,16 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Certifications',
     kind: 'collection',
     fields: [
-      { name: 'certificateTitle', label: 'Certificate Title' },
-      { name: 'issuer', label: 'Issuer' },
-      { name: 'issueDate', label: 'Issue Date', type: 'date' },
+      { name: 'status', label: 'Status', required: true },
+      { name: 'orderIndex', label: 'Order Index', type: 'number' },
+      { name: 'certificateTitle', label: 'Certificate Title', required: true },
+      { name: 'issuer', label: 'Issuer', required: true },
+      { name: 'issueDate', label: 'Issue Date', type: 'date', required: true },
       { name: 'expiryDate', label: 'Expiry Date', type: 'date' },
       { name: 'credentialId', label: 'Credential ID' },
       { name: 'credentialUrl', label: 'Credential URL' },
-      { name: 'certificateImageUrl', label: 'Certificate Image URL' },
-      { name: 'certificateFileUrl', label: 'Certificate File URL' },
+      { name: 'certificateImageUrl', label: 'Certificate Image URL', type: 'image' },
+      { name: 'certificateFileUrl', label: 'Certificate File URL', type: 'file' },
     ],
   },
   experience: {
@@ -160,8 +175,10 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Experience',
     kind: 'collection',
     fields: [
-      { name: 'company', label: 'Company' },
-      { name: 'role', label: 'Role' },
+      { name: 'status', label: 'Status', required: true },
+      { name: 'orderIndex', label: 'Order Index', type: 'number' },
+      { name: 'company', label: 'Company', required: true },
+      { name: 'role', label: 'Role', required: true },
       { name: 'startDate', label: 'Start Date', type: 'date' },
       { name: 'endDate', label: 'End Date', type: 'date' },
     ],
@@ -171,8 +188,10 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Blogs',
     kind: 'collection',
     fields: [
-      { name: 'title', label: 'Title' },
-      { name: 'slug', label: 'Slug' },
+      { name: 'status', label: 'Status', required: true },
+      { name: 'orderIndex', label: 'Order Index', type: 'number' },
+      { name: 'title', label: 'Title', required: true },
+      { name: 'slug', label: 'Slug', required: true },
       { name: 'excerpt', label: 'Excerpt', type: 'textarea' },
     ],
   },
@@ -181,8 +200,10 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Testimonials',
     kind: 'collection',
     fields: [
-      { name: 'author', label: 'Author' },
-      { name: 'quote', label: 'Quote', type: 'textarea' },
+      { name: 'status', label: 'Status', required: true },
+      { name: 'orderIndex', label: 'Order Index', type: 'number' },
+      { name: 'author', label: 'Author', required: true },
+      { name: 'quote', label: 'Quote', type: 'textarea', required: true },
     ],
   },
   achievements: {
@@ -190,10 +211,14 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Achievements',
     kind: 'collection',
     fields: [
-      { name: 'title', label: 'Title' },
-      { name: 'issuer', label: 'Issuer' },
-      { name: 'year', label: 'Year' },
-      { name: 'description', label: 'Description', type: 'textarea' },
+      { name: 'status', label: 'Status', required: true },
+      { name: 'orderIndex', label: 'Order Index', type: 'number' },
+      { name: 'title', label: 'Title', required: true },
+      { name: 'issuer', label: 'Issuer', required: true },
+      { name: 'year', label: 'Year', required: true },
+      { name: 'description', label: 'Description', type: 'textarea', required: true },
+      { name: 'certificateImageUrl', label: 'Certificate Image URL', type: 'image' },
+      { name: 'certificateFileUrl', label: 'Certificate File URL', type: 'file' },
       { name: 'externalLink', label: 'External Link' },
     ],
   },
@@ -202,8 +227,10 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Clients',
     kind: 'collection',
     fields: [
-      { name: 'name', label: 'Name' },
-      { name: 'logoUrl', label: 'Logo URL' },
+      { name: 'status', label: 'Status', required: true },
+      { name: 'orderIndex', label: 'Order Index', type: 'number' },
+      { name: 'name', label: 'Name', required: true },
+      { name: 'logoUrl', label: 'Logo URL', type: 'image' },
       { name: 'websiteUrl', label: 'Website URL' },
     ],
   },
@@ -211,7 +238,11 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     key: 'techStackCategories',
     title: 'Tech Stack Categories',
     kind: 'collection',
-    fields: [{ name: 'categoryName', label: 'Category Name' }],
+    fields: [
+      { name: 'status', label: 'Status', required: true },
+      { name: 'orderIndex', label: 'Order Index', type: 'number' },
+      { name: 'categoryName', label: 'Category Name', required: true },
+    ],
   },
 };
 
