@@ -20,18 +20,26 @@ export function ContactMessageDetailPage() {
 
   if (!message) {
     return (
-      <div>
-        <p>Message not found.</p>
-        <Link to="/admin/messages">Back</Link>
+      <div className="rounded border border-slate-200 bg-white p-6 shadow-sm">
+        <p className="text-sm text-slate-600">Message not found.</p>
+        <Link className="mt-3 inline-block text-sm text-slate-600 underline" to="/admin/messages">
+          Back
+        </Link>
       </div>
     );
   }
 
   return (
-    <div>
-      <h1>Message Detail</h1>
-      <pre>{JSON.stringify(message, null, 2)}</pre>
-      <Link to="/admin/messages">Back</Link>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold text-slate-900">Message Detail</h1>
+        <Link className="mt-2 inline-block text-sm text-slate-600 underline" to="/admin/messages">
+          Back to messages
+        </Link>
+      </div>
+      <div className="rounded border border-slate-200 bg-white p-6 shadow-sm">
+        <pre className="whitespace-pre-wrap text-sm text-slate-700">{JSON.stringify(message, null, 2)}</pre>
+      </div>
     </div>
   );
 }

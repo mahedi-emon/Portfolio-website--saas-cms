@@ -16,32 +16,52 @@ type DataTableProps<T> = {
 
 export function DataTable<T>({ columns, rows, rowKey, onEdit, onDelete }: DataTableProps<T>) {
   return (
-    <table>
-      <thead>
-        <tr>
-          {columns.map((col) => (
-            <th key={String(col.key)}>{col.header}</th>
-          ))}
-          {(onEdit || onDelete) && <th>Actions</th>}
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((row) => (
-          <tr key={rowKey(row)}>
+    <div className="overflow-x-auto rounded border border-slate-200 bg-white">
+      <table className="min-w-full text-left text-sm">
+        <thead className="bg-slate-50 text-xs uppercase text-slate-500">
+          <tr>
             {columns.map((col) => (
-              <td key={String(col.key)}>
-                {col.render ? col.render(row) : String((row as Record<string, unknown>)[col.key as string] ?? '')}
-              </td>
+              <th key={String(col.key)} className="px-4 py-3 font-semibold">
+                {col.header}
+              </th>
             ))}
-            {(onEdit || onDelete) && (
-              <td>
-                {onEdit && <button onClick={() => onEdit(row)}>Edit</button>}
-                {onDelete && <button onClick={() => onDelete(row)}>Delete</button>}
-              </td>
-            )}
+            {(onEdit || onDelete) && <th className="px-4 py-3 font-semibold">Actions</th>}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody className="divide-y divide-slate-100">
+          {rows.map((row) => (
+            <tr key={rowKey(row)} className="hover:bg-slate-50">
+              {columns.map((col) => (
+                <td key={String(col.key)} className="px-4 py-3 text-slate-700">
+                  {col.render ? col.render(row) : String((row as Record<string, unknown>)[col.key as string] ?? '')}
+                </td>
+              ))}
+              {(onEdit || onDelete) && (
+                <td className="px-4 py-3">
+                  <div className="flex gap-2">
+                    {onEdit && (
+                      <button
+                        className="rounded border border-slate-200 px-3 py-1 text-xs text-slate-700 hover:bg-slate-50"
+                        onClick={() => onEdit(row)}
+                      >
+                        Edit
+                      </button>
+                    )}
+                    {onDelete && (
+                      <button
+                        className="rounded border border-red-200 px-3 py-1 text-xs text-red-600 hover:bg-red-50"
+                        onClick={() => onDelete(row)}
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </div>
+                </td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

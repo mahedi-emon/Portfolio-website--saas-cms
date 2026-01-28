@@ -118,6 +118,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
 
   return (
     <form
+      className="space-y-4"
       onSubmit={(event) => {
         event.preventDefault();
         const nextErrors = validateValues(fields, values);
@@ -126,64 +127,80 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
         onSubmit(values);
       }}
     >
-      {fields.map((field) => (
-        <div key={field.name}>
-          <label>
-            {field.label}
-            {field.type === 'textarea' ? (
-              <textarea
-                value={String(getNested(values, field.name) ?? '')}
-                onChange={(event) => handleChange(field.name, event.target.value)}
-              />
-            ) : field.type === 'checkbox' ? (
-              <input
-                type="checkbox"
-                checked={Boolean(getNested(values, field.name))}
-                onChange={(event) => handleChange(field.name, event.target.checked)}
-              />
-            ) : field.type === 'list' ? (
-              <input
-                type="text"
-                value={Array.isArray(getNested(values, field.name)) ? ((getNested(values, field.name) as unknown[]) ?? []).join(', ') : ''}
-                onChange={(event) =>
-                  handleChange(
-                    field.name,
-                    event.target.value
-                      .split(',')
-                      .map((item) => item.trim())
-                      .filter(Boolean)
-                  )
-                }
-              />
-            ) : (
-              <input
-                type={field.type ?? 'text'}
-                value={String(getNested(values, field.name) ?? '')}
-                onChange={(event) => handleChange(field.name, event.target.value)}
+      <div className="grid gap-4 md:grid-cols-2">
+        {fields.map((field) => (
+          <div key={field.name} className="space-y-2">
+            <label className="text-sm font-medium text-slate-700">
+              {field.label}
+              {field.type === 'textarea' ? (
+                <textarea
+                  className="mt-1 w-full rounded border border-slate-200 px-3 py-2 text-sm text-slate-700"
+                  value={String(getNested(values, field.name) ?? '')}
+                  onChange={(event) => handleChange(field.name, event.target.value)}
+                />
+              ) : field.type === 'checkbox' ? (
+                <input
+                  className="ml-2"
+                  type="checkbox"
+                  checked={Boolean(getNested(values, field.name))}
+                  onChange={(event) => handleChange(field.name, event.target.checked)}
+                />
+              ) : field.type === 'list' ? (
+                <input
+                  className="mt-1 w-full rounded border border-slate-200 px-3 py-2 text-sm text-slate-700"
+                  type="text"
+                  value={
+                    Array.isArray(getNested(values, field.name))
+                      ? ((getNested(values, field.name) as unknown[]) ?? []).join(', ')
+                      : ''
+                  }
+                  onChange={(event) =>
+                    handleChange(
+                      field.name,
+                      event.target.value
+                        .split(',')
+                        .map((item) => item.trim())
+                        .filter(Boolean)
+                    )
+                  }
+                />
+              ) : (
+                <input
+                  className="mt-1 w-full rounded border border-slate-200 px-3 py-2 text-sm text-slate-700"
+                  type={field.type ?? 'text'}
+                  value={String(getNested(values, field.name) ?? '')}
+                  onChange={(event) => handleChange(field.name, event.target.value)}
+                />
+              )}
+            </label>
+            {errors[field.name] && <div className="text-xs text-red-600">{errors[field.name]}</div>}
+            {field.type === 'image' && typeof getNested(values, field.name) === 'string' && (
+              <img
+                src={String(getNested(values, field.name) ?? '')}
+                alt="Preview"
+                className="h-16 w-24 rounded border border-slate-200 object-cover"
               />
             )}
-          </label>
-          {errors[field.name] && <div className="text-xs">{errors[field.name]}</div>}
-          {field.type === 'image' && typeof getNested(values, field.name) === 'string' && (
-            <img
-              src={String(getNested(values, field.name) ?? '')}
-              alt="Preview"
-              className="mt-2 h-16 w-24 rounded border object-cover"
-            />
-          )}
-          {field.type === 'file' && typeof getNested(values, field.name) === 'string' && (
-            <div className="mt-2 text-sm">
-              <a href={String(getNested(values, field.name) ?? '')} target="_blank" rel="noreferrer">
-                Download
-              </a>
-            </div>
-          )}
-        </div>
-      ))}
-      <div>
-        <button type="submit">{submitLabel ?? 'Save'}</button>
+            {field.type === 'file' && typeof getNested(values, field.name) === 'string' && (
+              <div className="text-sm">
+                <a className="text-slate-600 underline" href={String(getNested(values, field.name) ?? '')} target="_blank" rel="noreferrer">
+                  Download
+                </a>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center gap-2">
+        <button type="submit" className="rounded bg-slate-900 px-4 py-2 text-sm font-semibold text-white">
+          {submitLabel ?? 'Save'}
+        </button>
         {onCancel && (
-          <button type="button" onClick={onCancel}>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded border border-slate-200 px-4 py-2 text-sm text-slate-700"
+          >
             Cancel
           </button>
         )}

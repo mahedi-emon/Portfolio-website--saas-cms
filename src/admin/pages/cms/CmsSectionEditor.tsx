@@ -46,9 +46,9 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
 
   if (!schema) {
     return (
-      <div>
-        <h1>Unknown section</h1>
-        <p>Section not found.</p>
+      <div className="rounded border border-slate-200 bg-white p-6">
+        <h1 className="text-lg font-semibold text-slate-900">Unknown section</h1>
+        <p className="mt-2 text-sm text-slate-600">Section not found.</p>
       </div>
     );
   }
@@ -57,67 +57,83 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
     const values = data.singletons[schema.key as SingletonKey] ?? {};
     const footerValues = schema.key === 'footer' ? (values as { socialLinks?: Array<{ id: string; platform: string; url: string; iconKey: string }> }) : null;
     return (
-      <div>
-        <h1>{schema.title}</h1>
-        <EntityForm
-          fields={schema.fields}
-          initialValues={values}
-          onSubmit={(nextValues) => updateSingleton(schema.key as SingletonKey, nextValues)}
-        />
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-semibold text-slate-900">{schema.title}</h1>
+          <p className="mt-1 text-sm text-slate-600">Manage {schema.title.toLowerCase()} content.</p>
+        </div>
+        <div className="rounded border border-slate-200 bg-white p-6 shadow-sm">
+          <EntityForm
+            fields={schema.fields}
+            initialValues={values}
+            onSubmit={(nextValues) => updateSingleton(schema.key as SingletonKey, nextValues)}
+          />
+        </div>
         {schema.key === 'footer' && footerValues && (
-          <div>
-            <h2>Social Links</h2>
-            <EntityForm
-              fields={[
-                { name: 'platform', label: 'Platform', required: true },
-                { name: 'url', label: 'URL', required: true },
-                { name: 'iconKey', label: 'Icon Key', required: true },
-              ]}
-              initialValues={(footerValues.socialLinks ?? []).find((link) => link.id === editingSocialId)}
-              submitLabel={editingSocialId ? 'Update Link' : 'Add Link'}
-              onSubmit={(linkValues) => {
-                const current = Array.isArray(footerValues.socialLinks) ? footerValues.socialLinks : [];
-                const next = editingSocialId
-                  ? current.map((link) =>
-                      link.id === editingSocialId ? { ...link, ...linkValues } : link
-                    )
-                  : [
-                      ...current,
-                      {
-                        id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-                        ...linkValues,
-                      },
-                    ];
-                updateSingleton('footer', { socialLinks: next });
-                setEditingSocialId(null);
-              }}
-              onCancel={editingSocialId ? () => setEditingSocialId(null) : undefined}
-            />
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold text-slate-900">Social Links</h2>
+            <div className="rounded border border-slate-200 bg-white p-6 shadow-sm">
+              <EntityForm
+                fields={[
+                  { name: 'platform', label: 'Platform', required: true },
+                  { name: 'url', label: 'URL', required: true },
+                  { name: 'iconKey', label: 'Icon Key', required: true },
+                ]}
+                initialValues={(footerValues.socialLinks ?? []).find((link) => link.id === editingSocialId)}
+                submitLabel={editingSocialId ? 'Update Link' : 'Add Link'}
+                onSubmit={(linkValues) => {
+                  const current = Array.isArray(footerValues.socialLinks) ? footerValues.socialLinks : [];
+                  const next = editingSocialId
+                    ? current.map((link) =>
+                        link.id === editingSocialId ? { ...link, ...linkValues } : link
+                      )
+                    : [
+                        ...current,
+                        {
+                          id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+                          ...linkValues,
+                        },
+                      ];
+                  updateSingleton('footer', { socialLinks: next });
+                  setEditingSocialId(null);
+                }}
+                onCancel={editingSocialId ? () => setEditingSocialId(null) : undefined}
+              />
+            </div>
 
-            <ul role="list">
-              {(footerValues.socialLinks ?? []).map((link) => (
-                <li key={link.id} role="listitem">
-                  <div>{link.platform}</div>
-                  <div>{link.url}</div>
-                  <div>{link.iconKey}</div>
-                  <div>
-                    <button type="button" onClick={() => setEditingSocialId(link.id)}>
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        updateSingleton('footer', {
-                          socialLinks: (footerValues.socialLinks ?? []).filter((item) => item.id !== link.id),
-                        })
-                      }
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <div className="rounded border border-slate-200 bg-white p-6 shadow-sm">
+              <ul role="list" className="space-y-3">
+                {(footerValues.socialLinks ?? []).map((link) => (
+                  <li key={link.id} role="listitem" className="flex items-center justify-between rounded border border-slate-100 px-4 py-3">
+                    <div>
+                      <div className="text-sm font-semibold text-slate-800">{link.platform}</div>
+                      <div className="text-xs text-slate-500">{link.url}</div>
+                      <div className="text-xs text-slate-400">{link.iconKey}</div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        className="rounded border border-slate-200 px-3 py-1 text-xs text-slate-700"
+                        onClick={() => setEditingSocialId(link.id)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        className="rounded border border-red-200 px-3 py-1 text-xs text-red-600"
+                        onClick={() =>
+                          updateSingleton('footer', {
+                            socialLinks: (footerValues.socialLinks ?? []).filter((item) => item.id !== link.id),
+                          })
+                        }
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         )}
       </div>
@@ -140,115 +156,139 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
   ] as const;
 
   return (
-    <div>
-      <h1>{schema.title}</h1>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold text-slate-900">{schema.title}</h1>
+        <p className="mt-1 text-sm text-slate-600">Manage {schema.title.toLowerCase()} entries.</p>
+      </div>
 
       {!isTechStack && (
-        <EntityForm
-          fields={schema.fields}
-          initialValues={editingItem}
-          submitLabel={editingId ? 'Update' : 'Create'}
-          onSubmit={(values) => {
-            if (editingId) {
-              updateItem(collectionKey, editingId, values);
-              setEditingId(null);
-              return;
-            }
-            createItem(collectionKey, values);
-          }}
-          onCancel={editingId ? () => setEditingId(null) : undefined}
-        />
+        <div className="rounded border border-slate-200 bg-white p-6 shadow-sm">
+          <EntityForm
+            fields={schema.fields}
+            initialValues={editingItem}
+            submitLabel={editingId ? 'Update' : 'Create'}
+            onSubmit={(values) => {
+              if (editingId) {
+                updateItem(collectionKey, editingId, values);
+                setEditingId(null);
+                return;
+              }
+              createItem(collectionKey, values);
+            }}
+            onCancel={editingId ? () => setEditingId(null) : undefined}
+          />
+        </div>
       )}
 
       {!isTechStack && !isReorderList && (
-        <DataTable
-          columns={tableColumns}
-          rows={rows}
-          rowKey={(row) => row.id}
-          onEdit={(row) => setEditingId(row.id)}
-          onDelete={(row) => deleteItem(collectionKey, row.id)}
-        />
+        <div className="rounded border border-slate-200 bg-white p-6 shadow-sm">
+          <DataTable
+            columns={tableColumns}
+            rows={rows}
+            rowKey={(row) => row.id}
+            onEdit={(row) => setEditingId(row.id)}
+            onDelete={(row) => deleteItem(collectionKey, row.id)}
+          />
+        </div>
       )}
 
       {isReorderList && !isTechStack && (
-        <ul role="list">
-          {rows.map((item) => (
-            <li
-              key={item.id}
-              role="listitem"
-              draggable
-              onDragStart={(event) => {
-                setDragId(item.id);
-                event.dataTransfer.setData('text/plain', item.id);
-              }}
-              onDragOver={(event) => event.preventDefault()}
-              onDrop={(event) => {
-                event.preventDefault();
-                const fromId = dragId ?? event.dataTransfer.getData('text/plain');
-                if (!fromId || fromId === item.id) return;
-                const reordered = applyOrderIndex(reorderItems(rows, fromId, item.id));
-                replaceCollection(collectionKey, reordered as CollectionItem[]);
-                setDragId(null);
-              }}
-            >
-              <div>
-                <button
-                  type="button"
-                  aria-label={`Reorder ${schema.title} item`}
-                  aria-grabbed={dragId === item.id}
-                  draggable
-                  onDragStart={(event) => {
-                    event.stopPropagation();
-                    setDragId(item.id);
-                    event.dataTransfer.setData('text/plain', item.id);
-                  }}
-                >
-                  ⠿
-                </button>
-                <strong>{String(item.title ?? item.slug ?? item.id)}</strong>
-              </div>
-              <div>
-                <button
-                  type="button"
-                  aria-label="Move item up"
-                  onClick={() =>
-                    replaceCollection(collectionKey, applyOrderIndex(moveItem(rows, item.id, 'up')) as CollectionItem[])
-                  }
-                >
-                  ↑
-                </button>
-                <button
-                  type="button"
-                  aria-label="Move item down"
-                  onClick={() =>
-                    replaceCollection(collectionKey, applyOrderIndex(moveItem(rows, item.id, 'down')) as CollectionItem[])
-                  }
-                >
-                  ↓
-                </button>
-                <button type="button" onClick={() => setEditingId(item.id)}>
-                  Edit
-                </button>
-                <button type="button" onClick={() => deleteItem(collectionKey, item.id)}>
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <div className="rounded border border-slate-200 bg-white p-6 shadow-sm">
+          <ul role="list" className="space-y-3">
+            {rows.map((item) => (
+              <li
+                key={item.id}
+                role="listitem"
+                className="flex items-center justify-between rounded border border-slate-100 px-4 py-3"
+                draggable
+                onDragStart={(event) => {
+                  setDragId(item.id);
+                  event.dataTransfer.setData('text/plain', item.id);
+                }}
+                onDragOver={(event) => event.preventDefault()}
+                onDrop={(event) => {
+                  event.preventDefault();
+                  const fromId = dragId ?? event.dataTransfer.getData('text/plain');
+                  if (!fromId || fromId === item.id) return;
+                  const reordered = applyOrderIndex(reorderItems(rows, fromId, item.id));
+                  replaceCollection(collectionKey, reordered as CollectionItem[]);
+                  setDragId(null);
+                }}
+              >
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    className="cursor-grab text-slate-400"
+                    aria-label={`Reorder ${schema.title} item`}
+                    aria-grabbed={dragId === item.id}
+                    draggable
+                    onDragStart={(event) => {
+                      event.stopPropagation();
+                      setDragId(item.id);
+                      event.dataTransfer.setData('text/plain', item.id);
+                    }}
+                  >
+                    ⠿
+                  </button>
+                  <strong className="text-sm text-slate-800">{String(item.title ?? item.slug ?? item.id)}</strong>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    className="rounded border border-slate-200 px-2 py-1 text-xs"
+                    aria-label="Move item up"
+                    onClick={() =>
+                      replaceCollection(collectionKey, applyOrderIndex(moveItem(rows, item.id, 'up')) as CollectionItem[])
+                    }
+                  >
+                    ↑
+                  </button>
+                  <button
+                    type="button"
+                    className="rounded border border-slate-200 px-2 py-1 text-xs"
+                    aria-label="Move item down"
+                    onClick={() =>
+                      replaceCollection(collectionKey, applyOrderIndex(moveItem(rows, item.id, 'down')) as CollectionItem[])
+                    }
+                  >
+                    ↓
+                  </button>
+                  <button
+                    type="button"
+                    className="rounded border border-slate-200 px-3 py-1 text-xs"
+                    onClick={() => setEditingId(item.id)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    className="rounded border border-red-200 px-3 py-1 text-xs text-red-600"
+                    onClick={() => deleteItem(collectionKey, item.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
 
       {isTechStack && (
-        <div>
-          <div>
-            <EntityForm
-              fields={schema.fields}
-              submitLabel="Create Category"
-              onSubmit={(values) => createItem(collectionKey, values)}
-            />
+        <div className="space-y-6">
+          <div className="rounded border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-slate-900">Create Category</h2>
+            <div className="mt-4">
+              <EntityForm
+                fields={schema.fields}
+                submitLabel="Create Category"
+                onSubmit={(values) => createItem(collectionKey, values)}
+              />
+            </div>
           </div>
 
-          <ul role="list">
+          <ul role="list" className="space-y-4">
             {rows.map((category) => {
               const toolRows = (category.tools ?? []) as Array<{
                 id: string;
@@ -260,8 +300,9 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
               const editingToolRow = editingToolId ? toolRows.find((tool) => tool.id === editingToolId) : undefined;
 
               return (
-                <li key={category.id} role="listitem">
+                <li key={category.id} role="listitem" className="rounded border border-slate-200 bg-white p-6 shadow-sm">
                   <details
+                    open
                     draggable
                     onDragStart={(event) => {
                       setDragId(category.id);
@@ -277,187 +318,216 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                       setDragId(null);
                     }}
                   >
-                    <summary>
-                      <button
-                        type="button"
-                        aria-label={`Reorder category ${category.categoryName}`}
-                        aria-grabbed={dragId === category.id}
-                        draggable
-                        onDragStart={(event) => {
-                          event.stopPropagation();
-                          setDragId(category.id);
-                          event.dataTransfer.setData('text/plain', category.id);
-                        }}
-                      >
-                        ⠿
-                      </button>
-                      <span>{String(category.categoryName)}</span>
-                      <span> ({toolRows.length} tools)</span>
-                      <button
-                        type="button"
-                        aria-label="Move category up"
-                        onClick={() =>
-                          replaceCollection(
-                            collectionKey,
-                            applyOrderIndex(moveItem(rows, category.id, 'up')) as CollectionItem[]
-                          )
-                        }
-                      >
-                        ↑
-                      </button>
-                      <button
-                        type="button"
-                        aria-label="Move category down"
-                        onClick={() =>
-                          replaceCollection(
-                            collectionKey,
-                            applyOrderIndex(moveItem(rows, category.id, 'down')) as CollectionItem[]
-                          )
-                        }
-                      >
-                        ↓
-                      </button>
-                    </summary>
-                    <div>
-                      <EntityForm
-                        fields={schema.fields}
-                        initialValues={category}
-                        submitLabel="Update Category"
-                        onSubmit={(values) =>
-                          updateItem(collectionKey, category.id, {
-                            ...category,
-                            ...values,
-                          })
-                        }
-                      />
-
-                      <div>
-                        <button type="button" onClick={() => deleteItem(collectionKey, category.id)}>
-                          Delete Category
+                    <summary className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <button
+                          type="button"
+                          className="cursor-grab text-slate-400"
+                          aria-label={`Reorder category ${category.categoryName}`}
+                          aria-grabbed={dragId === category.id}
+                          draggable
+                          onDragStart={(event) => {
+                            event.stopPropagation();
+                            setDragId(category.id);
+                            event.dataTransfer.setData('text/plain', category.id);
+                          }}
+                        >
+                          ⠿
+                        </button>
+                        <div>
+                          <div className="text-sm font-semibold text-slate-800">{String(category.categoryName)}</div>
+                          <div className="text-xs text-slate-500">{toolRows.length} tools</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          className="rounded border border-slate-200 px-2 py-1 text-xs"
+                          aria-label="Move category up"
+                          onClick={() =>
+                            replaceCollection(
+                              collectionKey,
+                              applyOrderIndex(moveItem(rows, category.id, 'up')) as CollectionItem[]
+                            )
+                          }
+                        >
+                          ↑
+                        </button>
+                        <button
+                          type="button"
+                          className="rounded border border-slate-200 px-2 py-1 text-xs"
+                          aria-label="Move category down"
+                          onClick={() =>
+                            replaceCollection(
+                              collectionKey,
+                              applyOrderIndex(moveItem(rows, category.id, 'down')) as CollectionItem[]
+                            )
+                          }
+                        >
+                          ↓
                         </button>
                       </div>
+                    </summary>
+                    <div className="mt-4 space-y-4">
+                      <div className="rounded border border-slate-100 bg-slate-50 p-4">
+                        <EntityForm
+                          fields={schema.fields}
+                          initialValues={category}
+                          submitLabel="Update Category"
+                          onSubmit={(values) =>
+                            updateItem(collectionKey, category.id, {
+                              ...category,
+                              ...values,
+                            })
+                          }
+                        />
+                        <div className="mt-3">
+                          <button
+                            type="button"
+                            className="rounded border border-red-200 px-3 py-1 text-xs text-red-600"
+                            onClick={() => deleteItem(collectionKey, category.id)}
+                          >
+                            Delete Category
+                          </button>
+                        </div>
+                      </div>
 
-                      <EntityForm
-                        fields={[...toolFormFields]}
-                        initialValues={editingToolRow}
-                        submitLabel={editingToolId ? 'Update Tool' : 'Add Tool'}
-                        onSubmit={(values) => {
-                          const nextTools = editingToolId
-                            ? toolRows.map((tool) =>
-                                tool.id === editingToolId
-                                  ? {
-                                      ...tool,
-                                      ...values,
-                                      proficiencyLevel: Number(values.proficiencyLevel ?? tool.proficiencyLevel ?? 0),
-                                    }
-                                  : tool
-                              )
-                            : [
-                                ...toolRows,
-                                {
-                                  id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-                                  name: String(values.name ?? ''),
-                                  logoUrl: String(values.logoUrl ?? ''),
-                                  proficiencyLevel: Number(values.proficiencyLevel ?? 0),
-                                },
-                              ];
+                      <div className="rounded border border-slate-100 bg-white p-4">
+                        <h3 className="text-sm font-semibold text-slate-700">Tools</h3>
+                        <div className="mt-3">
+                          <EntityForm
+                            fields={[...toolFormFields]}
+                            initialValues={editingToolRow}
+                            submitLabel={editingToolId ? 'Update Tool' : 'Add Tool'}
+                            onSubmit={(values) => {
+                              const nextTools = editingToolId
+                                ? toolRows.map((tool) =>
+                                    tool.id === editingToolId
+                                      ? {
+                                          ...tool,
+                                          ...values,
+                                          proficiencyLevel: Number(values.proficiencyLevel ?? tool.proficiencyLevel ?? 0),
+                                        }
+                                      : tool
+                                  )
+                                : [
+                                    ...toolRows,
+                                    {
+                                      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+                                      name: String(values.name ?? ''),
+                                      logoUrl: String(values.logoUrl ?? ''),
+                                      proficiencyLevel: Number(values.proficiencyLevel ?? 0),
+                                    },
+                                  ];
 
-                          updateItem(collectionKey, category.id, {
-                            ...category,
-                            tools: nextTools,
-                          });
-                          setEditingTool(null);
-                        }}
-                        onCancel={editingToolId ? () => setEditingTool(null) : undefined}
-                      />
-
-                      <ul role="list">
-                        {toolRows.map((tool) => (
-                          <li
-                            key={tool.id}
-                            role="listitem"
-                            draggable
-                            onDragStart={(event) => {
-                              setDragTool({ categoryId: category.id, toolId: tool.id });
-                              event.dataTransfer.setData('text/plain', tool.id);
-                            }}
-                            onDragOver={(event) => event.preventDefault()}
-                            onDrop={(event) => {
-                              event.preventDefault();
-                              const from = dragTool?.categoryId === category.id ? dragTool : null;
-                              const fromId = from?.toolId ?? event.dataTransfer.getData('text/plain');
-                              if (!fromId || fromId === tool.id) return;
-                              const reorderedTools = reorderItems(toolRows, fromId, tool.id);
                               updateItem(collectionKey, category.id, {
                                 ...category,
-                                tools: reorderedTools,
+                                tools: nextTools,
                               });
-                              setDragTool(null);
+                              setEditingTool(null);
                             }}
-                          >
-                            <div>
-                              <button
-                                type="button"
-                                aria-label={`Reorder tool ${tool.name}`}
-                                aria-grabbed={dragTool?.toolId === tool.id}
-                                draggable
-                                onDragStart={(event) => {
-                                  event.stopPropagation();
-                                  setDragTool({ categoryId: category.id, toolId: tool.id });
-                                  event.dataTransfer.setData('text/plain', tool.id);
-                                }}
-                              >
-                                ⠿
-                              </button>
-                              <strong>{tool.name}</strong> — {tool.proficiencyLevel}%
-                            </div>
-                            <div>
-                              <button
-                                type="button"
-                                aria-label="Move tool up"
-                                onClick={() =>
-                                  updateItem(collectionKey, category.id, {
-                                    ...category,
-                                    tools: moveItem(toolRows, tool.id, 'up'),
-                                  })
-                                }
-                              >
-                                ↑
-                              </button>
-                              <button
-                                type="button"
-                                aria-label="Move tool down"
-                                onClick={() =>
-                                  updateItem(collectionKey, category.id, {
-                                    ...category,
-                                    tools: moveItem(toolRows, tool.id, 'down'),
-                                  })
-                                }
-                              >
-                                ↓
-                              </button>
-                              <button type="button" onClick={() => setEditingTool({ categoryId: category.id, toolId: tool.id })}>
-                                Edit
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  const nextTools = toolRows.filter((item) => item.id !== tool.id);
-                                  updateItem(collectionKey, category.id, {
-                                    ...category,
-                                    tools: nextTools,
-                                  });
-                                  if (editingTool?.categoryId === category.id && editingTool.toolId === tool.id) {
-                                    setEditingTool(null);
+                            onCancel={editingToolId ? () => setEditingTool(null) : undefined}
+                          />
+                        </div>
+
+                        <ul role="list" className="mt-4 space-y-2">
+                          {toolRows.map((tool) => (
+                            <li
+                              key={tool.id}
+                              role="listitem"
+                              className="flex items-center justify-between rounded border border-slate-100 px-3 py-2"
+                              draggable
+                              onDragStart={(event) => {
+                                setDragTool({ categoryId: category.id, toolId: tool.id });
+                                event.dataTransfer.setData('text/plain', tool.id);
+                              }}
+                              onDragOver={(event) => event.preventDefault()}
+                              onDrop={(event) => {
+                                event.preventDefault();
+                                const from = dragTool?.categoryId === category.id ? dragTool : null;
+                                const fromId = from?.toolId ?? event.dataTransfer.getData('text/plain');
+                                if (!fromId || fromId === tool.id) return;
+                                const reorderedTools = reorderItems(toolRows, fromId, tool.id);
+                                updateItem(collectionKey, category.id, {
+                                  ...category,
+                                  tools: reorderedTools,
+                                });
+                                setDragTool(null);
+                              }}
+                            >
+                              <div className="flex items-center gap-3">
+                                <button
+                                  type="button"
+                                  className="cursor-grab text-slate-400"
+                                  aria-label={`Reorder tool ${tool.name}`}
+                                  aria-grabbed={dragTool?.toolId === tool.id}
+                                  draggable
+                                  onDragStart={(event) => {
+                                    event.stopPropagation();
+                                    setDragTool({ categoryId: category.id, toolId: tool.id });
+                                    event.dataTransfer.setData('text/plain', tool.id);
+                                  }}
+                                >
+                                  ⠿
+                                </button>
+                                <strong className="text-sm text-slate-800">{tool.name}</strong>
+                                <span className="text-xs text-slate-500">{tool.proficiencyLevel}%</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  className="rounded border border-slate-200 px-2 py-1 text-xs"
+                                  aria-label="Move tool up"
+                                  onClick={() =>
+                                    updateItem(collectionKey, category.id, {
+                                      ...category,
+                                      tools: moveItem(toolRows, tool.id, 'up'),
+                                    })
                                   }
-                                }}
-                              >
-                                Delete
-                              </button>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
+                                >
+                                  ↑
+                                </button>
+                                <button
+                                  type="button"
+                                  className="rounded border border-slate-200 px-2 py-1 text-xs"
+                                  aria-label="Move tool down"
+                                  onClick={() =>
+                                    updateItem(collectionKey, category.id, {
+                                      ...category,
+                                      tools: moveItem(toolRows, tool.id, 'down'),
+                                    })
+                                  }
+                                >
+                                  ↓
+                                </button>
+                                <button
+                                  type="button"
+                                  className="rounded border border-slate-200 px-3 py-1 text-xs"
+                                  onClick={() => setEditingTool({ categoryId: category.id, toolId: tool.id })}
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  type="button"
+                                  className="rounded border border-red-200 px-3 py-1 text-xs text-red-600"
+                                  onClick={() => {
+                                    const nextTools = toolRows.filter((item) => item.id !== tool.id);
+                                    updateItem(collectionKey, category.id, {
+                                      ...category,
+                                      tools: nextTools,
+                                    });
+                                    if (editingTool?.categoryId === category.id && editingTool.toolId === tool.id) {
+                                      setEditingTool(null);
+                                    }
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </details>
                 </li>
