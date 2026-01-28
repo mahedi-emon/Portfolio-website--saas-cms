@@ -16,6 +16,7 @@ import { DashboardHomePage } from '../admin/pages/Dashboard/DashboardHomePage';
 import { ContactMessagesPage } from '../admin/pages/messages/ContactMessagesPage';
 import { ContactMessageDetailPage } from '../admin/pages/messages/ContactMessageDetailPage';
 import { AdminPortfolioPage } from '../admin/pages/Portfolio/AdminPortfolioPage';
+import { ResumeLibraryPage } from '../admin/pages/resume/ResumeLibraryPage';
 import { CmsSectionEditor } from '../admin/pages/cms/CmsSectionEditor';
 
 export function AppRoutes() {
@@ -51,18 +52,17 @@ export function AppRoutes() {
         <Route path="dashboard" element={<DashboardHomePage />} />
         <Route path="cms/hero" element={<CmsSectionEditor sectionKey="hero" />} />
         <Route path="cms/about" element={<CmsSectionEditor sectionKey="about" />} />
+        <Route path="cms/contact" element={<CmsSectionEditor sectionKey="contact" />} />
         <Route path="cms/education" element={<CmsSectionEditor sectionKey="education" />} />
         <Route path="cms/skills" element={<CmsSectionEditor sectionKey="techStackCategories" />} />
         <Route path="cms/services" element={<CmsSectionEditor sectionKey="services" />} />
         <Route path="cms/blogs" element={<CmsSectionEditor sectionKey="blogs" />} />
         <Route path="cms/testimonials" element={<CmsSectionEditor sectionKey="testimonials" />} />
         <Route path="cms/clients" element={<CmsSectionEditor sectionKey="clients" />} />
-        <Route path="cms/resume" element={<CmsSectionEditor sectionKey="resume" />} />
-        <Route path="cms/footer" element={<CmsSectionEditor sectionKey="footer" />} />
+        <Route path="cms/resume" element={<ResumeLibraryPage />} />
         <Route path="cms/projects" element={<CmsSectionEditor sectionKey="projects" />} />
         <Route path="cms/publications" element={<CmsSectionEditor sectionKey="publications" />} />
         <Route path="cms/achievements" element={<CmsSectionEditor sectionKey="achievements" />} />
-        <Route path="cms/site-settings" element={<CmsSectionEditor sectionKey="siteSettings" />} />
         <Route path="portfolio" element={<AdminPortfolioPage />} />
         <Route path="messages" element={<ContactMessagesPage />} />
         <Route path="messages/:id" element={<ContactMessageDetailPage />} />

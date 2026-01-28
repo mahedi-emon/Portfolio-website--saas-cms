@@ -15,6 +15,10 @@ type CmsContextValue = {
   updateItem: (key: CollectionKey, id: string, values: Record<string, unknown>) => void;
   deleteItem: (key: CollectionKey, id: string) => void;
   replaceCollection: (key: CollectionKey, items: CollectionItem[]) => void;
+  addContactMessage: (message: Record<string, unknown>) => void;
+  updateContactMessage: (id: string, values: Record<string, unknown>) => void;
+  deleteContactMessage: (id: string) => void;
+  setActiveResume: (resumeId: string) => void;
 };
 
 export const CmsContext = createContext<CmsContextValue | null>(null);
@@ -32,6 +36,10 @@ export function CmsProvider({ children }: { children: ReactNode }) {
       updateItem: repo.updateItem,
       deleteItem: repo.deleteItem,
       replaceCollection: repo.replaceCollection,
+      addContactMessage: repo.addContactMessage,
+      updateContactMessage: repo.updateContactMessage,
+      deleteContactMessage: repo.deleteContactMessage,
+      setActiveResume: repo.setActiveResume,
     }),
     [data, repo]
   );

@@ -2,11 +2,13 @@ import { useCms } from '../../hooks/useCms';
 
 export function AboutPage() {
   const { data } = useCms();
+  const published = <T extends { status?: string }>(items: T[]) =>
+    items.filter((item) => item.status === 'published');
   const about = data.singletons.about ?? {};
-  const skills = data.collections.skills ?? [];
-  const education = data.collections.education ?? [];
-  const experience = data.collections.experience ?? [];
-  const certifications = data.collections.certifications ?? [];
+  const skills = published(data.collections.skills ?? []);
+  const education = published(data.collections.education ?? []);
+  const experience = published(data.collections.experience ?? []);
+  const certifications = published(data.collections.certifications ?? []);
 
   return (
     <div className="space-y-8">

@@ -2,7 +2,7 @@ import { useCms } from '../../hooks/useCms';
 
 export function ProjectsPage() {
   const { data } = useCms();
-  const projects = data.collections.projects ?? [];
+  const projects = (data.collections.projects ?? []).filter((item) => item.status === 'published');
 
   return (
     <div className="space-y-6">

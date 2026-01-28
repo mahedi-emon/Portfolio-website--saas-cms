@@ -1,4 +1,4 @@
-export type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'date' | 'list' | 'image' | 'file';
+export type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'date' | 'list' | 'image' | 'file' | 'socialLinks';
 
 export type FieldSchema = {
   name: string;
@@ -15,15 +15,6 @@ export type SectionSchema = {
 };
 
 export const sectionSchemas: Record<string, SectionSchema> = {
-  siteSettings: {
-    key: 'siteSettings',
-    title: 'Site Settings',
-    kind: 'singleton',
-    fields: [
-      { name: 'siteName', label: 'Site Name', required: true },
-      { name: 'tagline', label: 'Tagline' },
-    ],
-  },
   hero: {
     key: 'hero',
     title: 'Hero',
@@ -39,45 +30,33 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'About',
     kind: 'singleton',
     fields: [
+      { name: 'fullName', label: 'Full Name', required: true },
+      { name: 'tagline', label: 'Tagline', type: 'textarea' },
       { name: 'title', label: 'Title', required: true },
       { name: 'bio', label: 'Bio', type: 'textarea', required: true },
-      { name: 'profileImageUrl', label: 'Profile Image URL', type: 'image' },
+      { name: 'profileImageUrl', label: 'Profile Image', type: 'image' },
       { name: 'currentRole', label: 'Current Role' },
       { name: 'researchInterest', label: 'Research Interest' },
     ],
   },
-  contactInfo: {
-    key: 'contactInfo',
-    title: 'Contact Info',
+  contact: {
+    key: 'contact',
+    title: 'Contact',
     kind: 'singleton',
     fields: [
-      { name: 'email', label: 'Email', required: true },
-      { name: 'phone', label: 'Phone' },
-      { name: 'location', label: 'Location' },
+      { name: 'pageIntroText', label: 'Contact Page Intro', type: 'textarea' },
+      { name: 'contactInfo.email', label: 'Email', required: true },
+      { name: 'contactInfo.phone', label: 'Phone' },
+      { name: 'contactInfo.location', label: 'Location' },
+      { name: 'socialLinks', label: 'Social Links', type: 'socialLinks' },
+      { name: 'hireMeLabel', label: 'Hire Me Label' },
     ],
   },
-  footer: {
-    key: 'footer',
-    title: 'Footer',
+  resumeSettings: {
+    key: 'resumeSettings',
+    title: 'Resume Settings',
     kind: 'singleton',
-    fields: [
-      { name: 'title', label: 'Title', required: true },
-      { name: 'description', label: 'Description', type: 'textarea', required: true },
-      { name: 'contact.email', label: 'Contact Email', required: true },
-      { name: 'contact.phone', label: 'Contact Phone' },
-      { name: 'contact.location', label: 'Contact Location' },
-      { name: 'contact.directMessageUrl', label: 'Direct Message URL' },
-      { name: 'copyrightText', label: 'Copyright Text', required: true },
-    ],
-  },
-  resume: {
-    key: 'resume',
-    title: 'Resume',
-    kind: 'singleton',
-    fields: [
-      { name: 'resumeFileUrl', label: 'Resume File URL', type: 'file', required: true },
-      { name: 'resumePreviewUrl', label: 'Resume Preview URL', type: 'file' },
-    ],
+    fields: [{ name: 'activeResumeId', label: 'Active Resume ID' }],
   },
   education: {
     key: 'education',
@@ -113,6 +92,17 @@ export const sectionSchemas: Record<string, SectionSchema> = {
       { name: 'orderIndex', label: 'Order Index', type: 'number' },
       { name: 'title', label: 'Title', required: true },
       { name: 'summary', label: 'Summary', type: 'textarea' },
+    ],
+  },
+  resumes: {
+    key: 'resumes',
+    title: 'Resumes',
+    kind: 'collection',
+    fields: [
+      { name: 'status', label: 'Status', required: true },
+      { name: 'title', label: 'Title', required: true },
+      { name: 'fileUrl', label: 'File URL', type: 'file', required: true },
+      { name: 'uploadedAt', label: 'Uploaded At', type: 'date' },
     ],
   },
   projects: {

@@ -9,10 +9,10 @@ export function PortfolioPage() {
   const { data } = useCms();
   const [activeTab, setActiveTab] = useState<TabKey>('projects');
 
-  const projects = data.collections.projects ?? [];
-  const publications = data.collections.publications ?? [];
-  const achievements = data.collections.achievements ?? [];
-  const certifications = data.collections.certifications ?? [];
+  const projects = (data.collections.projects ?? []).filter((item) => item.status === 'published');
+  const publications = (data.collections.publications ?? []).filter((item) => item.status === 'published');
+  const achievements = (data.collections.achievements ?? []).filter((item) => item.status === 'published');
+  const certifications = (data.collections.certifications ?? []).filter((item) => item.status === 'published');
 
   return (
     <div className="space-y-6">

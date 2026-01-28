@@ -5,7 +5,7 @@ import { Footer } from '../../components/common/Footer';
 
 export function PublicLayout() {
   const { data } = useCms();
-  const siteName = data.singletons.siteSettings?.siteName ?? 'Portfolio';
+  const siteName = data.singletons.about?.fullName ?? data.singletons.hero?.fullName ?? 'Portfolio';
 
   return (
     <div className="min-h-screen bg-white text-slate-900">

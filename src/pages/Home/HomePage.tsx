@@ -4,24 +4,30 @@ import { ResumeViewerModal } from '../../components/common/ResumeViewerModal';
 
 export function HomePage() {
   const { data } = useCms();
+  const published = <T extends { status?: string }>(items: T[]) =>
+    items.filter((item) => item.status === 'published');
   const hero = data.singletons.hero ?? {};
-  const services = data.collections.services ?? [];
-  const projects = data.collections.projects ?? [];
-  const blogs = data.collections.blogs ?? [];
-  const testimonials = data.collections.testimonials ?? [];
-  const clients = data.collections.clients ?? [];
-  const achievements = data.collections.achievements ?? [];
+  const services = published(data.collections.services ?? []);
+  const projects = published(data.collections.projects ?? []);
+  const blogs = published(data.collections.blogs ?? []);
+  const testimonials = published(data.collections.testimonials ?? []);
+  const clients = published(data.collections.clients ?? []);
+  const achievements = published(data.collections.achievements ?? []);
   const about = data.singletons.about ?? {};
-  const education = data.collections.education ?? [];
-  const resume = data.singletons.resume ?? {};
+  const education = published(data.collections.education ?? []);
+  const resumes = data.collections.resumes ?? [];
+  const resumeSettings = data.singletons.resumeSettings ?? {};
+  const activeResume =
+    resumes.find((item) => item.id === resumeSettings.activeResumeId && item.status === 'active') ??
+    resumes.find((item) => item.status === 'active');
   const [isResumeOpen, setIsResumeOpen] = useState(false);
-  const techStackCategories = data.collections.techStackCategories ?? [];
+  const techStackCategories = published(data.collections.techStackCategories ?? []);
 
   return (
     <div className="space-y-12">
       <section className="space-y-4">
         <h1 className="text-4xl font-semibold">
-          Hi, I'm {hero.fullName ?? data.singletons.siteSettings?.siteName ?? 'Full Name'}
+          Hi, I'm {hero.fullName ?? about.fullName ?? 'Full Name'}
         </h1>
         <p className="max-w-2xl text-slate-600">
           {hero.subheadline ?? 'Full-stack engineer focused on scalable web platforms.'}
@@ -209,21 +215,28 @@ export function HomePage() {
 
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold">Resume</h2>
-        <div className="flex gap-3">
-          <button className="rounded border px-4 py-2" type="button" onClick={() => setIsResumeOpen(true)}>
-            Preview Resume
-          </button>
-          {resume.resumeFileUrl && (
-            <a className="rounded border px-4 py-2" href={resume.resumeFileUrl}>
-              Download Resume
-            </a>
-          )}
-        </div>
+        {activeResume ? (
+          <div className="space-y-2">
+            <div className="text-sm text-slate-600">{activeResume.title}</div>
+            <div className="rounded border">
+              <iframe
+                title="Resume Preview"
+                src={activeResume.fileUrl}
+                className="h-64 w-full"
+              />
+            </div>
+            <button className="rounded border px-4 py-2" type="button" onClick={() => setIsResumeOpen(true)}>
+              View full resume
+            </button>
+          </div>
+        ) : (
+          <div className="text-sm text-slate-600">Resume not available.</div>
+        )}
       </section>
 
       <ResumeViewerModal
         isOpen={isResumeOpen}
-        previewUrl={resume.resumePreviewUrl ?? resume.resumeFileUrl}
+        previewUrl={activeResume?.fileUrl}
         onClose={() => setIsResumeOpen(false)}
       />
 

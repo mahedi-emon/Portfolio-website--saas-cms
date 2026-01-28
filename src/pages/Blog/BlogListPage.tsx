@@ -2,7 +2,7 @@ import { useCms } from '../../hooks/useCms';
 
 export function BlogListPage() {
   const { data } = useCms();
-  const blogs = data.collections.blogs ?? [];
+  const blogs = (data.collections.blogs ?? []).filter((item) => item.status === 'published');
 
   return (
     <div className="space-y-6">

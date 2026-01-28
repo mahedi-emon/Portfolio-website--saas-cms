@@ -1,9 +1,5 @@
 {
   "singletons": {
-    "siteSettings": {
-      "siteName": "Alex Morgan",
-      "tagline": "Full-stack engineer building reliable SaaS platforms"
-    },
     "hero": {
       "fullName": "Alex Morgan",
       "headline": "Hi, I'm Alex — I build scalable web apps",
@@ -14,6 +10,8 @@
       "ctaSecondaryHref": "/contact"
     },
     "about": {
+      "fullName": "Alex Morgan",
+      "tagline": "Senior full-stack engineer & SaaS founder",
       "title": "About Me",
       "bio": "I design and ship production-grade web platforms with a focus on performance, accessibility, and maintainability. Over the last 10+ years I've led teams building SaaS products, internal tools, and public-facing apps.",
       "profileImageUrl": "https://placehold.co/320x320?text=Profile",
@@ -25,29 +23,43 @@
         "Design systems, performance, and DX"
       ]
     },
-    "contactInfo": {},
-    "footer": {
-      "title": "Get In Touch",
-      "description": "Open to collaboration, consulting, and speaking opportunities.",
-      "contact": {
+    "contact": {
+      "pageIntroText": "Have a project or collaboration in mind? Let’s connect.",
+      "hireMeLabel": "Hire Me",
+      "contactInfo": {
         "email": "alex.morgan@example.com",
         "phone": "+1 (555) 123-4567",
-        "location": "Seattle, WA",
-        "directMessageUrl": "/contact#contact-form"
+        "location": "Seattle, WA"
       },
       "socialLinks": [
-        { "id": "social-1", "platform": "LinkedIn", "url": "https://linkedin.com/in/example", "iconKey": "linkedin" },
-        { "id": "social-2", "platform": "GitHub", "url": "https://github.com/example", "iconKey": "github" },
-        { "id": "social-3", "platform": "Twitter", "url": "https://x.com/example", "iconKey": "twitter" }
-      ],
-      "copyrightText": "© 2026 Alex Morgan. All rights reserved."
+        { "url": "https://linkedin.com/in/example", "platform": "linkedin", "iconKey": "linkedin" },
+        { "url": "https://github.com/example", "platform": "github", "iconKey": "github" },
+        { "url": "https://x.com/example", "platform": "twitter", "iconKey": "twitter" },
+        { "url": "https://scholar.google.com/citations?user=example", "platform": "google_scholar", "iconKey": "google_scholar" },
+        { "url": "https://example.com", "platform": "custom", "iconKey": "custom" }
+      ]
     },
-    "resume": {
-      "resumeFileUrl": "https://example.com/resume/alex-morgan-resume.pdf",
-      "resumePreviewUrl": "https://example.com/resume/alex-morgan-resume.pdf"
+    "resumeSettings": {
+      "activeResumeId": "resume-1"
     }
   },
   "collections": {
+    "resumes": [
+      {
+        "id": "resume-1",
+        "status": "active",
+        "title": "Alex Morgan - Resume",
+        "fileUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        "uploadedAt": "2026-01-05"
+      },
+      {
+        "id": "resume-2",
+        "status": "inactive",
+        "title": "Alex Morgan - CV",
+        "fileUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        "uploadedAt": "2025-09-18"
+      }
+    ],
     "education": [
       {
         "id": "edu-1",
@@ -511,7 +523,9 @@
         "subject": "Project inquiry",
         "message": "Hi Alex, I'd love to discuss a potential SaaS build for our team. Are you available next week?",
         "status": "new",
-        "createdAt": "2024-11-12T09:30:00Z"
+        "createdAt": "2024-11-12T09:30:00Z",
+        "handledBy": "",
+        "handledAt": ""
       },
       {
         "id": "msg-2",
@@ -520,7 +534,9 @@
         "subject": "Conference collaboration",
         "message": "Your recent paper on multi-tenant systems was great. Interested in a joint workshop submission?",
         "status": "read",
-        "createdAt": "2024-11-08T14:05:00Z"
+        "createdAt": "2024-11-08T14:05:00Z",
+        "handledBy": "admin",
+        "handledAt": "2024-11-08T15:10:00Z"
       },
       {
         "id": "msg-3",
@@ -529,7 +545,9 @@
         "subject": "Speaking opportunity",
         "message": "We are organizing a frontend performance summit and would love you to speak about observability.",
         "status": "archived",
-        "createdAt": "2024-10-29T18:45:00Z"
+        "createdAt": "2024-10-29T18:45:00Z",
+        "handledBy": "admin",
+        "handledAt": "2024-11-01T10:00:00Z"
       }
     ]
   }
