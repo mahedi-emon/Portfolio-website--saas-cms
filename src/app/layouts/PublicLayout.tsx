@@ -1,77 +1,57 @@
 import { NavLink, Outlet } from 'react-router-dom';
-
-const linkStyle = ({ isActive }: { isActive: boolean }) => ({
-  textDecoration: 'none',
-  padding: '6px 10px',
-  borderRadius: 8,
-  color: isActive ? 'white' : 'rgba(255,255,255,0.85)',
-  background: isActive ? 'rgba(255,255,255,0.15)' : 'transparent',
-});
+import { LayoutDashboard } from 'lucide-react';
+import { useCms } from '../../hooks/useCms';
+import { Footer } from '../../components/common/Footer';
 
 export function PublicLayout() {
+  const { data } = useCms();
+  const siteName = data.singletons.siteSettings?.siteName ?? 'Portfolio';
+
   return (
-    <div>
-      <header
-        style={{
-          position: 'sticky',
-          top: 0,
-          backdropFilter: 'blur(8px)',
-          background: 'rgba(10, 10, 10, 0.6)',
-          borderBottom: '1px solid rgba(255,255,255,0.08)',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '12px 16px',
-            maxWidth: 1100,
-            margin: '0 auto',
-          }}
-        >
-          <div style={{ color: 'white', fontWeight: 700 }}>Portfolio</div>
-          <nav style={{ display: 'flex', gap: 6 }}>
-            <NavLink to="/" end style={linkStyle}>
+    <div className="min-h-screen bg-white text-slate-900">
+      <header className="sticky top-0 z-10 border-b bg-white">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+          <NavLink to="/" className="text-base font-semibold">
+            {siteName}
+          </NavLink>
+          <nav className="flex gap-4 text-sm">
+            <NavLink to="/" end className={({ isActive }) => (isActive ? 'font-semibold' : '')}>
               Home
             </NavLink>
-            <NavLink to="/about" style={linkStyle}>
+            <NavLink to="/about" className={({ isActive }) => (isActive ? 'font-semibold' : '')}>
               About
             </NavLink>
-            <NavLink to="/projects" style={linkStyle}>
-              Projects
+            <a href="/#skills" className="hover:underline">
+              Skills
+            </a>
+            <NavLink to="/portfolio" className={({ isActive }) => (isActive ? 'font-semibold' : '')}>
+              Portfolio
             </NavLink>
-            <NavLink to="/publications" style={linkStyle}>
-              Publications
-            </NavLink>
-            <NavLink to="/blog" style={linkStyle}>
-              Blog
-            </NavLink>
-            <NavLink to="/services" style={linkStyle}>
+            <NavLink to="/services" className={({ isActive }) => (isActive ? 'font-semibold' : '')}>
               Services
             </NavLink>
-            <NavLink to="/contact" style={linkStyle}>
+            <NavLink to="/blog" className={({ isActive }) => (isActive ? 'font-semibold' : '')}>
+              Blog
+            </NavLink>
+            <NavLink to="/contact" className={({ isActive }) => (isActive ? 'font-semibold' : '')}>
               Contact
+            </NavLink>
+            <NavLink
+              to="/admin/login"
+              className="rounded border p-1 text-xs hover:bg-slate-100"
+              title="Admin Login"
+              aria-label="Admin Login"
+            >
+              <LayoutDashboard size={16} />
             </NavLink>
           </nav>
         </div>
       </header>
 
-      <main style={{ maxWidth: 1100, margin: '0 auto' }}>
+      <main className="mx-auto max-w-6xl px-4 py-10">
         <Outlet />
       </main>
-
-      <footer
-        style={{
-          marginTop: 40,
-          padding: 16,
-          borderTop: '1px solid rgba(0,0,0,0.08)',
-          color: 'rgba(0,0,0,0.6)',
-          textAlign: 'center',
-        }}
-      >
-        <small>Footer placeholder</small>
-      </footer>
+      <Footer />
     </div>
   );
 }

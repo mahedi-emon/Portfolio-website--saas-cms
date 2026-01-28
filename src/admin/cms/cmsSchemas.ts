@@ -1,4 +1,4 @@
-export type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'date';
+export type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'date' | 'list';
 
 export type FieldSchema = {
   name: string;
@@ -28,6 +28,7 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Hero',
     kind: 'singleton',
     fields: [
+      { name: 'fullName', label: 'Full Name' },
       { name: 'headline', label: 'Headline' },
       { name: 'subheadline', label: 'Subheadline', type: 'textarea' },
     ],
@@ -39,6 +40,9 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     fields: [
       { name: 'title', label: 'Title' },
       { name: 'bio', label: 'Bio', type: 'textarea' },
+      { name: 'profileImageUrl', label: 'Profile Image URL' },
+      { name: 'currentRole', label: 'Current Role' },
+      { name: 'researchInterest', label: 'Research Interest' },
     ],
   },
   contactInfo: {
@@ -55,13 +59,24 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     key: 'footer',
     title: 'Footer',
     kind: 'singleton',
-    fields: [{ name: 'copyright', label: 'Copyright' }],
+    fields: [
+      { name: 'title', label: 'Title' },
+      { name: 'description', label: 'Description', type: 'textarea' },
+      { name: 'contact.email', label: 'Contact Email' },
+      { name: 'contact.phone', label: 'Contact Phone' },
+      { name: 'contact.location', label: 'Contact Location' },
+      { name: 'contact.directMessageUrl', label: 'Direct Message URL' },
+      { name: 'copyrightText', label: 'Copyright Text' },
+    ],
   },
   resume: {
     key: 'resume',
     title: 'Resume',
     kind: 'singleton',
-    fields: [{ name: 'activeResumeUrl', label: 'Resume URL' }],
+    fields: [
+      { name: 'resumeFileUrl', label: 'Resume File URL' },
+      { name: 'resumePreviewUrl', label: 'Resume Preview URL' },
+    ],
   },
   education: {
     key: 'education',
@@ -99,8 +114,13 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     kind: 'collection',
     fields: [
       { name: 'title', label: 'Title' },
-      { name: 'slug', label: 'Slug' },
       { name: 'summary', label: 'Summary', type: 'textarea' },
+      { name: 'description', label: 'Description', type: 'textarea' },
+      { name: 'coverImageUrl', label: 'Cover Image URL' },
+      { name: 'galleryImages', label: 'Gallery Images (comma separated)', type: 'list' },
+      { name: 'githubUrl', label: 'GitHub URL' },
+      { name: 'liveDemoUrl', label: 'Live Demo URL' },
+      { name: 'techStack', label: 'Tech Stack (comma separated)', type: 'list' },
       { name: 'featured', label: 'Featured', type: 'checkbox' },
     ],
   },
@@ -110,8 +130,14 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     kind: 'collection',
     fields: [
       { name: 'title', label: 'Title' },
-      { name: 'publisher', label: 'Publisher' },
-      { name: 'publishedDate', label: 'Published Date', type: 'date' },
+      { name: 'authors', label: 'Authors (comma separated)', type: 'list' },
+      { name: 'venue', label: 'Venue' },
+      { name: 'year', label: 'Year' },
+      { name: 'abstract', label: 'Abstract', type: 'textarea' },
+      { name: 'paperUrl', label: 'Paper URL' },
+      { name: 'pdfUrl', label: 'PDF URL' },
+      { name: 'coverImageUrl', label: 'Cover Image URL' },
+      { name: 'citation', label: 'Citation', type: 'textarea' },
     ],
   },
   certifications: {
@@ -119,9 +145,14 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     title: 'Certifications',
     kind: 'collection',
     fields: [
-      { name: 'name', label: 'Name' },
+      { name: 'certificateTitle', label: 'Certificate Title' },
       { name: 'issuer', label: 'Issuer' },
       { name: 'issueDate', label: 'Issue Date', type: 'date' },
+      { name: 'expiryDate', label: 'Expiry Date', type: 'date' },
+      { name: 'credentialId', label: 'Credential ID' },
+      { name: 'credentialUrl', label: 'Credential URL' },
+      { name: 'certificateImageUrl', label: 'Certificate Image URL' },
+      { name: 'certificateFileUrl', label: 'Certificate File URL' },
     ],
   },
   experience: {
@@ -160,7 +191,10 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     kind: 'collection',
     fields: [
       { name: 'title', label: 'Title' },
-      { name: 'date', label: 'Date', type: 'date' },
+      { name: 'issuer', label: 'Issuer' },
+      { name: 'year', label: 'Year' },
+      { name: 'description', label: 'Description', type: 'textarea' },
+      { name: 'externalLink', label: 'External Link' },
     ],
   },
   clients: {
@@ -169,8 +203,15 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     kind: 'collection',
     fields: [
       { name: 'name', label: 'Name' },
-      { name: 'website', label: 'Website' },
+      { name: 'logoUrl', label: 'Logo URL' },
+      { name: 'websiteUrl', label: 'Website URL' },
     ],
+  },
+  techStackCategories: {
+    key: 'techStackCategories',
+    title: 'Tech Stack Categories',
+    kind: 'collection',
+    fields: [{ name: 'categoryName', label: 'Category Name' }],
   },
 };
 

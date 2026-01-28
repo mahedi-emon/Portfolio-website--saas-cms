@@ -2,5 +2,20 @@ import { useCms } from '../../hooks/useCms';
 
 export function BlogListPage() {
   const { data } = useCms();
-  return <pre>{JSON.stringify(data.collections.blogs, null, 2)}</pre>;
+  const blogs = data.collections.blogs ?? [];
+
+  return (
+    <div className="space-y-6">
+      <h1 className="text-3xl font-semibold">Blog</h1>
+      <div className="space-y-4">
+        {blogs.map((post) => (
+          <article key={post.id} className="rounded border p-4">
+            <div className="text-xs uppercase text-slate-500">{post.slug}</div>
+            <h2 className="text-lg font-medium">{post.title}</h2>
+            <p className="text-sm text-slate-600">{post.excerpt}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
 }

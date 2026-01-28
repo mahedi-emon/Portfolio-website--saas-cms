@@ -13,6 +13,7 @@ type CmsContextValue = {
   createItem: (key: CollectionKey, values: Record<string, unknown>) => void;
   updateItem: (key: CollectionKey, id: string, values: Record<string, unknown>) => void;
   deleteItem: (key: CollectionKey, id: string) => void;
+  replaceCollection: (key: CollectionKey, items: CollectionItem[]) => void;
 };
 
 export const CmsContext = createContext<CmsContextValue | null>(null);
@@ -28,7 +29,10 @@ export function CmsProvider({ children }: { children: ReactNode }) {
         ...prev,
         singletons: {
           ...prev.singletons,
-          [key]: values,
+          [key]: {
+            ...(prev.singletons[key] as Record<string, unknown>),
+            ...values,
+          },
         },
       }));
     },
@@ -82,9 +86,19 @@ export function CmsProvider({ children }: { children: ReactNode }) {
     []
   );
 
+  const replaceCollection = useCallback((key: CollectionKey, items: CollectionItem[]) => {
+    setData((prev) => ({
+      ...prev,
+      collections: {
+        ...prev.collections,
+        [key]: items,
+      },
+    }));
+  }, []);
+
   const value = useMemo<CmsContextValue>(
-    () => ({ data, updateSingleton, createItem, updateItem, deleteItem }),
-    [data, updateSingleton, createItem, updateItem, deleteItem]
+    () => ({ data, updateSingleton, createItem, updateItem, deleteItem, replaceCollection }),
+    [data, updateSingleton, createItem, updateItem, deleteItem, replaceCollection]
   );
   return <CmsContext.Provider value={value}>{children}</CmsContext.Provider>;
 }

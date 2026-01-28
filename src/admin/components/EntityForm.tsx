@@ -9,11 +9,37 @@ export type EntityFormProps = {
   submitLabel?: string;
 };
 
+const getNested = (obj: Record<string, unknown>, path: string) => {
+  return path.split('.').reduce<unknown>((acc, key) => {
+    if (acc && typeof acc === 'object' && key in (acc as Record<string, unknown>)) {
+      return (acc as Record<string, unknown>)[key];
+    }
+    return undefined;
+  }, obj);
+};
+
+const setNested = (obj: Record<string, unknown>, path: string, value: unknown) => {
+  const keys = path.split('.');
+  const next = { ...obj } as Record<string, unknown>;
+  let cursor: Record<string, unknown> = next;
+  keys.forEach((key, index) => {
+    if (index === keys.length - 1) {
+      cursor[key] = value;
+      return;
+    }
+    const existing = cursor[key];
+    cursor[key] = typeof existing === 'object' && existing !== null ? { ...(existing as Record<string, unknown>) } : {};
+    cursor = cursor[key] as Record<string, unknown>;
+  });
+  return next;
+};
+
 function buildInitial(fields: FieldSchema[], initialValues?: Record<string, unknown>) {
   const base: Record<string, unknown> = {};
   for (const field of fields) {
-    if (initialValues && field.name in initialValues) {
-      base[field.name] = initialValues[field.name];
+    const nestedValue = initialValues ? getNested(initialValues, field.name) : undefined;
+    if (initialValues && nestedValue !== undefined) {
+      base[field.name] = nestedValue;
       continue;
     }
 
@@ -23,6 +49,9 @@ function buildInitial(fields: FieldSchema[], initialValues?: Record<string, unkn
         break;
       case 'number':
         base[field.name] = 0;
+        break;
+      case 'list':
+        base[field.name] = [];
         break;
       default:
         base[field.name] = '';
@@ -42,7 +71,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
   }, [initial]);
 
   const handleChange = (name: string, value: unknown) => {
-    setValues((prev) => ({ ...prev, [name]: value }));
+    setValues((prev) => setNested(prev, name, value));
   };
 
   return (
@@ -58,19 +87,33 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
             {field.label}
             {field.type === 'textarea' ? (
               <textarea
-                value={String(values[field.name] ?? '')}
+                value={String(getNested(values, field.name) ?? '')}
                 onChange={(event) => handleChange(field.name, event.target.value)}
               />
             ) : field.type === 'checkbox' ? (
               <input
                 type="checkbox"
-                checked={Boolean(values[field.name])}
+                checked={Boolean(getNested(values, field.name))}
                 onChange={(event) => handleChange(field.name, event.target.checked)}
+              />
+            ) : field.type === 'list' ? (
+              <input
+                type="text"
+                value={Array.isArray(getNested(values, field.name)) ? ((getNested(values, field.name) as unknown[]) ?? []).join(', ') : ''}
+                onChange={(event) =>
+                  handleChange(
+                    field.name,
+                    event.target.value
+                      .split(',')
+                      .map((item) => item.trim())
+                      .filter(Boolean)
+                  )
+                }
               />
             ) : (
               <input
                 type={field.type ?? 'text'}
-                value={String(values[field.name] ?? '')}
+                value={String(getNested(values, field.name) ?? '')}
                 onChange={(event) => handleChange(field.name, event.target.value)}
               />
             )}

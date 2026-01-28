@@ -5,6 +5,7 @@
       "tagline": "Full-stack engineer building reliable SaaS platforms"
     },
     "hero": {
+      "fullName": "Alex Morgan",
       "headline": "Hi, I'm Alex — I build scalable web apps",
       "subheadline": "Senior full-stack engineer specializing in React, TypeScript, and cloud-native systems.",
       "ctaPrimaryLabel": "View Projects",
@@ -15,6 +16,9 @@
     "about": {
       "title": "About Me",
       "bio": "I design and ship production-grade web platforms with a focus on performance, accessibility, and maintainability. Over the last 10+ years I've led teams building SaaS products, internal tools, and public-facing apps.",
+      "profileImageUrl": "https://placehold.co/320x320?text=Profile",
+      "currentRole": "Senior Full-Stack Engineer",
+      "researchInterest": "Scalable SaaS architectures and observability-driven development",
       "highlights": [
         "10+ years building SaaS and enterprise tools",
         "React, TypeScript, Node.js, Postgres",
@@ -22,11 +26,46 @@
       ]
     },
     "contactInfo": {},
-    "footer": {},
-    "resume": {}
+    "footer": {
+      "title": "Get In Touch",
+      "description": "Open to collaboration, consulting, and speaking opportunities.",
+      "contact": {
+        "email": "alex.morgan@example.com",
+        "phone": "+1 (555) 123-4567",
+        "location": "Seattle, WA",
+        "directMessageUrl": "/contact#contact-form"
+      },
+      "socialLinks": [
+        { "id": "social-1", "platform": "LinkedIn", "url": "https://linkedin.com/in/example", "iconKey": "linkedin" },
+        { "id": "social-2", "platform": "GitHub", "url": "https://github.com/example", "iconKey": "github" },
+        { "id": "social-3", "platform": "Twitter", "url": "https://x.com/example", "iconKey": "twitter" }
+      ],
+      "copyrightText": "© 2026 Alex Morgan. All rights reserved."
+    },
+    "resume": {
+      "resumeFileUrl": "https://example.com/resume/alex-morgan-resume.pdf",
+      "resumePreviewUrl": "https://example.com/resume/alex-morgan-resume.pdf"
+    }
   },
   "collections": {
-    "education": [],
+    "education": [
+      {
+        "id": "edu-1",
+        "institution": "University of Washington",
+        "degree": "BSc",
+        "field": "Computer Science and Engineering",
+        "startDate": "2012-09-01",
+        "endDate": "2016-06-01"
+      },
+      {
+        "id": "edu-2",
+        "institution": "Stanford Online",
+        "degree": "Graduate Certificate",
+        "field": "Machine Learning",
+        "startDate": "2018-01-01",
+        "endDate": "2018-08-01"
+      }
+    ],
     "skills": [
       { "id": "skill-1", "name": "TypeScript", "level": 5 },
       { "id": "skill-2", "name": "React", "level": 5 },
@@ -60,29 +99,52 @@
       {
         "id": "project-1",
         "title": "SaaS Analytics Platform",
-        "slug": "saas-analytics-platform",
         "summary": "Multi-tenant analytics dashboard with role-based access and live metrics.",
+        "description": "Built a scalable analytics product with tenant isolation, advanced filters, and audit trails.",
+        "coverImageUrl": "https://placehold.co/800x500?text=Analytics",
+        "galleryImages": [
+          "https://placehold.co/600x400?text=Dash+1",
+          "https://placehold.co/600x400?text=Dash+2"
+        ],
+        "githubUrl": "https://github.com/example/analytics",
+        "liveDemoUrl": "https://example.com/analytics",
+        "techStack": ["React", "TypeScript", "PostgreSQL"],
         "featured": true
       },
       {
         "id": "project-2",
         "title": "Design System Toolkit",
-        "slug": "design-system-toolkit",
         "summary": "Reusable React component library with theming and accessibility audits.",
+        "description": "Delivered a component library with tokens, theming, and usage analytics.",
+        "coverImageUrl": "https://placehold.co/800x500?text=Design+System",
+        "galleryImages": ["https://placehold.co/600x400?text=UI+Kit"],
+        "githubUrl": "https://github.com/example/design-system",
+        "liveDemoUrl": "https://example.com/design-system",
+        "techStack": ["React", "Storybook", "CSS"],
         "featured": true
       },
       {
         "id": "project-3",
         "title": "DevOps Cost Optimizer",
-        "slug": "devops-cost-optimizer",
         "summary": "Automated cloud cost optimization with scheduled reports and alerts.",
+        "description": "Identified infra waste and generated weekly savings reports with alerts.",
+        "coverImageUrl": "https://placehold.co/800x500?text=Cost+Optimizer",
+        "galleryImages": [],
+        "githubUrl": "",
+        "liveDemoUrl": "https://example.com/cost-optimizer",
+        "techStack": ["Node.js", "AWS", "PostgreSQL"],
         "featured": false
       },
       {
         "id": "project-4",
         "title": "Customer Success Portal",
-        "slug": "customer-success-portal",
         "summary": "B2B portal with ticketing, knowledge base, and account insights.",
+        "description": "Unified support workflows with knowledge base search and account visibility.",
+        "coverImageUrl": "https://placehold.co/800x500?text=Portal",
+        "galleryImages": ["https://placehold.co/600x400?text=Portal+UI"],
+        "githubUrl": "",
+        "liveDemoUrl": "https://example.com/portal",
+        "techStack": ["React", "Node.js", "PostgreSQL"],
         "featured": false
       }
     ],
@@ -90,41 +152,87 @@
       {
         "id": "pub-1",
         "title": "Scalable Multi-Tenant Architectures for Data-Intensive SaaS",
-        "publisher": "Proceedings of the ACM on Cloud Computing Systems",
-        "publishedDate": "2023-06-15",
         "authors": ["Alex Morgan", "Priya Raman", "Hannah Lee"],
-        "doi": "10.0000/placeholder.saas.2023.001",
-        "pdfUrl": "https://example.com/papers/saas-multi-tenant-2023.pdf"
+        "venue": "Proceedings of the ACM on Cloud Computing Systems",
+        "year": "2023",
+        "abstract": "A multi-tenant architecture approach focused on performance isolation and cost efficiency.",
+        "paperUrl": "https://doi.org/10.0000/placeholder.saas.2023.001",
+        "pdfUrl": "https://example.com/papers/saas-multi-tenant-2023.pdf",
+        "coverImageUrl": "https://placehold.co/800x500?text=Publication+1",
+        "citation": "Morgan, A., Raman, P., Lee, H. (2023). Scalable Multi-Tenant Architectures for Data-Intensive SaaS. PACM CCS."
       },
       {
         "id": "pub-2",
         "title": "Observability-Driven Development in Distributed Product Teams",
-        "publisher": "International Conference on Software Engineering (ICSE)",
-        "publishedDate": "2022-05-21",
         "authors": ["Alex Morgan", "Miguel Santos"],
-        "doi": "10.0000/placeholder.icse.2022.045",
-        "pdfUrl": "https://example.com/papers/observability-icse-2022.pdf"
+        "venue": "International Conference on Software Engineering (ICSE)",
+        "year": "2022",
+        "abstract": "A field study on using observability practices to accelerate delivery and reduce incidents.",
+        "paperUrl": "https://doi.org/10.0000/placeholder.icse.2022.045",
+        "pdfUrl": "https://example.com/papers/observability-icse-2022.pdf",
+        "coverImageUrl": "https://placehold.co/800x500?text=Publication+2",
+        "citation": "Morgan, A., Santos, M. (2022). Observability-Driven Development in Distributed Product Teams. ICSE."
       },
       {
         "id": "pub-3",
         "title": "Latency Budgets for Frontend Platforms at Scale",
-        "publisher": "IEEE Software",
-        "publishedDate": "2021-09-01",
         "authors": ["Alex Morgan", "Nadia Kim"],
-        "doi": "10.0000/placeholder.ieee.2021.112",
-        "pdfUrl": "https://example.com/papers/latency-budgets-2021.pdf"
+        "venue": "IEEE Software",
+        "year": "2021",
+        "abstract": "Guidelines for setting and enforcing latency budgets in large frontend platforms.",
+        "paperUrl": "https://doi.org/10.0000/placeholder.ieee.2021.112",
+        "pdfUrl": "https://example.com/papers/latency-budgets-2021.pdf",
+        "coverImageUrl": "https://placehold.co/800x500?text=Publication+3",
+        "citation": "Morgan, A., Kim, N. (2021). Latency Budgets for Frontend Platforms at Scale. IEEE Software."
       },
       {
         "id": "pub-4",
         "title": "Design System Governance: A Case Study in Enterprise UI Consistency",
-        "publisher": "CHI Conference on Human Factors in Computing Systems",
-        "publishedDate": "2020-04-25",
         "authors": ["Alex Morgan", "Sofia Patel", "Jordan Wells"],
-        "doi": "10.0000/placeholder.chi.2020.210",
-        "pdfUrl": "https://example.com/papers/design-system-governance-2020.pdf"
+        "venue": "CHI Conference on Human Factors in Computing Systems",
+        "year": "2020",
+        "abstract": "A governance model for maintaining design consistency across enterprise teams.",
+        "paperUrl": "https://doi.org/10.0000/placeholder.chi.2020.210",
+        "pdfUrl": "https://example.com/papers/design-system-governance-2020.pdf",
+        "coverImageUrl": "https://placehold.co/800x500?text=Publication+4",
+        "citation": "Morgan, A., Patel, S., Wells, J. (2020). Design System Governance. CHI."
       }
     ],
-    "certifications": [],
+    "certifications": [
+      {
+        "id": "cert-1",
+        "certificateTitle": "AWS Certified Solutions Architect – Associate",
+        "issuer": "Amazon Web Services",
+        "issueDate": "2023-05-01",
+        "expiryDate": "2026-05-01",
+        "credentialId": "AWS-123456",
+        "credentialUrl": "https://example.com/credentials/aws-architect",
+        "certificateImageUrl": "https://placehold.co/640x420?text=AWS+Certificate",
+        "certificateFileUrl": "https://example.com/certificates/aws-architect.pdf"
+      },
+      {
+        "id": "cert-2",
+        "certificateTitle": "Professional Scrum Master I",
+        "issuer": "Scrum.org",
+        "issueDate": "2021-10-01",
+        "expiryDate": "",
+        "credentialId": "PSM-I-778899",
+        "credentialUrl": "https://example.com/credentials/psm1",
+        "certificateImageUrl": "https://placehold.co/640x420?text=PSM+Certificate",
+        "certificateFileUrl": "https://example.com/certificates/psm1.pdf"
+      },
+      {
+        "id": "cert-3",
+        "certificateTitle": "Google Cloud Digital Leader",
+        "issuer": "Google Cloud",
+        "issueDate": "2022-07-01",
+        "expiryDate": "2025-07-01",
+        "credentialId": "GCDL-334455",
+        "credentialUrl": "https://example.com/credentials/gcdl",
+        "certificateImageUrl": "https://placehold.co/640x420?text=GCP+Certificate",
+        "certificateFileUrl": "https://example.com/certificates/gcdl.pdf"
+      }
+    ],
     "experience": [
       {
         "id": "exp-1",
@@ -185,8 +293,132 @@
         "quote": "Excellent collaborator and mentor. The new design system improved delivery speed by 30%."
       }
     ],
-    "achievements": [],
-    "clients": [],
+    "achievements": [
+      {
+        "id": "ach-1",
+        "title": "Led a 6-person team to ship a multi-tenant analytics platform",
+        "issuer": "Nimbus Labs",
+        "year": "2024",
+        "description": "Delivered an enterprise analytics platform with role-based access and audit-ready reporting.",
+        "externalLink": "https://example.com/case-studies/analytics"
+      },
+      {
+        "id": "ach-2",
+        "title": "Reduced frontend bundle size by 42%",
+        "issuer": "Vantage Health",
+        "year": "2023",
+        "description": "Introduced code-splitting and dependency auditing across the frontend platform.",
+        "externalLink": "https://example.com/blog/perf-optimization"
+      },
+      {
+        "id": "ach-3",
+        "title": "Authored internal platform standards adopted across 5 teams",
+        "issuer": "Northwind Analytics",
+        "year": "2022",
+        "description": "Defined engineering standards for testing, monitoring, and release processes.",
+        "externalLink": "https://example.com/standards"
+      }
+    ],
+    "clients": [
+      {
+        "id": "client-1",
+        "name": "Northwind",
+        "logoUrl": "https://placehold.co/160x80?text=Northwind",
+        "websiteUrl": "https://example.com"
+      },
+      {
+        "id": "client-2",
+        "name": "Vantage Health",
+        "logoUrl": "https://placehold.co/160x80?text=Vantage",
+        "websiteUrl": "https://example.com"
+      },
+      {
+        "id": "client-3",
+        "name": "Nimbus Labs",
+        "logoUrl": "https://placehold.co/160x80?text=Nimbus",
+        "websiteUrl": "https://example.com"
+      },
+      {
+        "id": "client-4",
+        "name": "Atlas Mobility",
+        "logoUrl": "https://placehold.co/160x80?text=Atlas",
+        "websiteUrl": "https://example.com"
+      }
+    ],
+    "techStackCategories": [
+      {
+        "id": "tech-1",
+        "categoryName": "Frontend",
+        "tools": [
+          {
+            "id": "tool-1",
+            "name": "React",
+            "logoUrl": "https://placehold.co/64x64?text=React",
+            "proficiencyLevel": 92
+          },
+          {
+            "id": "tool-2",
+            "name": "TypeScript",
+            "logoUrl": "https://placehold.co/64x64?text=TS",
+            "proficiencyLevel": 90
+          },
+          {
+            "id": "tool-3",
+            "name": "Tailwind CSS",
+            "logoUrl": "https://placehold.co/64x64?text=TW",
+            "proficiencyLevel": 86
+          }
+        ]
+      },
+      {
+        "id": "tech-2",
+        "categoryName": "Backend",
+        "tools": [
+          {
+            "id": "tool-4",
+            "name": "Node.js",
+            "logoUrl": "https://placehold.co/64x64?text=Node",
+            "proficiencyLevel": 88
+          },
+          {
+            "id": "tool-5",
+            "name": "PostgreSQL",
+            "logoUrl": "https://placehold.co/64x64?text=PG",
+            "proficiencyLevel": 82
+          },
+          {
+            "id": "tool-6",
+            "name": "GraphQL",
+            "logoUrl": "https://placehold.co/64x64?text=GQL",
+            "proficiencyLevel": 75
+          }
+        ]
+      },
+      {
+        "id": "tech-3",
+        "categoryName": "Cloud & DevOps",
+        "tools": [
+          {
+            "id": "tool-7",
+            "name": "AWS",
+            "logoUrl": "https://placehold.co/64x64?text=AWS",
+            "proficiencyLevel": 78
+          },
+          {
+            "id": "tool-8",
+            "name": "Docker",
+            "logoUrl": "https://placehold.co/64x64?text=Docker",
+            "proficiencyLevel": 81
+          },
+          {
+            "id": "tool-9",
+            "name": "Terraform",
+            "logoUrl": "https://placehold.co/64x64?text=TF",
+            "proficiencyLevel": 70
+          }
+        ]
+      }
+    ],
     "contactMessages": [
       {
         "id": "msg-1",

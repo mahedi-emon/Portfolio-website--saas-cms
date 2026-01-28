@@ -5,9 +5,7 @@ import { AdminOnlyRoute } from './guards/AdminOnlyRoute';
 import { ProtectedRoute } from './guards/ProtectedRoute';
 import { HomePage } from '../pages/Home/HomePage';
 import { AboutPage } from '../pages/About/AboutPage';
-import { ProjectsPage } from '../pages/Projects/ProjectsPage';
-import { ProjectDetailPage } from '../pages/Projects/ProjectDetailPage';
-import { PublicationsPage } from '../pages/Publications/PublicationsPage';
+import { PortfolioPage } from '../pages/Portfolio/PortfolioPage';
 import { BlogListPage } from '../pages/Blog/BlogListPage';
 import { BlogPostPage } from '../pages/Blog/BlogPostPage';
 import { ServicesPage } from '../pages/Services/ServicesPage';
@@ -29,9 +27,7 @@ export function AppRoutes() {
       <Route element={<PublicLayout />}>
         <Route index element={<HomePage />} />
         <Route path="about" element={<AboutPage />} />
-        <Route path="projects" element={<ProjectsPage />} />
-        <Route path="projects/:slug" element={<ProjectDetailPage />} />
-        <Route path="publications" element={<PublicationsPage />} />
+        <Route path="portfolio" element={<PortfolioPage />} />
         <Route path="blog" element={<BlogListPage />} />
         <Route path="blog/:slug" element={<BlogPostPage />} />
         <Route path="services" element={<ServicesPage />} />
@@ -41,6 +37,8 @@ export function AppRoutes() {
       {/* Admin (no Supabase yet; guarded by mock auth context) */}
       <Route path="admin/login" element={<AdminLoginPage />} />
       <Route path="admin/auth/callback" element={<AuthCallbackPage />} />
+
+      <Route path="admin" element={<Navigate to="/admin/login" replace />} />
 
       <Route
         path="admin"
@@ -52,7 +50,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       >
-        <Route index element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="dashboard" element={<DashboardHomePage />} />
         <Route path="cms" element={<CmsIndexPage />} />
         <Route path="cms/:sectionKey" element={<CmsSectionPage />} />
