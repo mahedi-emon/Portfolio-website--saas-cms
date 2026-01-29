@@ -38,31 +38,31 @@ const setNested = (obj: Record<string, unknown>, path: string, value: unknown) =
 };
 
 function buildInitial(fields: FieldSchema[], initialValues?: Record<string, unknown>) {
-  const base: Record<string, unknown> = {};
+  let base: Record<string, unknown> = {};
   for (const field of fields) {
     const nestedValue = initialValues ? getNested(initialValues, field.name) : undefined;
     if (initialValues && nestedValue !== undefined) {
-      base[field.name] = nestedValue;
+      base = setNested(base, field.name, nestedValue) as Record<string, unknown>;
       continue;
     }
 
     switch (field.type) {
       case 'checkbox':
-        base[field.name] = false;
+        base = setNested(base, field.name, false) as Record<string, unknown>;
         break;
       case 'number':
-        base[field.name] = 0;
+        base = setNested(base, field.name, 0) as Record<string, unknown>;
         break;
       case 'list':
-        base[field.name] = [];
+        base = setNested(base, field.name, []) as Record<string, unknown>;
         break;
       default:
         if (field.name === 'status') {
-          base[field.name] = 'draft';
+          base = setNested(base, field.name, 'draft') as Record<string, unknown>;
         } else if (field.name === 'orderIndex') {
-          base[field.name] = 0;
+          base = setNested(base, field.name, 0) as Record<string, unknown>;
         } else {
-          base[field.name] = '';
+          base = setNested(base, field.name, '') as Record<string, unknown>;
         }
         break;
     }
@@ -105,7 +105,8 @@ const validateValues = (fields: FieldSchema[], values: Record<string, unknown>) 
       return;
     }
 
-    const isUrlField = field.name.toLowerCase().includes('url') && field.type !== 'socialLinks';
+    const isUrlField =
+      field.type === 'url' || (field.name.toLowerCase().includes('url') && field.type !== 'socialLinks');
     if (!isEmptyValue(value) && isUrlField) {
       if (Array.isArray(value)) {
         const invalid = value.some((item) => !z.string().url().safeParse(String(item)).success);
@@ -134,7 +135,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
   const hasSocialLinksField = useMemo(() => fields.some((field) => field.type === 'socialLinks'), [fields]);
 
   const mediaFields = useMemo(
-    () => fields.filter((field) => field.type === 'image' || field.type === 'file'),
+    () => fields.filter((field) => field.type === 'image'),
     [fields]
   );
 

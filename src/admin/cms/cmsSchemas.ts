@@ -1,4 +1,4 @@
-export type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'date' | 'list' | 'image' | 'file' | 'socialLinks';
+export type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'date' | 'list' | 'image' | 'url' | 'socialLinks';
 
 export type FieldSchema = {
   name: string;
@@ -101,7 +101,7 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     fields: [
       { name: 'status', label: 'Status', required: true },
       { name: 'title', label: 'Title', required: true },
-      { name: 'fileUrl', label: 'File URL', type: 'file', required: true },
+      { name: 'fileUrl', label: 'File URL', type: 'url', required: true },
       { name: 'uploadedAt', label: 'Uploaded At', type: 'date' },
     ],
   },
@@ -138,7 +138,7 @@ export const sectionSchemas: Record<string, SectionSchema> = {
       { name: 'year', label: 'Year', required: true },
       { name: 'abstract', label: 'Abstract', type: 'textarea' },
       { name: 'paperUrl', label: 'Paper URL' },
-      { name: 'pdfUrl', label: 'PDF URL', type: 'file' },
+      { name: 'pdfUrl', label: 'PDF URL', type: 'url' },
       { name: 'coverImageUrl', label: 'Cover Image URL', type: 'image' },
       { name: 'citation', label: 'Citation', type: 'textarea' },
     ],
@@ -157,7 +157,7 @@ export const sectionSchemas: Record<string, SectionSchema> = {
       { name: 'credentialId', label: 'Credential ID' },
       { name: 'credentialUrl', label: 'Credential URL' },
       { name: 'certificateImageUrl', label: 'Certificate Image URL', type: 'image' },
-      { name: 'certificateFileUrl', label: 'Certificate File URL', type: 'file' },
+      { name: 'certificateFileUrl', label: 'Certificate File URL', type: 'url' },
     ],
   },
   experience: {
@@ -208,7 +208,7 @@ export const sectionSchemas: Record<string, SectionSchema> = {
       { name: 'year', label: 'Year', required: true },
       { name: 'description', label: 'Description', type: 'textarea', required: true },
       { name: 'certificateImageUrl', label: 'Certificate Image URL', type: 'image' },
-      { name: 'certificateFileUrl', label: 'Certificate File URL', type: 'file' },
+      { name: 'certificateFileUrl', label: 'Certificate File URL', type: 'url' },
       { name: 'externalLink', label: 'External Link' },
     ],
   },

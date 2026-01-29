@@ -10,6 +10,7 @@ import { BlogListPage } from '../pages/Blog/BlogListPage';
 import { BlogPostPage } from '../pages/Blog/BlogPostPage';
 import { ServicesPage } from '../pages/Services/ServicesPage';
 import { ContactPage } from '../pages/Contact/ContactPage';
+import { ProjectDetailPage } from '../pages/Projects/ProjectDetailPage';
 import { AdminLoginPage } from '../admin/pages/Login/AdminLoginPage';
 import { AuthCallbackPage } from '../admin/pages/AuthCallback/AuthCallbackPage';
 import { DashboardHomePage } from '../admin/pages/Dashboard/DashboardHomePage';
@@ -27,6 +28,7 @@ export function AppRoutes() {
         <Route index element={<HomePage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="portfolio" element={<PortfolioPage />} />
+        <Route path="portfolio/:slug" element={<ProjectDetailPage />} />
         <Route path="blog" element={<BlogListPage />} />
         <Route path="blog/:slug" element={<BlogPostPage />} />
         <Route path="services" element={<ServicesPage />} />
@@ -54,6 +56,9 @@ export function AppRoutes() {
         <Route path="cms/about" element={<CmsSectionEditor sectionKey="about" />} />
         <Route path="cms/contact" element={<CmsSectionEditor sectionKey="contact" />} />
         <Route path="cms/education" element={<CmsSectionEditor sectionKey="education" />} />
+        <Route path="cms/core-skills" element={<CmsSectionEditor sectionKey="skills" />} />
+        <Route path="cms/experience" element={<CmsSectionEditor sectionKey="experience" />} />
+        <Route path="cms/certifications" element={<CmsSectionEditor sectionKey="certifications" />} />
         <Route path="cms/skills" element={<CmsSectionEditor sectionKey="techStackCategories" />} />
         <Route path="cms/services" element={<CmsSectionEditor sectionKey="services" />} />
         <Route path="cms/blogs" element={<CmsSectionEditor sectionKey="blogs" />} />

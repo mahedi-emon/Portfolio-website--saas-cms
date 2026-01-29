@@ -9,10 +9,22 @@ export function PortfolioPage() {
   const { data } = useCms();
   const [activeTab, setActiveTab] = useState<TabKey>('projects');
 
-  const projects = (data.collections.projects ?? []).filter((item) => item.status === 'published');
-  const publications = (data.collections.publications ?? []).filter((item) => item.status === 'published');
-  const achievements = (data.collections.achievements ?? []).filter((item) => item.status === 'published');
-  const certifications = (data.collections.certifications ?? []).filter((item) => item.status === 'published');
+  const projects = (data.collections.projects ?? [])
+    .filter((item) => item.status === 'published')
+    .slice()
+    .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
+  const publications = (data.collections.publications ?? [])
+    .filter((item) => item.status === 'published')
+    .slice()
+    .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
+  const achievements = (data.collections.achievements ?? [])
+    .filter((item) => item.status === 'published')
+    .slice()
+    .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
+  const certifications = (data.collections.certifications ?? [])
+    .filter((item) => item.status === 'published')
+    .slice()
+    .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
 
   return (
     <div className="space-y-6">

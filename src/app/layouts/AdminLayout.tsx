@@ -1,6 +1,7 @@
 import {
   BadgeCheck,
   BookOpen,
+  Briefcase,
   FolderKanban,
   GraduationCap,
   Home,
@@ -163,6 +164,24 @@ export function AdminLayout() {
                 <NavLink to="/admin/cms/education" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
                   <GraduationCap className="h-4 w-4" />
                   {!isCollapsed && <span>Education</span>}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/admin/cms/core-skills" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
+                  <Layers className="h-4 w-4" />
+                  {!isCollapsed && <span>Core Skills</span>}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/admin/cms/experience" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
+                  <Briefcase className="h-4 w-4" />
+                  {!isCollapsed && <span>Experience</span>}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/admin/cms/certifications" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
+                  <BadgeCheck className="h-4 w-4" />
+                  {!isCollapsed && <span>Certifications</span>}
                 </NavLink>
               </li>
               <li>

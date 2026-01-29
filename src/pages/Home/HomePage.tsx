@@ -4,8 +4,11 @@ import { ResumeViewerModal } from '../../components/common/ResumeViewerModal';
 
 export function HomePage() {
   const { data } = useCms();
-  const published = <T extends { status?: string }>(items: T[]) =>
-    items.filter((item) => item.status === 'published');
+  const published = <T extends { status?: string; orderIndex?: number }>(items: T[]) =>
+    items
+      .filter((item) => item.status === 'published')
+      .slice()
+      .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
   const hero = data.singletons.hero ?? {};
   const services = published(data.collections.services ?? []);
   const projects = published(data.collections.projects ?? []);

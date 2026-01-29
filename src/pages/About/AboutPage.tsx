@@ -2,8 +2,11 @@ import { useCms } from '../../hooks/useCms';
 
 export function AboutPage() {
   const { data } = useCms();
-  const published = <T extends { status?: string }>(items: T[]) =>
-    items.filter((item) => item.status === 'published');
+  const published = <T extends { status?: string; orderIndex?: number }>(items: T[]) =>
+    items
+      .filter((item) => item.status === 'published')
+      .slice()
+      .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
   const about = data.singletons.about ?? {};
   const skills = published(data.collections.skills ?? []);
   const education = published(data.collections.education ?? []);
@@ -79,7 +82,7 @@ export function AboutPage() {
         <div className="space-y-3">
           {certifications.map((item) => (
             <article key={item.id} className="rounded border p-4">
-              <h3 className="text-lg font-medium">{item.name}</h3>
+              <h3 className="text-lg font-medium">{item.certificateTitle}</h3>
               <p className="text-sm text-slate-600">{item.issuer}</p>
               <p className="text-xs text-slate-500">{item.issueDate}</p>
             </article>

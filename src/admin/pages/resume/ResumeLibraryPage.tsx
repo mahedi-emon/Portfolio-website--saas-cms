@@ -13,7 +13,7 @@ type ResumeItem = CollectionItem & {
 
 const formFields = [
   { name: 'title', label: 'Title', required: true },
-  { name: 'fileUrl', label: 'File URL', type: 'file', required: true },
+  { name: 'fileUrl', label: 'File URL', type: 'url', required: true },
   { name: 'uploadedAt', label: 'Uploaded At', type: 'date' },
 ] as const;
 

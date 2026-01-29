@@ -2,7 +2,10 @@ import { useCms } from '../../hooks/useCms';
 
 export function ProjectsPage() {
   const { data } = useCms();
-  const projects = (data.collections.projects ?? []).filter((item) => item.status === 'published');
+  const projects = (data.collections.projects ?? [])
+    .filter((item) => item.status === 'published')
+    .slice()
+    .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
 
   return (
     <div className="space-y-6">
