@@ -16,6 +16,7 @@ export function HomePage() {
   const testimonials = published(data.collections.testimonials ?? []);
   const clients = published(data.collections.clients ?? []);
   const achievements = published(data.collections.achievements ?? []);
+  const certifications = published(data.collections.certifications ?? []);
   const about = data.singletons.about ?? {};
   const education = published(data.collections.education ?? []);
   const resumes = data.collections.resumes ?? [];
@@ -212,6 +213,50 @@ export function HomePage() {
                 </a>
               )}
             </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold">Certifications</h2>
+        <div className="grid gap-4 md:grid-cols-2">
+          {certifications.map((cert) => (
+            <article key={cert.id} className="rounded border p-4">
+              <div className="flex items-start gap-4">
+                {cert.certificateImageUrl ? (
+                  <img
+                    className="h-16 w-16 rounded border object-cover"
+                    src={cert.certificateImageUrl}
+                    alt={cert.certificateTitle}
+                  />
+                ) : (
+                  <div className="h-16 w-16 rounded border" />
+                )}
+                <div className="space-y-1">
+                  <h3 className="text-base font-medium">{cert.certificateTitle}</h3>
+                  <div className="text-xs text-slate-500">{cert.issuer}</div>
+                  <div className="text-xs text-slate-500">
+                    Issued: {cert.issueDate}
+                    {cert.expiryDate ? ` · Expires: ${cert.expiryDate}` : ''}
+                  </div>
+                  {cert.credentialId && (
+                    <div className="text-xs text-slate-500">Credential ID: {cert.credentialId}</div>
+                  )}
+                  <div className="flex gap-3 text-xs">
+                    {cert.credentialUrl && (
+                      <a href={cert.credentialUrl} target="_blank" rel="noreferrer">
+                        Verify
+                      </a>
+                    )}
+                    {cert.certificateFileUrl && (
+                      <a href={cert.certificateFileUrl} target="_blank" rel="noreferrer">
+                        Download
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </article>
           ))}
         </div>
       </section>

@@ -15,9 +15,7 @@ import {
   Mail,
   ChevronDown,
   LogOut,
-  Moon,
   Search,
-  Sun,
   Menu,
 } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -30,15 +28,10 @@ export function AdminLayout() {
   const { data } = useCms();
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isDark, setIsDark] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDark);
-  }, [isDark]);
 
   useEffect(() => {
     const handler = (event: MouseEvent) => {
@@ -313,14 +306,6 @@ export function AdminLayout() {
             </div>
 
             <div className="flex items-center gap-4">
-              <button
-                type="button"
-                className="inline-flex h-9 w-9 items-center justify-center rounded border border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-300"
-                onClick={() => setIsDark((prev) => !prev)}
-                aria-label="Toggle theme"
-              >
-                {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              </button>
               <div className="relative" ref={menuRef}>
                 <button
                   type="button"
