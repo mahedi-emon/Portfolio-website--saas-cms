@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Edit2, Trash2 } from 'lucide-react';
 
 export type Column<T> = {
   key: keyof T | string;
@@ -16,52 +17,67 @@ type DataTableProps<T> = {
 
 export function DataTable<T>({ columns, rows, rowKey, onEdit, onDelete }: DataTableProps<T>) {
   return (
-    <div className="overflow-x-auto rounded border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-      <table className="min-w-full text-left text-sm">
-        <thead className="bg-slate-50 text-xs uppercase text-slate-500 dark:bg-slate-800 dark:text-slate-300">
-          <tr>
-            {columns.map((col) => (
-              <th key={String(col.key)} className="px-4 py-3 font-semibold">
-                {col.header}
-              </th>
-            ))}
-            {(onEdit || onDelete) && <th className="px-4 py-3 font-semibold">Actions</th>}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-          {rows.map((row) => (
-            <tr key={rowKey(row)} className="hover:bg-slate-50 dark:hover:bg-slate-800">
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div className="overflow-x-auto">
+        <table className="min-w-full text-left text-sm">
+          <thead className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+            <tr>
               {columns.map((col) => (
-                <td key={String(col.key)} className="px-4 py-3 text-slate-700 dark:text-slate-200">
-                  {col.render ? col.render(row) : String((row as Record<string, unknown>)[col.key as string] ?? '')}
-                </td>
+                <th key={String(col.key)} className="px-5 py-4 font-semibold text-slate-600 text-xs uppercase tracking-wider">
+                  {col.header}
+                </th>
               ))}
-              {(onEdit || onDelete) && (
-                <td className="px-4 py-3">
-                  <div className="flex gap-2">
-                    {onEdit && (
-                      <button
-                        className="rounded border border-slate-200 px-3 py-1 text-xs text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
-                        onClick={() => onEdit(row)}
-                      >
-                        Edit
-                      </button>
-                    )}
-                    {onDelete && (
-                      <button
-                        className="rounded border border-red-200 px-3 py-1 text-xs text-red-600 hover:bg-red-50 dark:border-red-900/60 dark:text-red-400 dark:hover:bg-red-900/20"
-                        onClick={() => onDelete(row)}
-                      >
-                        Delete
-                      </button>
-                    )}
-                  </div>
-                </td>
-              )}
+              {(onEdit || onDelete) && <th className="px-5 py-4 font-semibold text-slate-600 text-xs uppercase tracking-wider">Actions</th>}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
+            {rows.length === 0 && (
+              <tr>
+                <td colSpan={columns.length + 1} className="px-5 py-12 text-center text-slate-400">
+                  No items found
+                </td>
+              </tr>
+            )}
+            {rows.map((row, index) => (
+              <tr 
+                key={rowKey(row)} 
+                className="hover:bg-slate-50/50 transition-colors"
+                style={{ animationDelay: `${index * 30}ms` }}
+              >
+                {columns.map((col) => (
+                  <td key={String(col.key)} className="px-5 py-4 text-slate-700">
+                    {col.render ? col.render(row) : String((row as Record<string, unknown>)[col.key as string] ?? '')}
+                  </td>
+                ))}
+                {(onEdit || onDelete) && (
+                  <td className="px-5 py-4">
+                    <div className="flex gap-2">
+                      {onEdit && (
+                        <button
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-50 border border-indigo-200 px-3 py-1.5 text-xs font-medium text-indigo-600 hover:bg-indigo-100 transition-colors"
+                          onClick={() => onEdit(row)}
+                        >
+                          <Edit2 className="w-3.5 h-3.5" />
+                          Edit
+                        </button>
+                      )}
+                      {onDelete && (
+                        <button
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-red-50 border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-100 transition-colors"
+                          onClick={() => onDelete(row)}
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          Delete
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

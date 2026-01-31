@@ -17,9 +17,13 @@ import {
   LogOut,
   Search,
   Menu,
+  X,
+  Bell,
+  Settings,
+  Sparkles,
 } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useCms } from '../../hooks/useCms';
 
@@ -27,11 +31,17 @@ export function AdminLayout() {
   const { role, refresh } = useAuth();
   const { data } = useCms();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setIsMobileSidebarOpen(false);
+  }, [location]);
 
   useEffect(() => {
     const handler = (event: MouseEvent) => {
@@ -44,14 +54,12 @@ export function AdminLayout() {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const mockAuthSnippet =
-    "localStorage.setItem('portfolio.mockAuth', '{\"isAuthenticated\":true,\"role\":\"admin\"}')";
-
   const baseLink =
-    'flex items-center gap-2 rounded px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800';
-  const activeLink = 'bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-white';
-  const sidebarWidth = isCollapsed ? 'w-20' : 'w-64';
-  const mainOffset = isCollapsed ? 'ml-20' : 'ml-64';
+    'group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200';
+  const inactiveLink = 'text-slate-400 hover:text-white hover:bg-white/5';
+  const activeLink = 'text-white bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30';
+  const sidebarWidth = isCollapsed ? 'w-20' : 'w-72';
+  const mainOffset = isCollapsed ? 'lg:ml-20' : 'lg:ml-72';
 
   const collectionRoutes: Record<string, string> = {
     projects: '/admin/cms/projects',
@@ -106,259 +114,266 @@ export function AdminLayout() {
     return results.slice(0, 8);
   }, [data.collections, searchQuery]);
 
+  const navSections = [
+    {
+      title: 'Content',
+      items: [
+        { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+        { to: '/admin/cms/hero', icon: Home, label: 'Hero' },
+        { to: '/admin/cms/about', icon: Users, label: 'About' },
+        { to: '/admin/cms/contact', icon: Mail, label: 'Contact' },
+      ],
+    },
+    {
+      title: 'Profile',
+      items: [
+        { to: '/admin/cms/education', icon: GraduationCap, label: 'Education' },
+        { to: '/admin/cms/core-skills', icon: Layers, label: 'Core Skills' },
+        { to: '/admin/cms/experience', icon: Briefcase, label: 'Experience' },
+        { to: '/admin/cms/certifications', icon: BadgeCheck, label: 'Certifications' },
+        { to: '/admin/cms/skills', icon: Sparkles, label: 'Tech Stack' },
+      ],
+    },
+    {
+      title: 'Portfolio',
+      items: [
+        { to: '/admin/portfolio', icon: FolderKanban, label: 'Overview' },
+        { to: '/admin/cms/projects', icon: SquareStack, label: 'Projects' },
+        { to: '/admin/cms/publications', icon: BookOpen, label: 'Publications' },
+        { to: '/admin/cms/achievements', icon: BadgeCheck, label: 'Achievements' },
+      ],
+    },
+    {
+      title: 'Engagement',
+      items: [
+        { to: '/admin/cms/services', icon: PenLine, label: 'Services' },
+        { to: '/admin/cms/blogs', icon: FileText, label: 'Blogs' },
+        { to: '/admin/cms/testimonials', icon: MessageSquare, label: 'Testimonials' },
+        { to: '/admin/cms/clients', icon: Users, label: 'Clients' },
+      ],
+    },
+    {
+      title: 'System',
+      items: [
+        { to: '/admin/cms/resume', icon: FileText, label: 'Resume' },
+        { to: '/admin/messages', icon: MessageSquare, label: 'Messages' },
+      ],
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-        <aside className={`fixed left-0 top-0 h-full ${sidebarWidth} border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900`}>
-          <div className="flex h-16 items-center justify-between border-b border-slate-200 px-4 dark:border-slate-800">
-            <div className={isCollapsed ? 'hidden' : ''}>
-              <div className="text-sm font-semibold">Admin Panel</div>
-              <div className="text-xs text-slate-500 dark:text-slate-400">Role: {role ?? 'none'}</div>
+    <div className="min-h-screen bg-slate-50">
+      {/* Mobile Sidebar Overlay */}
+      {isMobileSidebarOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+          onClick={() => setIsMobileSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`
+        fixed left-0 top-0 z-50 h-full ${sidebarWidth} 
+        bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950
+        border-r border-white/5 transition-all duration-300
+        ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
+      `}>
+        {/* Logo Section */}
+        <div className="flex h-20 items-center justify-between border-b border-white/10 px-4">
+          <div className={`flex items-center gap-3 ${isCollapsed ? 'hidden' : ''}`}>
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30">
+              <LayoutDashboard className="h-5 w-5 text-white" />
             </div>
+            <div>
+              <div className="text-sm font-bold text-white">Admin Panel</div>
+              <div className="text-xs text-indigo-300">Portfolio CMS</div>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="hidden lg:flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white transition-colors"
+            onClick={() => setIsCollapsed((prev) => !prev)}
+            aria-label="Toggle sidebar"
+          >
+            <Menu className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            className="lg:hidden flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white transition-colors"
+            onClick={() => setIsMobileSidebarOpen(false)}
+            aria-label="Close sidebar"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* Navigation */}
+        <nav className="h-[calc(100%-5rem)] overflow-y-auto px-3 py-6 space-y-6">
+          {navSections.map((section) => (
+            <div key={section.title}>
+              {!isCollapsed && (
+                <div className="px-3 mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  {section.title}
+                </div>
+              )}
+              <ul className="space-y-1">
+                {section.items.map((item) => (
+                  <li key={item.to}>
+                    <NavLink 
+                      to={item.to} 
+                      className={({ isActive }) => `
+                        ${baseLink} 
+                        ${isActive ? activeLink : inactiveLink}
+                        ${isCollapsed ? 'justify-center px-0' : ''}
+                      `}
+                    >
+                      <item.icon className={`h-5 w-5 flex-shrink-0 ${isCollapsed ? '' : 'group-hover:scale-110'} transition-transform`} />
+                      {!isCollapsed && <span>{item.label}</span>}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
+      </aside>
+
+      {/* Main Content Area */}
+      <div className={`${mainOffset} transition-all duration-300`}>
+        {/* Top Header */}
+        <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-slate-200 bg-white/80 backdrop-blur-xl px-6">
+          <div className="flex items-center gap-4">
+            {/* Mobile Menu Toggle */}
             <button
               type="button"
-              className="inline-flex h-8 w-8 items-center justify-center rounded border border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-300"
-              onClick={() => setIsCollapsed((prev) => !prev)}
-              aria-label="Toggle sidebar"
+              className="lg:hidden flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
+              onClick={() => setIsMobileSidebarOpen(true)}
+              aria-label="Open sidebar"
             >
-              <Menu className="h-4 w-4" />
+              <Menu className="h-5 w-5" />
             </button>
+
+            {/* Search */}
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <input
+                className="w-64 md:w-80 rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-11 pr-4 text-sm text-slate-700 placeholder-slate-400 focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-500/10 transition-all"
+                placeholder="Search content..."
+                value={searchQuery}
+                onChange={(event) => {
+                  setSearchQuery(event.target.value);
+                  setIsSearchOpen(true);
+                }}
+                onFocus={() => setIsSearchOpen(true)}
+                onBlur={() => setTimeout(() => setIsSearchOpen(false), 150)}
+              />
+              {isSearchOpen && searchResults.length > 0 && (
+                <div className="absolute left-0 top-full mt-2 w-full rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-200/50 overflow-hidden">
+                  <ul className="max-h-72 overflow-auto py-2">
+                    {searchResults.map((result) => (
+                      <li key={`${result.collection}-${result.id}`}>
+                        <NavLink
+                          to={result.href}
+                          className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-slate-50 transition-colors"
+                        >
+                          <div className="flex-1">
+                            <div className="font-medium text-slate-800">{result.label}</div>
+                            <div className="text-xs text-slate-400 uppercase">{result.collection}</div>
+                          </div>
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
 
-          <nav className="h-[calc(100%-4rem)] overflow-y-auto px-3 py-4">
-            {!isCollapsed && (
-              <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">Content</div>
-            )}
-            <ul className="mt-3 space-y-1">
-              <li>
-                <NavLink to="/admin/dashboard" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <LayoutDashboard className="h-4 w-4" />
-                  {!isCollapsed && <span>Dashboard</span>}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/cms/hero" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <Home className="h-4 w-4" />
-                  {!isCollapsed && <span>Hero</span>}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/cms/about" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <Users className="h-4 w-4" />
-                  {!isCollapsed && <span>About</span>}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/cms/contact" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <Mail className="h-4 w-4" />
-                  {!isCollapsed && <span>Contact</span>}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/cms/education" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <GraduationCap className="h-4 w-4" />
-                  {!isCollapsed && <span>Education</span>}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/cms/core-skills" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <Layers className="h-4 w-4" />
-                  {!isCollapsed && <span>Core Skills</span>}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/cms/experience" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <Briefcase className="h-4 w-4" />
-                  {!isCollapsed && <span>Experience</span>}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/cms/certifications" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <BadgeCheck className="h-4 w-4" />
-                  {!isCollapsed && <span>Certifications</span>}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/cms/skills" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <Layers className="h-4 w-4" />
-                  {!isCollapsed && <span>Skills</span>}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/portfolio" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <FolderKanban className="h-4 w-4" />
-                  {!isCollapsed && <span>Portfolio</span>}
-                </NavLink>
-                {!isCollapsed && (
-                  <ul className="ml-6 mt-2 space-y-1">
-                    <li>
-                      <NavLink to="/admin/cms/projects" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''}`}>
-                        <SquareStack className="h-4 w-4" /> Projects
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/admin/cms/publications"
-                        className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''}`}
-                      >
-                        <BookOpen className="h-4 w-4" /> Publications
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/admin/cms/achievements"
-                        className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''}`}
-                      >
-                        <BadgeCheck className="h-4 w-4" /> Achievements
-                      </NavLink>
-                    </li>
-                  </ul>
-                )}
-              </li>
-              <li>
-                <NavLink to="/admin/cms/services" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <PenLine className="h-4 w-4" />
-                  {!isCollapsed && <span>Services</span>}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/cms/blogs" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <FileText className="h-4 w-4" />
-                  {!isCollapsed && <span>Blogs</span>}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/admin/cms/testimonials"
-                  className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}
-                >
-                  <MessageSquare className="h-4 w-4" />
-                  {!isCollapsed && <span>Testimonials</span>}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/cms/clients" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <Users className="h-4 w-4" />
-                  {!isCollapsed && <span>Clients</span>}
-                </NavLink>
-              </li>
-            </ul>
+          <div className="flex items-center gap-3">
+            {/* Notifications */}
+            <button
+              type="button"
+              className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
+            >
+              <Bell className="h-5 w-5" />
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-[10px] font-bold text-white">
+                3
+              </span>
+            </button>
 
-            {!isCollapsed && (
-              <div className="mt-6 text-xs font-semibold uppercase tracking-wide text-slate-400">System</div>
-            )}
-            <ul className="mt-3 space-y-1">
-              <li>
-                <NavLink to="/admin/cms/resume" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <FileText className="h-4 w-4" />
-                  {!isCollapsed && <span>Resume</span>}
-                </NavLink>
-              </li>
-            </ul>
-
-            {!isCollapsed && (
-              <div className="mt-6 text-xs font-semibold uppercase tracking-wide text-slate-400">Communication</div>
-            )}
-            <ul className="mt-3 space-y-1">
-              <li>
-                <NavLink to="/admin/messages" className={({ isActive }) => `${baseLink} ${isActive ? activeLink : ''} ${isCollapsed ? 'justify-center' : ''}`}>
-                  <MessageSquare className="h-4 w-4" />
-                  {!isCollapsed && <span>Contact Messages</span>}
-                </NavLink>
-              </li>
-            </ul>
-          </nav>
-        </aside>
-
-        <div className={mainOffset}>
-          <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-6 dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                <input
-                  className="w-64 rounded border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-700 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-                  placeholder="Search content"
-                  value={searchQuery}
-                  onChange={(event) => {
-                    setSearchQuery(event.target.value);
-                    setIsSearchOpen(true);
-                  }}
-                  onFocus={() => setIsSearchOpen(true)}
-                  onBlur={() => setTimeout(() => setIsSearchOpen(false), 150)}
-                />
-                {isSearchOpen && searchResults.length > 0 && (
-                  <div className="absolute left-0 top-full mt-2 w-full rounded border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                    <ul className="max-h-60 overflow-auto py-2">
-                      {searchResults.map((result) => (
-                        <li key={`${result.collection}-${result.id}`}>
-                          <NavLink
-                            to={result.href}
-                            className="block px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
-                          >
-                            <div className="text-xs uppercase text-slate-400">{result.collection}</div>
-                            <div>{result.label}</div>
-                          </NavLink>
-                        </li>
-                      ))}
-                    </ul>
+            {/* User Menu */}
+            <div className="relative" ref={menuRef}>
+              <button
+                type="button"
+                className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2 hover:bg-slate-50 transition-colors"
+                onClick={() => setIsMenuOpen((prev) => !prev)}
+              >
+                {data.singletons.about?.profileImageUrl ? (
+                  <img
+                    src={data.singletons.about.profileImageUrl}
+                    alt="Admin avatar"
+                    className="h-8 w-8 rounded-lg border-2 border-indigo-100 object-cover"
+                  />
+                ) : (
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 text-sm font-bold text-white">
+                    {(data.singletons.about?.fullName ?? 'A').charAt(0)}
                   </div>
                 )}
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div className="relative" ref={menuRef}>
-                <button
-                  type="button"
-                  className="flex items-center gap-2 rounded border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
-                  onClick={() => setIsMenuOpen((prev) => !prev)}
-                >
-                  {data.singletons.about?.profileImageUrl ? (
-                    <img
-                      src={data.singletons.about.profileImageUrl}
-                      alt="Admin avatar"
-                      className="h-7 w-7 rounded-full border object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full border text-xs">AD</div>
-                  )}
-                  <span className="rounded bg-slate-100 px-2 py-0.5 text-xs text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-                    {role ?? 'guest'}
-                  </span>
-                  <ChevronDown className="h-4 w-4" />
-                </button>
-                {isMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-44 rounded border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
+                <div className="hidden md:block text-left">
+                  <div className="text-sm font-medium text-slate-800">
+                    {data.singletons.about?.fullName ?? 'Admin'}
+                  </div>
+                  <div className="text-xs text-slate-500">{role ?? 'guest'}</div>
+                </div>
+                <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {isMenuOpen && (
+                <div className="absolute right-0 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-200/50 overflow-hidden animate-scale-in">
+                  <div className="p-4 border-b border-slate-100">
+                    <div className="text-sm font-medium text-slate-800">
+                      {data.singletons.about?.fullName ?? 'Admin User'}
+                    </div>
+                    <div className="text-xs text-slate-500 mt-0.5">
+                      {role === 'admin' ? 'Administrator' : 'Guest User'}
+                    </div>
+                  </div>
+                  <div className="py-2">
                     <button
                       type="button"
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors"
                       onClick={() => {
                         navigate('/');
                         setIsMenuOpen(false);
                       }}
                     >
-                      <Home className="h-4 w-4" /> Home
+                      <Home className="h-4 w-4" /> 
+                      <span>View Site</span>
                     </button>
                     <button
                       type="button"
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
                       onClick={() => {
                         localStorage.removeItem('portfolio.mockAuth');
                         refresh();
                         navigate('/admin/login');
                       }}
                     >
-                      <LogOut className="h-4 w-4" /> Logout
+                      <LogOut className="h-4 w-4" /> 
+                      <span>Sign Out</span>
                     </button>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
-          </header>
+          </div>
+        </header>
 
-          <main className="p-6">
-            <Outlet />
-          </main>
-        </div>
+        {/* Page Content */}
+        <main className="p-6 lg:p-8">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }

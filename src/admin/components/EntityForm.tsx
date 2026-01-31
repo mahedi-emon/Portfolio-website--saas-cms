@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { z } from 'zod';
+import { Plus, X, Save, AlertCircle } from 'lucide-react';
 import type { FieldSchema } from '../cms/cmsSchemas';
 import { detectSocialPlatform, formatPlatformLabel } from '../../utils/detectSocialPlatform';
 import { iconMap } from '../../utils/iconMap';
@@ -149,7 +150,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
 
   return (
     <form
-      className="space-y-4"
+      className="space-y-6"
       onSubmit={(event) => {
         event.preventDefault();
         const nextErrors = validateValues(fields, values);
@@ -159,17 +160,20 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
       }}
     >
       <div className={mediaFields.length > 0 ? 'grid gap-6 lg:grid-cols-[2fr_1fr]' : ''}>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-5 md:grid-cols-2">
           {fields.map((field) => {
             const isWideField =
               field.type === 'socialLinks' || field.type === 'textarea' || field.name === 'pageIntroText';
             return (
               <div key={field.name} className={`space-y-2 ${isWideField ? 'md:col-span-2' : ''}`}>
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                {field.label}
+              <label className="block text-sm font-medium text-slate-700">
+                <span className="flex items-center gap-1">
+                  {field.label}
+                  {field.required && <span className="text-indigo-500">*</span>}
+                </span>
                 {field.type === 'image' ? (
                   <input
-                    className="mt-1 w-full rounded border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 file:mr-3 file:rounded file:border-0 file:bg-slate-100 file:px-3 file:py-1 file:text-sm file:font-medium file:text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:file:bg-slate-800 dark:file:text-slate-200"
+                    className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 file:mr-3 file:rounded-lg file:border-0 file:bg-indigo-100 file:px-4 file:py-2 file:text-sm file:font-medium file:text-indigo-600 hover:file:bg-indigo-200 transition-colors"
                     type="file"
                     accept="image/*"
                     onChange={(event) => {
@@ -182,21 +186,25 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                   />
                 ) : field.type === 'textarea' ? (
                   <textarea
-                    className="mt-1 w-full rounded border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                    className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all min-h-[120px] resize-y"
                     value={String(getNested(values, field.name) ?? '')}
                     onChange={(event) => handleChange(field.name, event.target.value)}
                   />
                 ) : field.type === 'checkbox' ? (
-                  <input
-                    className="ml-2"
-                    type="checkbox"
-                    checked={Boolean(getNested(values, field.name))}
-                    onChange={(event) => handleChange(field.name, event.target.checked)}
-                  />
+                  <div className="mt-2 flex items-center">
+                    <input
+                      className="h-5 w-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 transition-colors"
+                      type="checkbox"
+                      checked={Boolean(getNested(values, field.name))}
+                      onChange={(event) => handleChange(field.name, event.target.checked)}
+                    />
+                    <span className="ml-2 text-slate-600">Enable</span>
+                  </div>
                 ) : field.type === 'list' ? (
                   <input
-                    className="mt-1 w-full rounded border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                    className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                     type="text"
+                    placeholder="Comma-separated values"
                     value={
                       Array.isArray(getNested(values, field.name))
                         ? ((getNested(values, field.name) as unknown[]) ?? []).join(', ')
@@ -213,7 +221,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                     }
                   />
                 ) : field.type === 'socialLinks' ? (
-                  <div className="mt-1 space-y-3">
+                  <div className="mt-2 space-y-3">
                     {(() => {
                       const currentLinks = Array.isArray(getNested(values, field.name))
                         ? (getNested(values, field.name) as SocialLinkItem[])
@@ -235,14 +243,16 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                       const Icon = iconMap[iconKey] ?? iconMap.custom;
                       const label = formatPlatformLabel(String(platformKey), detected.label);
                       return (
-                        <div key={`${field.name}-${index}`} className="flex flex-col gap-2 rounded border border-slate-200 p-3 dark:border-slate-700">
+                        <div key={`${field.name}-${index}`} className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50/50 p-4">
                           <div className="flex items-center gap-3">
-                            <Icon className="h-4 w-4 text-slate-500" />
-                            <span className="text-xs font-semibold uppercase text-slate-500">{label}</span>
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100">
+                              <Icon className="h-4 w-4 text-indigo-600" />
+                            </div>
+                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">{label}</span>
                           </div>
                           <div className="flex flex-col gap-2 md:flex-row md:items-center">
                             <input
-                              className="w-full rounded border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                              className="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                               placeholder="https://"
                               value={String(link.url ?? '')}
                               onChange={(event) => {
@@ -261,7 +271,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                             />
                             <button
                               type="button"
-                              className="rounded border border-red-200 px-3 py-2 text-xs text-red-600 dark:border-red-900/60 dark:text-red-400"
+                              className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-100 transition-colors"
                               onClick={() => {
                                 const current = Array.isArray(getNested(values, field.name))
                                   ? ([...(getNested(values, field.name) as SocialLinkItem[])] as SocialLinkItem[])
@@ -270,6 +280,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                                 handleChange(field.name, current);
                               }}
                             >
+                              <X className="w-3.5 h-3.5" />
                               Remove
                             </button>
                           </div>
@@ -279,7 +290,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                           <div className="flex flex-wrap items-center gap-2">
                             <button
                               type="button"
-                              className="rounded border border-slate-200 px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:text-slate-200"
+                              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
                               onClick={() => {
                                 const current = Array.isArray(getNested(values, field.name))
                                   ? ([...(getNested(values, field.name) as SocialLinkItem[])] as SocialLinkItem[])
@@ -288,14 +299,16 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                                 handleChange(field.name, current);
                               }}
                             >
+                              <Plus className="w-4 h-4" />
                               Add social link
                             </button>
                             {hasAnyLinks && (
                               <button
                                 type="submit"
-                                className="rounded bg-slate-900 px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-100 dark:text-slate-900"
+                                className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 hover:shadow-lg hover:shadow-indigo-500/30 disabled:cursor-not-allowed disabled:opacity-50 transition-all"
                                 disabled={hasEmptyLink || hasInvalidLink}
                               >
+                                <Save className="w-4 h-4" />
                                 {submitLabel ?? 'Save'}
                               </button>
                             )}
@@ -303,7 +316,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                               <button
                                 type="button"
                                 onClick={onCancel}
-                                className="rounded border border-slate-200 px-4 py-2 text-sm text-slate-700 dark:border-slate-700 dark:text-slate-200"
+                                className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
                               >
                                 Cancel
                               </button>
@@ -315,37 +328,42 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                   </div>
                 ) : (
                   <input
-                    className="mt-1 w-full rounded border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                    className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                     type={field.type ?? 'text'}
                     value={String(getNested(values, field.name) ?? '')}
                     onChange={(event) => handleChange(field.name, event.target.value)}
                   />
                 )}
               </label>
-              {errors[field.name] && <div className="text-xs text-red-600">{errors[field.name]}</div>}
+              {errors[field.name] && (
+                <div className="flex items-center gap-1.5 text-xs text-red-600">
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  {errors[field.name]}
+                </div>
+              )}
               </div>
             );
           })}
         </div>
 
         {mediaFields.length > 0 && (
-          <aside className="rounded border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900">
-            <div className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Media Preview</div>
-            <div className="mt-3 space-y-4">
+          <aside className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-indigo-50/30 p-5">
+            <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">Media Preview</div>
+            <div className="mt-4 space-y-4">
               {mediaFields.map((field) => {
                 const value = getNested(values, field.name);
                 if (!value) return null;
                 return (
                   <div key={field.name} className="space-y-2">
-                    <div className="text-xs text-slate-500 dark:text-slate-400">{field.label}</div>
+                    <div className="text-xs text-slate-500">{field.label}</div>
                     {field.type === 'image' ? (
                       <img
                         src={String(value)}
                         alt="Preview"
-                        className="h-20 w-full rounded border border-slate-200 object-cover dark:border-slate-700"
+                        className="h-24 w-full rounded-xl border border-slate-200 object-cover shadow-sm"
                       />
                     ) : (
-                      <a className="text-sm text-slate-700 underline dark:text-slate-200" href={String(value)} target="_blank" rel="noreferrer">
+                      <a className="text-sm text-indigo-600 hover:text-indigo-700 font-medium underline transition-colors" href={String(value)} target="_blank" rel="noreferrer">
                         Download file
                       </a>
                     )}
@@ -357,15 +375,19 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
         )}
       </div>
       {!hasSocialLinksField && (
-        <div className="flex items-center gap-2">
-          <button type="submit" className="rounded bg-slate-900 px-4 py-2 text-sm font-semibold text-white dark:bg-slate-100 dark:text-slate-900">
+        <div className="flex items-center gap-3 pt-2">
+          <button 
+            type="submit" 
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 hover:shadow-lg hover:shadow-indigo-500/30 transition-all"
+          >
+            <Save className="w-4 h-4" />
             {submitLabel ?? 'Save'}
           </button>
           {onCancel && (
             <button
               type="button"
               onClick={onCancel}
-              className="rounded border border-slate-200 px-4 py-2 text-sm text-slate-700 dark:border-slate-700 dark:text-slate-200"
+              className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
             >
               Cancel
             </button>
