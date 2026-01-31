@@ -64,8 +64,8 @@ export function DashboardHomePage() {
       label: 'Projects', 
       value: projectsCount, 
       icon: FolderKanban, 
-      gradient: 'from-indigo-500 to-purple-600',
-      bgGradient: 'from-indigo-50 to-purple-50',
+      gradient: 'from-[#C77DFF] to-[#9D4EDD]',
+      bgGradient: 'from-[#C77DFF]/10 to-[#9D4EDD]/10',
       href: '/admin/cms/projects'
     },
     { 
@@ -73,7 +73,7 @@ export function DashboardHomePage() {
       value: blogsCount, 
       icon: FileText, 
       gradient: 'from-cyan-500 to-blue-600',
-      bgGradient: 'from-cyan-50 to-blue-50',
+      bgGradient: 'from-cyan-500/10 to-blue-500/10',
       href: '/admin/cms/blogs'
     },
     { 
@@ -81,7 +81,7 @@ export function DashboardHomePage() {
       value: skillsCount, 
       icon: Sparkles, 
       gradient: 'from-amber-500 to-orange-600',
-      bgGradient: 'from-amber-50 to-orange-50',
+      bgGradient: 'from-amber-500/10 to-orange-500/10',
       href: '/admin/cms/skills'
     },
     { 
@@ -89,7 +89,7 @@ export function DashboardHomePage() {
       value: messagesCount, 
       icon: MessageSquare, 
       gradient: 'from-emerald-500 to-teal-600',
-      bgGradient: 'from-emerald-50 to-teal-50',
+      bgGradient: 'from-emerald-500/10 to-teal-500/10',
       href: '/admin/messages'
     },
   ];
@@ -99,13 +99,13 @@ export function DashboardHomePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Dashboard</h1>
-          <p className="mt-1 text-slate-500">Welcome back! Here's what's happening with your portfolio.</p>
+          <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+          <p className="mt-1 text-white/60">Welcome back! Here's what's happening with your portfolio.</p>
         </div>
         <NavLink 
           to="/"
           target="_blank"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium hover:shadow-lg hover:shadow-indigo-500/30 transition-all"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] text-white font-medium hover:shadow-lg hover:shadow-[#C77DFF]/30 transition-all"
         >
           <Eye className="w-4 h-4" />
           View Site
@@ -119,18 +119,18 @@ export function DashboardHomePage() {
           <NavLink 
             key={card.label} 
             to={card.href}
-            className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${card.bgGradient} p-6 border border-white/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1`}
+            className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${card.bgGradient} p-6 border border-white/10 hover:shadow-xl transition-all duration-300 hover:-translate-y-1`}
           >
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm font-medium text-slate-600">{card.label}</p>
-                <p className="mt-2 text-4xl font-bold text-slate-900">{card.value}</p>
+                <p className="text-sm font-medium text-[#C9D1D9]">{card.label}</p>
+                <p className="mt-2 text-4xl font-bold text-white">{card.value}</p>
               </div>
               <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${card.gradient} shadow-lg`}>
                 <card.icon className="w-6 h-6 text-white" />
               </div>
             </div>
-            <div className="mt-4 flex items-center gap-1 text-sm text-slate-500">
+            <div className="mt-4 flex items-center gap-1 text-sm text-white/60">
               <TrendingUp className="w-4 h-4 text-emerald-500" />
               <span>View all</span>
             </div>
@@ -143,17 +143,17 @@ export function DashboardHomePage() {
       {/* Status & Quick Actions Row */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Published */}
-        <div className="rounded-2xl bg-white border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div className="rounded-2xl bg-[#0B1320]/50 border border-white/10 p-6 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/20">
               <CheckCircle2 className="w-5 h-5 text-emerald-600" />
             </div>
             <div>
-              <p className="text-sm text-slate-500">Published</p>
-              <p className="text-2xl font-bold text-slate-900">{statusCounts.published}</p>
+              <p className="text-sm text-white/60">Published</p>
+              <p className="text-2xl font-bold text-white">{statusCounts.published}</p>
             </div>
           </div>
-          <div className="mt-4 h-2 rounded-full bg-slate-100 overflow-hidden">
+          <div className="mt-4 h-2 rounded-full bg-white/10 overflow-hidden">
             <div 
               className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-500"
               style={{ width: `${(statusCounts.published / (statusCounts.published + statusCounts.draft || 1)) * 100}%` }}
@@ -162,17 +162,17 @@ export function DashboardHomePage() {
         </div>
 
         {/* Draft */}
-        <div className="rounded-2xl bg-white border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div className="rounded-2xl bg-[#0B1320]/50 border border-white/10 p-6 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/20">
               <Clock className="w-5 h-5 text-amber-600" />
             </div>
             <div>
-              <p className="text-sm text-slate-500">Drafts</p>
-              <p className="text-2xl font-bold text-slate-900">{statusCounts.draft}</p>
+              <p className="text-sm text-white/60">Drafts</p>
+              <p className="text-2xl font-bold text-white">{statusCounts.draft}</p>
             </div>
           </div>
-          <div className="mt-4 h-2 rounded-full bg-slate-100 overflow-hidden">
+          <div className="mt-4 h-2 rounded-full bg-white/10 overflow-hidden">
             <div 
               className="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-500"
               style={{ width: `${(statusCounts.draft / (statusCounts.published + statusCounts.draft || 1)) * 100}%` }}
@@ -181,7 +181,7 @@ export function DashboardHomePage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="rounded-2xl bg-gradient-to-br from-slate-900 to-indigo-950 p-6 text-white">
+        <div className="rounded-2xl bg-gradient-to-br from-[#0B1320] to-[#0B1320]/80 p-6 text-white border border-white/10">
           <h3 className="font-semibold">Quick Actions</h3>
           <div className="mt-4 flex flex-wrap gap-2">
             <NavLink 
@@ -203,32 +203,32 @@ export function DashboardHomePage() {
       {/* Activity & Collections Row */}
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Recent Activity */}
-        <div className="rounded-2xl bg-white border border-slate-200 p-6 shadow-sm">
+        <div className="rounded-2xl bg-[#0B1320]/50 border border-white/10 p-6 shadow-sm">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-slate-900">Recent Activity</h2>
-            <BarChart3 className="w-5 h-5 text-slate-400" />
+            <h2 className="text-lg font-semibold text-white">Recent Activity</h2>
+            <BarChart3 className="w-5 h-5 text-white/60" />
           </div>
           <div className="space-y-4">
             {recentActivity.length === 0 && (
-              <div className="text-center py-8 text-slate-500">
-                <Clock className="w-10 h-10 mx-auto mb-3 text-slate-300" />
+              <div className="text-center py-8 text-white/60">
+                <Clock className="w-10 h-10 mx-auto mb-3 text-white/20" />
                 <p>No recent edits yet</p>
               </div>
             )}
             {recentActivity.map((activity, index) => (
               <div 
                 key={`${activity.collection}-${activity.id}`} 
-                className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors"
+                className="flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-100 to-purple-100">
-                  <FileText className="w-5 h-5 text-indigo-600" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#C77DFF]/20 to-[#9D4EDD]/20">
+                  <FileText className="w-5 h-5 text-[#C77DFF]" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-slate-800 truncate">{activity.label}</p>
-                  <p className="text-xs text-slate-500 capitalize">{activity.collection.replace(/([A-Z])/g, ' $1').trim()}</p>
+                  <p className="font-medium text-white truncate">{activity.label}</p>
+                  <p className="text-xs text-white/60 capitalize">{activity.collection.replace(/([A-Z])/g, ' $1').trim()}</p>
                 </div>
-                <div className="text-xs text-slate-400 whitespace-nowrap">
+                <div className="text-xs text-white/60 whitespace-nowrap">
                   {activity.timestamp ? new Date(activity.timestamp).toLocaleDateString() : '—'}
                 </div>
               </div>
@@ -237,16 +237,16 @@ export function DashboardHomePage() {
         </div>
 
         {/* Collections Overview */}
-        <div className="rounded-2xl bg-white border border-slate-200 p-6 shadow-sm">
+        <div className="rounded-2xl bg-[#0B1320]/50 border border-white/10 p-6 shadow-sm">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-slate-900">Collections Overview</h2>
-            <Users className="w-5 h-5 text-slate-400" />
+            <h2 className="text-lg font-semibold text-white">Collections Overview</h2>
+            <Users className="w-5 h-5 text-white/60" />
           </div>
           <div className="space-y-3">
             {Object.entries(data.collections).slice(0, 8).map(([key, items], index) => (
               <div 
                 key={key} 
-                className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 transition-colors"
+                className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <div 
@@ -255,11 +255,11 @@ export function DashboardHomePage() {
                       backgroundColor: `hsl(${(index * 40) % 360}, 70%, 50%)` 
                     }}
                   />
-                  <span className="text-sm font-medium text-slate-700 capitalize">
+                  <span className="text-sm font-medium text-[#C9D1D9] capitalize">
                     {key.replace(/([A-Z])/g, ' $1').trim()}
                   </span>
                 </div>
-                <span className="text-sm font-semibold text-slate-900 bg-slate-100 px-3 py-1 rounded-lg">
+                <span className="text-sm font-semibold text-white bg-white/10 px-3 py-1 rounded-lg">
                   {items.length}
                 </span>
               </div>

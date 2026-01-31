@@ -56,8 +56,8 @@ export function AdminLayout() {
 
   const baseLink =
     'group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200';
-  const inactiveLink = 'text-slate-400 hover:text-white hover:bg-white/5';
-  const activeLink = 'text-white bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30';
+  const inactiveLink = 'text-white/60 hover:text-white hover:bg-white/5';
+  const activeLink = 'text-white bg-gradient-to-r from-[#C77DFF]/20 to-[#9D4EDD]/20 border border-[#C77DFF]/30';
   const sidebarWidth = isCollapsed ? 'w-20' : 'w-72';
   const mainOffset = isCollapsed ? 'lg:ml-20' : 'lg:ml-72';
 
@@ -162,36 +162,36 @@ export function AdminLayout() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[#0B1320]">
       {/* Mobile Sidebar Overlay */}
       {isMobileSidebarOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
           onClick={() => setIsMobileSidebarOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar - Premium Ink Purple Theme */}
       <aside className={`
         fixed left-0 top-0 z-50 h-full ${sidebarWidth} 
-        bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950
-        border-r border-white/5 transition-all duration-300
+        bg-gradient-to-b from-[#0B1320] via-[#0B1320] to-[#0B1320]/80
+        border-r border-white/10 transition-all duration-300
         ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
       `}>
         {/* Logo Section */}
         <div className="flex h-20 items-center justify-between border-b border-white/10 px-4">
           <div className={`flex items-center gap-3 ${isCollapsed ? 'hidden' : ''}`}>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] shadow-lg shadow-[#C77DFF]/30">
               <LayoutDashboard className="h-5 w-5 text-white" />
             </div>
             <div>
               <div className="text-sm font-bold text-white">Admin Panel</div>
-              <div className="text-xs text-indigo-300">Portfolio CMS</div>
+              <div className="text-xs text-[#C77DFF]">Portfolio CMS</div>
             </div>
           </div>
           <button
             type="button"
-            className="hidden lg:flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white transition-colors"
+            className="hidden lg:flex h-9 w-9 items-center justify-center rounded-xl bg-[#0B1320]/60 border border-white/10 text-white/60 hover:bg-white/5 hover:text-white hover:border-[#C77DFF]/50 transition-all"
             onClick={() => setIsCollapsed((prev) => !prev)}
             aria-label="Toggle sidebar"
           >
@@ -199,7 +199,7 @@ export function AdminLayout() {
           </button>
           <button
             type="button"
-            className="lg:hidden flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white transition-colors"
+            className="lg:hidden flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 text-white/60 hover:bg-[#C77DFF]/20 hover:text-white transition-colors"
             onClick={() => setIsMobileSidebarOpen(false)}
             aria-label="Close sidebar"
           >
@@ -212,7 +212,7 @@ export function AdminLayout() {
           {navSections.map((section) => (
             <div key={section.title}>
               {!isCollapsed && (
-                <div className="px-3 mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                <div className="px-3 mb-3 text-xs font-semibold uppercase tracking-wider text-[#C77DFF]">
                   {section.title}
                 </div>
               )}
@@ -241,12 +241,12 @@ export function AdminLayout() {
       {/* Main Content Area */}
       <div className={`${mainOffset} transition-all duration-300`}>
         {/* Top Header */}
-        <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-slate-200 bg-white/80 backdrop-blur-xl px-6">
+        <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-white/10 bg-[#0B1320]/90 backdrop-blur-xl px-6">
           <div className="flex items-center gap-4">
             {/* Mobile Menu Toggle */}
             <button
               type="button"
-              className="lg:hidden flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
+              className="lg:hidden flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 text-[#C9D1D9] hover:bg-white/5 hover:text-white transition-colors"
               onClick={() => setIsMobileSidebarOpen(true)}
               aria-label="Open sidebar"
             >
@@ -255,9 +255,9 @@ export function AdminLayout() {
 
             {/* Search */}
             <div className="relative">
-              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/60" />
               <input
-                className="w-64 md:w-80 rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-11 pr-4 text-sm text-slate-700 placeholder-slate-400 focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-500/10 transition-all"
+                className="w-64 md:w-80 rounded-xl border border-white/10 bg-[#0B1320]/60 py-2.5 pl-11 pr-4 text-sm text-white placeholder-white/60 focus:border-[#C77DFF] focus:bg-white/5 focus:outline-none focus:ring-4 focus:ring-[#C77DFF]/20 transition-all"
                 placeholder="Search content..."
                 value={searchQuery}
                 onChange={(event) => {
@@ -268,17 +268,17 @@ export function AdminLayout() {
                 onBlur={() => setTimeout(() => setIsSearchOpen(false), 150)}
               />
               {isSearchOpen && searchResults.length > 0 && (
-                <div className="absolute left-0 top-full mt-2 w-full rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-200/50 overflow-hidden">
+                <div className="absolute left-0 top-full mt-2 w-full rounded-xl border border-white/10 bg-[#0B1320]/95 shadow-xl shadow-black/30 overflow-hidden backdrop-blur-xl">
                   <ul className="max-h-72 overflow-auto py-2">
                     {searchResults.map((result) => (
                       <li key={`${result.collection}-${result.id}`}>
                         <NavLink
                           to={result.href}
-                          className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-slate-50 transition-colors"
+                          className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-white/5 transition-colors"
                         >
                           <div className="flex-1">
-                            <div className="font-medium text-slate-800">{result.label}</div>
-                            <div className="text-xs text-slate-400 uppercase">{result.collection}</div>
+                            <div className="font-medium text-white">{result.label}</div>
+                            <div className="text-xs text-[#C77DFF] uppercase">{result.collection}</div>
                           </div>
                         </NavLink>
                       </li>
@@ -293,10 +293,10 @@ export function AdminLayout() {
             {/* Notifications */}
             <button
               type="button"
-              className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
+              className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 text-[#C9D1D9] hover:bg-white/5 hover:text-white transition-colors"
             >
               <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-[10px] font-bold text-white">
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] text-[10px] font-bold text-[#0B1320]">
                 3
               </span>
             </button>
@@ -305,43 +305,43 @@ export function AdminLayout() {
             <div className="relative" ref={menuRef}>
               <button
                 type="button"
-                className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2 hover:bg-slate-50 transition-colors"
+                className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#0B1320]/60 px-3 py-2 hover:bg-white/5 transition-colors"
                 onClick={() => setIsMenuOpen((prev) => !prev)}
               >
                 {data.singletons.about?.profileImageUrl ? (
                   <img
                     src={data.singletons.about.profileImageUrl}
                     alt="Admin avatar"
-                    className="h-8 w-8 rounded-lg border-2 border-indigo-100 object-cover"
+                    className="h-8 w-8 rounded-lg border-2 border-[#C77DFF]/30 object-cover"
                   />
                 ) : (
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 text-sm font-bold text-white">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] text-sm font-bold text-[#0B1320]">
                     {(data.singletons.about?.fullName ?? 'A').charAt(0)}
                   </div>
                 )}
                 <div className="hidden md:block text-left">
-                  <div className="text-sm font-medium text-slate-800">
+                  <div className="text-sm font-medium text-white">
                     {data.singletons.about?.fullName ?? 'Admin'}
                   </div>
-                  <div className="text-xs text-slate-500">{role ?? 'guest'}</div>
+                  <div className="text-xs text-white/60">{role ?? 'guest'}</div>
                 </div>
-                <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`h-4 w-4 text-white/60 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`} />
               </button>
               
               {isMenuOpen && (
-                <div className="absolute right-0 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-200/50 overflow-hidden animate-scale-in">
-                  <div className="p-4 border-b border-slate-100">
-                    <div className="text-sm font-medium text-slate-800">
+                <div className="absolute right-0 mt-2 w-56 rounded-xl border border-white/10 bg-[#0B1320]/95 shadow-xl shadow-black/30 overflow-hidden animate-scale-in backdrop-blur-xl">
+                  <div className="p-4 border-b border-white/10">
+                    <div className="text-sm font-medium text-white">
                       {data.singletons.about?.fullName ?? 'Admin User'}
                     </div>
-                    <div className="text-xs text-slate-500 mt-0.5">
+                    <div className="text-xs text-white/60 mt-0.5">
                       {role === 'admin' ? 'Administrator' : 'Guest User'}
                     </div>
                   </div>
                   <div className="py-2">
                     <button
                       type="button"
-                      className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors"
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-[#C9D1D9] hover:bg-white/5 hover:text-white transition-colors"
                       onClick={() => {
                         navigate('/');
                         setIsMenuOpen(false);
@@ -352,7 +352,7 @@ export function AdminLayout() {
                     </button>
                     <button
                       type="button"
-                      className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-[#C77DFF] hover:bg-[#C77DFF]/10 transition-colors"
                       onClick={() => {
                         localStorage.removeItem('portfolio.mockAuth');
                         refresh();
@@ -370,7 +370,7 @@ export function AdminLayout() {
         </header>
 
         {/* Page Content */}
-        <main className="p-6 lg:p-8">
+        <main className="p-6 lg:p-8 bg-[#0B1320] min-h-[calc(100vh-5rem)]">
           <Outlet />
         </main>
       </div>

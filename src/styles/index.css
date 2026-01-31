@@ -3,31 +3,51 @@
 @tailwind utilities;
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   PREMIUM PORTFOLIO - GLOBAL STYLES & ANIMATIONS
-   Modern SaaS Design System
+   PREMIUM PORTFOLIO - CINEMATIC DARK DESIGN SYSTEM
+   Professional • Luxury • Freelancer-Grade UI
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Custom Properties - Premium Color Palette */
+/* Premium Cinematic Color System */
 :root {
-  --color-primary: #6366f1;
-  --color-primary-light: #818cf8;
-  --color-primary-dark: #4f46e5;
-  --color-accent: #06b6d4;
-  --color-accent-light: #22d3ee;
-  --color-surface: #ffffff;
-  --color-surface-elevated: #f8fafc;
-  --color-text: #0f172a;
-  --color-text-secondary: #64748b;
-  --color-border: #e2e8f0;
-  --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
-  --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-  --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
-  --shadow-glow-accent: 0 0 40px rgba(6, 182, 212, 0.15);
+  /* Core Background Colors */
+  --bg-primary: #0B1320;
+  --bg-secondary: rgba(11, 19, 32, 0.9);
+  --bg-tertiary: rgba(11, 19, 32, 0.7);
+  --bg-card: rgba(11, 19, 32, 0.6);
+  --bg-glass: rgba(11, 19, 32, 0.5);
+  
+  /* Accent Colors */
+  --accent-primary: #C77DFF;
+  --accent-secondary: #9D4EDD;
+  --accent-gradient: linear-gradient(90deg, #C77DFF, #9D4EDD);
+  
+  /* Text Colors */
+  --text-primary: #FFFFFF;
+  --text-secondary: #C9D1D9;
+  --text-muted: rgba(255, 255, 255, 0.6);
+  
+  /* UI Elements */
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.2);
+  --line-animation: rgba(255, 255, 255, 0.15);
+  
+  /* Shadows & Glows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --glow-accent: 0 0 40px rgba(199, 125, 255, 0.3);
+  --glow-soft: 0 0 60px rgba(199, 125, 255, 0.15);
+  
+  /* Legacy support */
+  --color-primary: #C77DFF;
+  --color-primary-light: #D9A5FF;
+  --color-primary-dark: #9D4EDD;
+  --color-accent: #C77DFF;
+  --color-surface: #0B1320;
+  --color-surface-elevated: rgba(11, 19, 32, 0.8);
+  --color-text: #FFFFFF;
+  --color-text-secondary: #C9D1D9;
+  --color-border: rgba(255, 255, 255, 0.1);
 }
 
 /* Base Typography */
@@ -40,13 +60,13 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--color-surface);
-    color: var(--color-text);
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
   }
 
   ::selection {
-    background-color: rgba(99, 102, 241, 0.2);
-    color: var(--color-primary-dark);
+    background-color: rgba(199, 125, 255, 0.3);
+    color: var(--text-primary);
   }
 }
 
@@ -65,8 +85,8 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.05); }
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.25; transform: scale(1.01); }
 }
 
 @keyframes gradient-shift {
@@ -136,13 +156,13 @@
 }
 
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6); }
+  0%, 100% { box-shadow: 0 0 15px rgba(199, 125, 255, 0.1); }
+  50% { box-shadow: 0 0 25px rgba(199, 125, 255, 0.2); }
 }
 
 @keyframes text-glow {
-  0%, 100% { text-shadow: 0 0 10px rgba(99, 102, 241, 0.3); }
-  50% { text-shadow: 0 0 20px rgba(99, 102, 241, 0.6), 0 0 30px rgba(139, 92, 246, 0.4); }
+  0%, 100% { text-shadow: 0 0 8px rgba(199, 125, 255, 0.15); }
+  50% { text-shadow: 0 0 15px rgba(199, 125, 255, 0.25), 0 0 20px rgba(157, 78, 221, 0.15); }
 }
 
 @keyframes border-dance {
@@ -221,6 +241,30 @@
   100% { background-position: 0% 50%; }
 }
 
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Nebula animations for animated background */
+@keyframes nebula-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.12; }
+  25% { transform: translate(50px, 30px) scale(1.1); opacity: 0.15; }
+  50% { transform: translate(30px, 60px) scale(0.95); opacity: 0.1; }
+  75% { transform: translate(-20px, 40px) scale(1.05); opacity: 0.14; }
+}
+
+@keyframes nebula-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.1; }
+  33% { transform: translate(-40px, 50px) scale(1.15); opacity: 0.13; }
+  66% { transform: translate(30px, -30px) scale(0.9); opacity: 0.08; }
+}
+
+@keyframes nebula-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.08; }
+  50% { transform: translate(60px, -40px) scale(1.2); opacity: 0.12; }
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    ANIMATION UTILITY CLASSES
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -264,6 +308,25 @@
     background-size: 200% 200%;
     animation: bg-pan 4s ease infinite; 
   }
+  .animate-gradient-x {
+    animation: gradient-x 3s ease-in-out infinite;
+  }
+  .animate-typewriter-fixed {
+    display: inline-block;
+    animation: typewriter-maxwidth 1.5s steps(15) forwards;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  @keyframes typewriter-maxwidth {
+    from { max-width: 0; }
+    to { max-width: 160px; }
+  }
+  
+  /* Nebula animations */
+  .animate-nebula-1 { animation: nebula-drift-1 20s ease-in-out infinite; }
+  .animate-nebula-2 { animation: nebula-drift-2 25s ease-in-out infinite; }
+  .animate-nebula-3 { animation: nebula-drift-3 18s ease-in-out infinite; }
 
   /* Hover Animations */
   .hover-bounce:hover { animation: bounce-subtle 0.5s ease; }

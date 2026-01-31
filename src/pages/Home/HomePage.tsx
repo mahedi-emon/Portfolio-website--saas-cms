@@ -61,102 +61,99 @@ export function HomePage() {
   return (
     <div className="space-y-32">
       {/* ═══════════════════════════════════════════════════════════════════════════
-          HERO SECTION - Premium Landing
+          HERO SECTION - Premium Cinematic Landing
           ═══════════════════════════════════════════════════════════════════════════ */}
       <section 
         id="hero" 
         ref={setSectionRef('hero')}
         className={`relative min-h-[85vh] flex items-center ${sectionClass('hero')}`}
       >
-        {/* Animated Background */}
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute top-20 right-20 w-72 h-72 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-full opacity-20 blur-3xl animate-morph" />
-          <div className="absolute bottom-20 left-20 w-96 h-96 bg-gradient-to-br from-cyan-400 to-blue-400 rounded-full opacity-15 blur-3xl floating-slow" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-purple-300 to-pink-300 rounded-full opacity-10 blur-3xl animate-pulse-glow" />
-          {/* Animated particles */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.03)_1px,transparent_1px)] bg-[length:40px_40px] animate-float" />
+        {/* Radial Glow Behind Hero */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[radial-gradient(circle_at_center,rgba(199,125,255,0.15),transparent_60%)]" />
+          <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[radial-gradient(circle_at_center,rgba(157,78,221,0.1),transparent_60%)]" />
         </div>
-
-        <div className="grid lg:grid-cols-2 gap-16 items-center w-full">
+        
+        <div className="relative grid lg:grid-cols-2 gap-12 lg:gap-8 items-center w-full">
           {/* Content */}
-          <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 animate-slide-in-left hover:scale-105 transition-transform cursor-default">
-              <Sparkles className="w-4 h-4 text-indigo-500 animate-spin-slow" />
-              <span className="text-sm font-medium text-indigo-600">Available for freelance work</span>
+          <div className="space-y-8 lg:pr-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0B1320]/60 border border-white/10 animate-slide-in-left hover:scale-105 hover:border-[#C77DFF]/50 transition-all cursor-default backdrop-blur-sm">
+              <Sparkles className="w-4 h-4 text-[#C77DFF] animate-spin-slow" />
+              <span className="text-sm font-medium text-[#C9D1D9]">Available for freelance work</span>
             </div>
             
-            <h1 className="text-5xl lg:text-7xl font-bold leading-tight animate-slide-up">
+            <h1 className="text-5xl lg:text-7xl font-bold leading-[1.15] animate-slide-up text-white">
               Hi, I'm{' '}
-              <span className="text-shimmer inline-block hover:animate-wiggle">
+              <span className="bg-gradient-to-r from-[#C77DFF] via-[#E0AAFF] to-[#9D4EDD] bg-[length:200%_auto] bg-clip-text text-transparent inline-block pb-2 animate-gradient-x">
                 {hero.fullName ?? about.fullName ?? 'Full Name'}
               </span>
             </h1>
             
-            <p className="text-xl text-slate-600 max-w-xl leading-relaxed animate-slide-up delay-200 hover:text-slate-800 transition-colors">
+            <p className="text-xl text-[#C9D1D9] max-w-xl leading-relaxed animate-slide-up delay-200 hover:text-white transition-colors">
               {hero.subheadline ?? 'Full-stack engineer focused on scalable web platforms.'}
             </p>
             
             <div className="flex flex-wrap gap-4 animate-slide-up delay-300">
               <Link
                 to={hero.ctaPrimaryHref ?? '/portfolio'}
-                className="btn-primary btn-animated inline-flex items-center gap-2 group ripple"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#C77DFF] text-[#0B1320] font-semibold shadow-lg shadow-[#C77DFF]/20 hover:shadow-xl hover:shadow-[#C77DFF]/30 hover:-translate-y-1 transition-all duration-300 group"
               >
                 {hero.ctaPrimaryLabel ?? 'View Portfolio'}
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-2 group-hover:scale-110" />
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-2" />
               </Link>
               <Link
                 to={hero.ctaSecondaryHref ?? '/contact'}
-                className="btn-secondary btn-animated inline-flex items-center gap-2 hover:animate-glow"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-transparent border border-white/20 text-white font-medium hover:border-[#C77DFF]/50 hover:text-white hover:-translate-y-1 transition-all duration-300"
               >
                 {hero.ctaSecondaryLabel ?? 'Contact Me'}
               </Link>
             </div>
 
             {/* Stats Row */}
-            <div className="flex gap-8 pt-8 border-t border-slate-200 animate-slide-up delay-500">
+            <div className="flex gap-8 pt-8 border-t border-white/10 animate-slide-up delay-500">
               <div className="group cursor-default">
-                <div className="text-3xl font-bold text-shimmer group-hover:animate-heartbeat">{projects.length}+</div>
-                <div className="text-sm text-slate-500 group-hover:text-indigo-500 transition-colors">Projects</div>
+                <div className="text-3xl font-bold bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">{projects.length}+</div>
+                <div className="text-sm text-white/60 group-hover:text-[#C77DFF] transition-colors">Projects</div>
               </div>
               <div className="group cursor-default">
-                <div className="text-3xl font-bold text-shimmer group-hover:animate-heartbeat">{clients.length}+</div>
-                <div className="text-sm text-slate-500 group-hover:text-indigo-500 transition-colors">Clients</div>
+                <div className="text-3xl font-bold bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">{clients.length}+</div>
+                <div className="text-sm text-white/60 group-hover:text-[#C77DFF] transition-colors">Clients</div>
               </div>
               <div className="group cursor-default">
-                <div className="text-3xl font-bold text-shimmer group-hover:animate-heartbeat">{certifications.length}+</div>
-                <div className="text-sm text-slate-500 group-hover:text-indigo-500 transition-colors">Certifications</div>
+                <div className="text-3xl font-bold bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">{certifications.length}+</div>
+                <div className="text-sm text-white/60 group-hover:text-[#C77DFF] transition-colors">Certifications</div>
               </div>
             </div>
           </div>
 
           {/* Profile Image / Visual */}
-          <div className="relative hidden lg:flex justify-center items-center">
-            <div className="absolute w-80 h-80 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full opacity-20 blur-3xl animate-morph" />
+          <div className="relative hidden lg:flex justify-center items-center lg:pl-8">
+            <div className="absolute w-80 h-80 bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] rounded-full opacity-20 blur-3xl animate-morph" />
             <div className="relative">
               {about.profileImageUrl ? (
-                <div className="relative group img-hover-shine">
-                  <div className="absolute -inset-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 rounded-3xl blur-lg opacity-40 group-hover:opacity-70 transition-opacity animate-bg-pan" />
+                <div className="relative group">
+                  <div className="absolute -inset-4 bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] rounded-3xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity" />
                   <img 
-                    className="relative w-80 h-80 rounded-3xl object-cover border-4 border-white shadow-2xl transition-all duration-500 group-hover:scale-[1.02] group-hover:rotate-1" 
+                    className="relative w-80 h-80 rounded-3xl object-cover border-4 border-white/10 shadow-2xl shadow-[#C77DFF]/20 transition-all duration-500 group-hover:scale-[1.02] group-hover:rotate-1 group-hover:border-[#C77DFF]/50" 
                     src={about.profileImageUrl} 
                     alt="Profile" 
                   />
                 </div>
               ) : (
-                <div className="w-80 h-80 rounded-3xl bg-gradient-to-br from-indigo-100 to-purple-100 border-4 border-white shadow-2xl flex items-center justify-center animate-pulse-glow">
-                  <Code2 className="w-20 h-20 text-indigo-300 animate-bounce-subtle" />
+                <div className="w-80 h-80 rounded-3xl bg-[#0B1320]/60 border-4 border-white/10 shadow-2xl flex items-center justify-center">
+                  <Code2 className="w-20 h-20 text-[#C77DFF] animate-bounce-subtle" />
                 </div>
               )}
               
-              {/* Floating Elements */}
-              <div className="absolute -top-6 -right-6 p-4 bg-white rounded-2xl shadow-xl floating hover:scale-110 transition-transform cursor-pointer">
-                <Zap className="w-8 h-8 text-yellow-500 animate-pulse" />
+              {/* Floating Elements - Ink Purple Theme */}
+              <div className="absolute -top-6 -right-6 p-4 bg-[#0B1320]/60 border border-white/10 rounded-2xl shadow-xl shadow-[#C77DFF]/10 floating hover:scale-110 hover:border-[#C77DFF]/50 transition-all cursor-pointer">
+                <Zap className="w-8 h-8 text-[#C77DFF]" />
               </div>
-              <div className="absolute -bottom-6 -left-6 p-4 bg-white rounded-2xl shadow-xl floating-delayed hover:scale-110 transition-transform cursor-pointer">
-                <Rocket className="w-8 h-8 text-indigo-500 hover:animate-wiggle" />
+              <div className="absolute -bottom-6 -left-6 p-4 bg-[#0B1320]/60 border border-white/10 rounded-2xl shadow-xl shadow-[#C77DFF]/10 floating-delayed hover:scale-110 hover:border-[#C77DFF]/50 transition-all cursor-pointer">
+                <Rocket className="w-8 h-8 text-[#C77DFF]" />
               </div>
-              <div className="absolute top-1/2 -right-12 p-3 bg-white rounded-xl shadow-lg animate-bounce-subtle delay-300">
-                <Sparkles className="w-6 h-6 text-purple-500" />
+              <div className="absolute top-1/2 -right-12 p-3 bg-[#0B1320]/60 border border-white/10 rounded-xl shadow-lg animate-bounce-subtle delay-300">
+                <Sparkles className="w-6 h-6 text-[#9D4EDD]" />
               </div>
             </div>
           </div>
@@ -164,7 +161,7 @@ export function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════════════════
-          ABOUT SECTION
+          ABOUT SECTION - Ink Purple Theme
           ═══════════════════════════════════════════════════════════════════════════ */}
       <section 
         id="about-section" 
@@ -172,58 +169,58 @@ export function HomePage() {
         className={sectionClass('about-section')}
       >
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4 hover:animate-wiggle inline-block">
-            About <span className="text-shimmer">Me</span>
+          <h2 className="text-4xl font-bold mb-4 text-white">
+            About <span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">Me</span>
           </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto animate-fade-in">Passionate about creating impactful digital experiences</p>
+          <p className="text-white/60 max-w-2xl mx-auto animate-fade-in">Passionate about creating impactful digital experiences</p>
         </div>
         
         <div className="grid lg:grid-cols-[1fr_2fr] gap-12 items-start">
-          <div className="relative group img-hover-shine">
+          <div className="relative group">
             {about.profileImageUrl ? (
               <>
-                <div className="absolute -inset-4 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl blur opacity-25 group-hover:opacity-50 transition-all duration-500 animate-morph" />
+                <div className="absolute -inset-4 bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] rounded-3xl blur opacity-25 group-hover:opacity-40 transition-all duration-500" />
                 <img 
-                  className="relative w-full aspect-square rounded-3xl object-cover shadow-2xl transition-all duration-500 group-hover:scale-[1.02] group-hover:rotate-1" 
+                  className="relative w-full aspect-square rounded-3xl object-cover shadow-2xl shadow-[#C77DFF]/20 border-2 border-white/10 transition-all duration-500 group-hover:scale-[1.02] group-hover:border-[#C77DFF]/50" 
                   src={about.profileImageUrl} 
                   alt="Profile" 
                 />
               </>
             ) : (
-              <div className="w-full aspect-square rounded-3xl bg-gradient-to-br from-slate-100 to-slate-200 animate-pulse" />
+              <div className="w-full aspect-square rounded-3xl bg-[#0B1320]/60 border-2 border-white/10" />
             )}
           </div>
           
           <div className="space-y-6">
-            <p className="text-lg text-slate-600 leading-relaxed hover:text-slate-800 transition-colors duration-300">{about.bio}</p>
+            <p className="text-lg text-[#C9D1D9] leading-relaxed hover:text-white transition-colors duration-300">{about.bio}</p>
             
             <div className="grid sm:grid-cols-2 gap-4">
               {about.currentRole && (
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100 card-animated hover:border-indigo-300">
-                  <div className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-1">Current Role</div>
-                  <div className="font-medium text-slate-800">{about.currentRole}</div>
+                <div className="p-4 rounded-2xl bg-[#0B1320]/60 border border-white/10 hover:border-[#C77DFF]/50 transition-all">
+                  <div className="text-xs font-semibold text-[#C77DFF] uppercase tracking-wider mb-1">Current Role</div>
+                  <div className="font-medium text-white">{about.currentRole}</div>
                 </div>
               )}
               {about.researchInterest && (
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-100">
-                  <div className="text-xs font-semibold text-cyan-600 uppercase tracking-wider mb-1">Research Interest</div>
-                  <div className="font-medium text-slate-800">{about.researchInterest}</div>
+                <div className="p-4 rounded-2xl bg-[#0B1320]/60 border border-white/10 hover:border-[#C77DFF]/50 transition-all">
+                  <div className="text-xs font-semibold text-[#C77DFF] uppercase tracking-wider mb-1">Research Interest</div>
+                  <div className="font-medium text-white">{about.researchInterest}</div>
                 </div>
               )}
             </div>
             
             {education.length > 0 && (
-              <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+              <div className="p-6 rounded-2xl bg-[#0B1320]/60 border border-white/10 hover:border-[#C77DFF]/30 transition-all">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] flex items-center justify-center shadow-lg shadow-[#C77DFF]/20">
                     <Award className="w-5 h-5 text-white" />
                   </div>
-                  <div className="text-sm font-semibold text-slate-800">Education</div>
+                  <div className="text-sm font-semibold text-white">Education</div>
                 </div>
-                <div className="text-slate-600">
+                <div className="text-[#C9D1D9]">
                   {education[0].degree} in {education[0].field}
                 </div>
-                <div className="text-sm text-slate-500">
+                <div className="text-sm text-white/60">
                   {education[0].institution} • {education[0].endDate}
                 </div>
               </div>
@@ -241,20 +238,20 @@ export function HomePage() {
         className={sectionClass('skills')}
       >
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4">
-            Tech Stack & <span className="gradient-text">Tools</span>
+          <h2 className="text-4xl font-bold mb-4 text-white">
+            Tech Stack & <span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">Tools</span>
           </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto">Technologies I work with to bring ideas to life</p>
+          <p className="text-[#C9D1D9] max-w-2xl mx-auto">Technologies I work with to bring ideas to life</p>
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {techStackCategories.map((category, catIndex) => (
             <div 
               key={category.id} 
-              className="group p-6 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-xl hover:border-indigo-200 transition-all duration-500 hover:-translate-y-1"
+              className="group p-6 rounded-3xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out hover:-translate-y-1"
               style={{ animationDelay: `${catIndex * 100}ms` }}
             >
-              <h3 className="text-lg font-semibold text-slate-800 mb-6 pb-4 border-b border-slate-100">
+              <h3 className="text-lg font-semibold text-white mb-6 pb-4 border-b border-white/10">
                 {category.categoryName}
               </h3>
               <div className="space-y-4">
@@ -263,23 +260,23 @@ export function HomePage() {
                     <div className="relative">
                       {tool.logoUrl ? (
                         <img 
-                          className="w-10 h-10 rounded-xl object-contain p-1 bg-slate-50 border border-slate-100 group-hover/item:border-indigo-200 transition-colors" 
+                          className="w-10 h-10 rounded-xl object-contain p-1 bg-[#0B1320]/50 border border-white/10 group-hover/item:border-[#C77DFF]/50 transition-colors" 
                           src={tool.logoUrl} 
                           alt={tool.name} 
                         />
                       ) : (
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-                          <Code2 className="w-5 h-5 text-slate-400" />
+                        <div className="w-10 h-10 rounded-xl bg-[#0B1320]/50 border border-white/10 flex items-center justify-center">
+                          <Code2 className="w-5 h-5 text-white/60" />
                         </div>
                       )}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-slate-700">{tool.name}</span>
+                        <span className="font-medium text-[#C9D1D9]">{tool.name}</span>
                       </div>
-                      <div className="h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+                      <div className="h-2 w-full rounded-full bg-[#0B1320]/50 overflow-hidden">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-1000 ease-out progress-bar"
+                          className="h-full rounded-full bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] transition-all duration-1000 ease-out progress-bar"
                           style={{ width: `${tool.proficiencyLevel}%` }}
                         />
                       </div>
@@ -301,25 +298,25 @@ export function HomePage() {
         className={sectionClass('services-section')}
       >
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4">
-            My <span className="gradient-text">Services</span>
+          <h2 className="text-4xl font-bold mb-4 text-white">
+            My <span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">Services</span>
           </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto">What I can do for you</p>
+          <p className="text-[#C9D1D9] max-w-2xl mx-auto">What I can do for you</p>
         </div>
         
         <div className="grid md:grid-cols-2 gap-6">
           {services.map((service, index) => (
             <div 
               key={service.id} 
-              className="group relative p-8 rounded-3xl bg-white border border-slate-200 shadow-sm overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+              className="group relative p-8 rounded-3xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] overflow-hidden hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out hover:-translate-y-1"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#C77DFF]/20 to-[#9D4EDD]/20 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700" />
               <div className="relative">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-6 shadow-lg shadow-indigo-500/30 group-hover:scale-110 transition-transform">
-                  <Zap className="w-7 h-7 text-white" />
+                <div className="w-14 h-14 rounded-2xl bg-[#C77DFF]/10 border border-[#C77DFF]/15 flex items-center justify-center mb-6 group-hover:bg-[#C77DFF]/15 group-hover:border-[#C77DFF]/25 transition-all duration-500 ease-out">
+                  <Zap className="w-7 h-7 text-[#C77DFF]" />
                 </div>
-                <h3 className="text-xl font-semibold text-slate-800 mb-3">{service.title}</h3>
-                <p className="text-slate-600 leading-relaxed">{service.summary}</p>
+                <h3 className="text-xl font-semibold text-white mb-3">{service.title}</h3>
+                <p className="text-[#C9D1D9] leading-relaxed">{service.summary}</p>
               </div>
             </div>
           ))}
@@ -336,12 +333,12 @@ export function HomePage() {
       >
         <div className="flex items-center justify-between mb-16">
           <div>
-            <h2 className="text-4xl font-bold mb-4">
-              Featured <span className="gradient-text">Projects</span>
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              Featured <span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">Projects</span>
             </h2>
-            <p className="text-slate-600">Some of my best work</p>
+            <p className="text-[#C9D1D9]">Some of my best work</p>
           </div>
-          <Link to="/portfolio" className="hidden sm:flex items-center gap-2 text-indigo-600 font-medium hover:gap-3 transition-all">
+          <Link to="/portfolio" className="hidden sm:flex items-center gap-2 text-[#C77DFF] font-medium hover:gap-3 transition-all">
             View All <ChevronRight className="w-5 h-5" />
           </Link>
         </div>
@@ -353,7 +350,7 @@ export function HomePage() {
             .map((project) => (
               <article 
                 key={project.id} 
-                className="group rounded-3xl bg-white border border-slate-200 shadow-sm overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                className="group rounded-3xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] overflow-hidden hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out hover:-translate-y-1"
               >
                 {project.coverImageUrl && (
                   <div className="relative h-56 overflow-hidden">
@@ -369,7 +366,7 @@ export function HomePage() {
                           href={project.githubUrl} 
                           target="_blank" 
                           rel="noreferrer"
-                          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 text-slate-800 text-sm font-medium hover:bg-white transition-colors"
+                          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 text-[#0B1320] text-sm font-medium hover:bg-white transition-colors"
                         >
                           <Github className="w-4 h-4" /> Code
                         </a>
@@ -379,7 +376,7 @@ export function HomePage() {
                           href={project.liveDemoUrl} 
                           target="_blank" 
                           rel="noreferrer"
-                          className="flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500 text-white text-sm font-medium hover:bg-indigo-600 transition-colors"
+                          className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#C77DFF] text-white text-sm font-medium hover:bg-[#9D4EDD] transition-colors"
                         >
                           <ExternalLink className="w-4 h-4" /> Live Demo
                         </a>
@@ -388,10 +385,10 @@ export function HomePage() {
                   </div>
                 )}
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold text-slate-800 mb-2 group-hover:text-indigo-600 transition-colors">
+                  <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-[#C77DFF] transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-slate-600 line-clamp-2">{project.summary}</p>
+                  <p className="text-[#C9D1D9] line-clamp-2">{project.summary}</p>
                 </div>
               </article>
             ))}
@@ -414,12 +411,12 @@ export function HomePage() {
       >
         <div className="flex items-center justify-between mb-16">
           <div>
-            <h2 className="text-4xl font-bold mb-4">
-              Latest <span className="gradient-text">Blog Posts</span>
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              Latest <span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">Blog Posts</span>
             </h2>
-            <p className="text-slate-600">Thoughts, tutorials, and insights</p>
+            <p className="text-[#C9D1D9]">Thoughts, tutorials, and insights</p>
           </div>
-          <Link to="/blog" className="hidden sm:flex items-center gap-2 text-indigo-600 font-medium hover:gap-3 transition-all">
+          <Link to="/blog" className="hidden sm:flex items-center gap-2 text-[#C77DFF] font-medium hover:gap-3 transition-all">
             Read More <ChevronRight className="w-5 h-5" />
           </Link>
         </div>
@@ -428,16 +425,16 @@ export function HomePage() {
           {blogs.slice(0, 3).map((post) => (
             <article 
               key={post.id} 
-              className="group p-6 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+              className="group p-6 rounded-3xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out hover:-translate-y-1"
             >
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
-                <Quote className="w-5 h-5 text-indigo-500" />
+              <div className="w-12 h-12 rounded-2xl bg-[#C77DFF]/10 border border-[#C77DFF]/15 flex items-center justify-center mb-5 group-hover:bg-[#C77DFF]/15 group-hover:border-[#C77DFF]/25 transition-all duration-500 ease-out">
+                <Quote className="w-5 h-5 text-[#C77DFF]" />
               </div>
-              <h3 className="text-lg font-semibold text-slate-800 mb-3 group-hover:text-indigo-600 transition-colors">
+              <h3 className="text-lg font-semibold text-white mb-3 group-hover:text-[#C77DFF] transition-colors">
                 {post.title}
               </h3>
-              <p className="text-slate-600 text-sm line-clamp-3">{post.excerpt}</p>
-              <Link to={`/blog/${post.slug}`} className="inline-flex items-center gap-1 mt-4 text-indigo-600 text-sm font-medium group-hover:gap-2 transition-all">
+              <p className="text-[#C9D1D9] text-sm line-clamp-3">{post.excerpt}</p>
+              <Link to={`/blog/${post.slug}`} className="inline-flex items-center gap-1 mt-4 text-[#C77DFF] text-sm font-medium group-hover:gap-2 transition-all">
                 Read more <ArrowRight className="w-4 h-4" />
               </Link>
             </article>
@@ -455,26 +452,26 @@ export function HomePage() {
           className={sectionClass('testimonials-section')}
         >
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">
-              Client <span className="gradient-text">Testimonials</span>
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              Client <span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">Testimonials</span>
             </h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">What people say about working with me</p>
+            <p className="text-[#C9D1D9] max-w-2xl mx-auto">What people say about working with me</p>
           </div>
           
           <div className="grid md:grid-cols-2 gap-6">
             {testimonials.map((item) => (
               <blockquote 
                 key={item.id} 
-                className="relative p-8 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500"
+                className="relative p-8 rounded-3xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out"
               >
-                <Quote className="absolute top-6 right-6 w-10 h-10 text-indigo-100" />
-                <p className="text-lg text-slate-600 italic leading-relaxed mb-6">"{item.quote}"</p>
+                <Quote className="absolute top-6 right-6 w-10 h-10 text-[#C77DFF]/20" />
+                <p className="text-lg text-[#C9D1D9] italic leading-relaxed mb-6">"{item.quote}"</p>
                 <footer className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] flex items-center justify-center text-white font-semibold">
                     {item.author?.charAt(0) ?? 'A'}
                   </div>
                   <div>
-                    <div className="font-semibold text-slate-800">{item.author}</div>
+                    <div className="font-semibold text-white">{item.author}</div>
                   </div>
                 </footer>
               </blockquote>
@@ -493,16 +490,16 @@ export function HomePage() {
           className={sectionClass('clients-section')}
         >
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">
-              Trusted <span className="gradient-text">Clients</span>
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              Trusted <span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">Clients</span>
             </h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">Companies I've had the pleasure to work with</p>
+            <p className="text-[#C9D1D9] max-w-2xl mx-auto">Companies I've had the pleasure to work with</p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {clients.map((client) => {
               const content = (
-                <div className="group p-8 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-indigo-200 transition-all duration-300 flex items-center justify-center h-32">
+                <div className="group p-8 rounded-2xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out flex items-center justify-center h-32">
                   {client.logoUrl ? (
                     <img
                       className="max-h-12 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
@@ -510,7 +507,7 @@ export function HomePage() {
                       alt={`${client.name} logo`}
                     />
                   ) : (
-                    <div className="text-lg font-semibold text-slate-400 group-hover:text-indigo-600 transition-colors">{client.name}</div>
+                    <div className="text-lg font-semibold text-white/60 group-hover:text-[#C77DFF] transition-colors">{client.name}</div>
                   )}
                 </div>
               );
@@ -539,30 +536,30 @@ export function HomePage() {
           className={sectionClass('achievements-section')}
         >
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">
-              Awards & <span className="gradient-text">Achievements</span>
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              Awards & <span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">Achievements</span>
             </h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">Recognition and milestones</p>
+            <p className="text-[#C9D1D9] max-w-2xl mx-auto">Recognition and milestones</p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {achievements.map((item) => (
               <div 
                 key={item.id} 
-                className="group p-6 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+                className="group p-6 rounded-3xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out hover:-translate-y-1"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform">
-                    <Award className="w-6 h-6 text-white" />
+                  <div className="w-12 h-12 rounded-2xl bg-[#C77DFF]/10 border border-[#C77DFF]/15 flex items-center justify-center group-hover:bg-[#C77DFF]/15 group-hover:border-[#C77DFF]/25 transition-all duration-500 ease-out">
+                    <Award className="w-6 h-6 text-[#C77DFF]" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-slate-800 mb-1">{item.title}</h3>
-                    <div className="text-sm text-indigo-600 font-medium">{item.issuer}</div>
-                    <div className="text-xs text-slate-500 mb-3">{item.year}</div>
-                    <p className="text-sm text-slate-600">{item.description}</p>
+                    <h3 className="font-semibold text-white mb-1">{item.title}</h3>
+                    <div className="text-sm text-[#C77DFF] font-medium">{item.issuer}</div>
+                    <div className="text-xs text-white/60 mb-3">{item.year}</div>
+                    <p className="text-sm text-[#C9D1D9]">{item.description}</p>
                     {item.externalLink && (
                       <a 
-                        className="inline-flex items-center gap-1 mt-3 text-indigo-600 text-sm font-medium hover:gap-2 transition-all" 
+                        className="inline-flex items-center gap-1 mt-3 text-[#C77DFF] text-sm font-medium hover:gap-2 transition-all" 
                         href={item.externalLink} 
                         target="_blank" 
                         rel="noreferrer"
@@ -588,41 +585,41 @@ export function HomePage() {
           className={sectionClass('certifications-section')}
         >
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">
-              Professional <span className="gradient-text">Certifications</span>
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              Professional <span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">Certifications</span>
             </h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">Verified skills and expertise</p>
+            <p className="text-[#C9D1D9] max-w-2xl mx-auto">Verified skills and expertise</p>
           </div>
           
           <div className="grid md:grid-cols-2 gap-6">
             {certifications.map((cert) => (
               <article 
                 key={cert.id} 
-                className="group p-6 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+                className="group p-6 rounded-3xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out hover:-translate-y-1"
               >
                 <div className="flex items-start gap-5">
                   {cert.certificateImageUrl ? (
                     <img
-                      className="w-16 h-16 rounded-2xl object-cover border-2 border-slate-100 group-hover:border-indigo-200 transition-colors"
+                      className="w-16 h-16 rounded-2xl object-cover border-2 border-white/10 group-hover:border-[#C77DFF]/50 transition-colors"
                       src={cert.certificateImageUrl}
                       alt={cert.certificateTitle}
                     />
                   ) : (
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
-                      <Award className="w-8 h-8 text-indigo-500" />
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#C77DFF]/20 to-[#9D4EDD]/20 flex items-center justify-center">
+                      <Award className="w-8 h-8 text-[#C77DFF]" />
                     </div>
                   )}
                   <div className="flex-1 space-y-2">
-                    <h3 className="font-semibold text-slate-800 group-hover:text-indigo-600 transition-colors">
+                    <h3 className="font-semibold text-white group-hover:text-[#C77DFF] transition-colors">
                       {cert.certificateTitle}
                     </h3>
-                    <div className="text-sm text-indigo-600 font-medium">{cert.issuer}</div>
-                    <div className="text-xs text-slate-500">
+                    <div className="text-sm text-[#C77DFF] font-medium">{cert.issuer}</div>
+                    <div className="text-xs text-white/60">
                       Issued: {cert.issueDate}
                       {cert.expiryDate ? ` • Expires: ${cert.expiryDate}` : ''}
                     </div>
                     {cert.credentialId && (
-                      <div className="text-xs text-slate-400">ID: {cert.credentialId}</div>
+                      <div className="text-xs text-white/60">ID: {cert.credentialId}</div>
                     )}
                     <div className="flex gap-3 pt-2">
                       {cert.credentialUrl && (
@@ -630,7 +627,7 @@ export function HomePage() {
                           href={cert.credentialUrl} 
                           target="_blank" 
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1 text-sm text-indigo-600 font-medium hover:gap-2 transition-all"
+                          className="inline-flex items-center gap-1 text-sm text-[#C77DFF] font-medium hover:gap-2 transition-all"
                         >
                           Verify <ExternalLink className="w-3 h-3" />
                         </a>
@@ -642,7 +639,7 @@ export function HomePage() {
                             imageUrl: cert.certificateImageUrl || cert.certificateFileUrl, 
                             title: cert.certificateTitle 
                           })}
-                          className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-indigo-600 font-medium transition-colors"
+                          className="inline-flex items-center gap-1 text-sm text-[#C9D1D9] hover:text-[#C77DFF] font-medium transition-colors"
                         >
                           View Certificate <ExternalLink className="w-3 h-3" />
                         </button>
@@ -664,26 +661,26 @@ export function HomePage() {
         ref={setSectionRef('resume-section')}
         className={`${sectionClass('resume-section')} -mx-4 sm:-mx-6 lg:-mx-8 px-0`}
       >
-        <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 py-16 sm:py-20 lg:py-24 text-center">
+        <div className="relative overflow-hidden bg-gradient-to-br from-[#0B1320] via-[#0B1320]/80 to-[#0B1320] py-16 sm:py-20 lg:py-24 text-center">
           {/* Background decoration */}
           <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-0 left-1/4 w-72 h-72 bg-indigo-500 rounded-full opacity-10 blur-3xl animate-morph floating" />
-            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500 rounded-full opacity-10 blur-3xl animate-morph floating-delayed" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600 rounded-full opacity-5 blur-3xl animate-pulse-glow" />
+            <div className="absolute top-0 left-1/4 w-72 h-72 bg-[#C77DFF] rounded-full opacity-10 blur-3xl animate-morph floating" />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#9D4EDD] rounded-full opacity-10 blur-3xl animate-morph floating-delayed" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#C77DFF] rounded-full opacity-5 blur-3xl animate-pulse-glow" />
           </div>
           
           <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 animate-slide-up">
               Want to know more?
             </h2>
-            <p className="text-slate-300 text-lg sm:text-xl max-w-xl mx-auto mb-8 animate-fade-in" style={{ animationDelay: '200ms' }}>
+            <p className="text-[#C9D1D9] text-lg sm:text-xl max-w-xl mx-auto mb-8 animate-fade-in" style={{ animationDelay: '200ms' }}>
               Download my resume to see my full experience, education, and skills
             </p>
             
             {activeResume ? (
               <div className="flex flex-wrap justify-center gap-4 animate-slide-up" style={{ animationDelay: '400ms' }}>
                 <button 
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold shadow-xl shadow-indigo-500/30 hover:shadow-2xl hover:shadow-indigo-500/40 hover:-translate-y-1 hover:scale-105 transition-all duration-300 btn-animated group"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-[#C77DFF] text-[#0B1320] font-semibold shadow-xl shadow-[#C77DFF]/30 hover:shadow-2xl hover:shadow-[#C77DFF]/40 hover:-translate-y-1 hover:scale-105 transition-all duration-300 btn-animated group"
                   type="button" 
                   onClick={() => setIsResumeOpen(true)}
                 >
@@ -692,7 +689,7 @@ export function HomePage() {
                 </button>
               </div>
             ) : (
-              <div className="text-slate-400 animate-pulse">Resume coming soon...</div>
+              <div className="text-white/60 animate-pulse">Resume coming soon...</div>
             )}
           </div>
         </div>

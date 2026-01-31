@@ -11,19 +11,19 @@ export function AdminPortfolioPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Portfolio</h1>
-        <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">Manage projects, publications, and achievements.</p>
+        <h1 className="text-2xl font-semibold text-white">Portfolio</h1>
+        <p className="mt-1 text-sm text-[#C9D1D9]">Manage projects, publications, and achievements.</p>
       </div>
-      <div className="flex flex-wrap gap-2 rounded border border-slate-200 bg-white p-2 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="flex flex-wrap gap-2 rounded border border-white/10 bg-[#0B1320]/80 p-2 shadow-sm">
         {tabs.map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             aria-pressed={activeTab === tab}
-            className={`rounded px-3 py-1 text-sm ${
+            className={`rounded px-3 py-1 text-sm transition-colors ${
               activeTab === tab
-                ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900'
-                : 'border border-slate-200 text-slate-700 dark:border-slate-700 dark:text-slate-200'
+                ? 'bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] text-white'
+                : 'border border-white/10 text-[#C9D1D9] hover:bg-white/5'
             }`}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}

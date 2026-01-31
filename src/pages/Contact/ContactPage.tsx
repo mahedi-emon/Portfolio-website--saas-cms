@@ -53,20 +53,20 @@ export function ContactPage() {
       {/* Hero Section */}
       <section className="relative pt-8 text-center">
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-full opacity-10 blur-3xl animate-morph floating" />
-          <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-gradient-to-br from-cyan-400 to-blue-400 rounded-full opacity-10 blur-3xl animate-morph floating-delayed" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-br from-purple-300 to-indigo-300 rounded-full opacity-5 blur-3xl animate-pulse-glow" />
+          <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] rounded-full opacity-10 blur-3xl animate-morph floating" />
+          <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] rounded-full opacity-10 blur-3xl animate-morph floating-delayed" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] rounded-full opacity-5 blur-3xl animate-pulse-glow" />
         </div>
 
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 mb-6 animate-slide-in-left hover:scale-105 transition-transform">
-          <MessageCircle className="w-4 h-4 text-indigo-500 animate-bounce-subtle" />
-          <span className="text-sm font-medium text-indigo-600">Get in Touch</span>
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0B1320]/60 border border-white/10 mb-6 animate-slide-in-left hover:scale-105 transition-transform">
+          <MessageCircle className="w-4 h-4 text-[#C77DFF] animate-bounce-subtle" />
+          <span className="text-sm font-medium text-[#C77DFF]">Get in Touch</span>
         </div>
         
-        <h1 className="text-4xl lg:text-5xl font-bold mb-6 animate-fade-in">
+        <h1 className="text-4xl lg:text-5xl font-bold mb-6 animate-fade-in text-white">
           Let's <span className="gradient-text text-shimmer hover:animate-wiggle inline-block">Connect</span>
         </h1>
-        <p className="text-lg text-slate-600 max-w-2xl mx-auto animate-slide-up">
+        <p className="text-lg text-[#C9D1D9] max-w-2xl mx-auto animate-slide-up">
           {contact.pageIntroText || "Have a question or want to work together? I'd love to hear from you."}
         </p>
       </section>
@@ -77,27 +77,27 @@ export function ContactPage() {
         <div className="space-y-6">
           {/* Contact Details Card */}
           <div className="group relative animate-fade-in" style={{ animationDelay: '100ms' }}>
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500 animate-pulse-glow" />
-            <div className="relative bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-animated">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] rounded-2xl blur-sm opacity-[0.06] group-hover:blur-md group-hover:opacity-[0.14] transition-all duration-600 ease-out" />
+            <div className="relative bg-[#0B1320]/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg shadow-[#C77DFF]/[0.05] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-600 ease-out card-animated">
               <div className="flex items-center gap-3 mb-6">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 group-hover:scale-110 transition-transform">
-                  <Sparkles className="w-5 h-5 text-white animate-spin-slow" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#C77DFF]/10 border border-[#C77DFF]/15 group-hover:bg-[#C77DFF]/15 group-hover:border-[#C77DFF]/25 transition-all duration-500 ease-out">
+                  <Sparkles className="w-5 h-5 text-[#C77DFF]" />
                 </div>
-                <h2 className="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">Contact Info</h2>
+                <h2 className="text-lg font-bold text-white group-hover:text-[#C77DFF] transition-colors">Contact Info</h2>
               </div>
               
               <div className="space-y-4">
                 {contactInfo.email && (
                   <a 
                     href={`mailto:${contactInfo.email}`}
-                    className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 hover:-translate-x-1 transition-all duration-300 group/item"
+                    className="flex items-center gap-4 p-3 rounded-xl hover:bg-[#0B1320]/50 hover:-translate-x-1 transition-all duration-300 group/item"
                   >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-indigo-50 text-indigo-500 group-hover/item:bg-indigo-100 group-hover/item:scale-110 transition-all">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#C77DFF]/20 text-[#C77DFF] group-hover/item:bg-[#C77DFF]/30 group-hover/item:scale-110 transition-all">
                       <Mail className="w-5 h-5 group-hover/item:animate-wiggle" />
                     </div>
                     <div>
-                      <p className="text-xs text-slate-500 uppercase tracking-wider">Email</p>
-                      <p className="text-sm font-medium text-slate-700">{contactInfo.email}</p>
+                      <p className="text-xs text-white/60 uppercase tracking-wider">Email</p>
+                      <p className="text-sm font-medium text-[#C9D1D9]">{contactInfo.email}</p>
                     </div>
                   </a>
                 )}
@@ -105,26 +105,26 @@ export function ContactPage() {
                 {contactInfo.phone && (
                   <a 
                     href={`tel:${contactInfo.phone}`}
-                    className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 hover:-translate-x-1 transition-all duration-300 group/item"
+                    className="flex items-center gap-4 p-3 rounded-xl hover:bg-[#0B1320]/50 hover:-translate-x-1 transition-all duration-300 group/item"
                   >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-cyan-50 text-cyan-500 group-hover/item:bg-cyan-100 group-hover/item:scale-110 transition-all">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#C77DFF]/20 text-[#C77DFF] group-hover/item:bg-[#C77DFF]/30 group-hover/item:scale-110 transition-all">
                       <Phone className="w-5 h-5 group-hover/item:animate-wiggle" />
                     </div>
                     <div>
-                      <p className="text-xs text-slate-500 uppercase tracking-wider">Phone</p>
-                      <p className="text-sm font-medium text-slate-700">{contactInfo.phone}</p>
+                      <p className="text-xs text-white/60 uppercase tracking-wider">Phone</p>
+                      <p className="text-sm font-medium text-[#C9D1D9]">{contactInfo.phone}</p>
                     </div>
                   </a>
                 )}
                 
                 {contactInfo.location && (
-                  <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors group/item">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-emerald-50 text-emerald-500 group-hover/item:scale-110 transition-transform">
+                  <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-[#0B1320]/50 transition-colors group/item">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#C77DFF]/20 text-[#C77DFF] group-hover/item:scale-110 transition-transform">
                       <MapPin className="w-5 h-5 group-hover/item:animate-bounce-subtle" />
                     </div>
                     <div>
-                      <p className="text-xs text-slate-500 uppercase tracking-wider">Location</p>
-                      <p className="text-sm font-medium text-slate-700">{contactInfo.location}</p>
+                      <p className="text-xs text-white/60 uppercase tracking-wider">Location</p>
+                      <p className="text-sm font-medium text-[#C9D1D9]">{contactInfo.location}</p>
                     </div>
                   </div>
                 )}
@@ -135,9 +135,9 @@ export function ContactPage() {
           {/* Social Links Card */}
           {socialLinks.length > 0 && (
             <div className="group relative animate-fade-in" style={{ animationDelay: '200ms' }}>
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500 animate-pulse-glow" />
-              <div className="relative bg-white rounded-2xl p-6 shadow-sm border border-slate-100 card-animated">
-                <h2 className="text-lg font-bold text-slate-800 mb-4 group-hover:text-cyan-600 transition-colors">Follow Me</h2>
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] rounded-2xl blur-sm opacity-[0.06] group-hover:blur-md group-hover:opacity-[0.14] transition-all duration-600 ease-out" />
+              <div className="relative bg-[#0B1320]/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg shadow-[#C77DFF]/[0.05] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-600 ease-out card-animated">
+                <h2 className="text-lg font-bold text-white mb-4 group-hover:text-[#C77DFF] transition-colors">Follow Me</h2>
                 <div className="flex flex-wrap gap-3">
                   {socialLinks.map((link, index) => {
                     const derived = detectSocialPlatform(String(link.url ?? ''));
@@ -148,7 +148,7 @@ export function ContactPage() {
                     return (
                       <a
                         key={`${label}-${link.url}`}
-                        className="group/social inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-50 text-slate-600 hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-500 hover:text-white hover:scale-105 hover:-translate-y-0.5 transition-all duration-300"
+                        className="group/social inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0B1320]/50 text-[#C9D1D9] hover:bg-gradient-to-r hover:from-[#C77DFF] hover:to-[#9D4EDD] hover:text-white hover:scale-105 hover:-translate-y-0.5 transition-all duration-300"
                         href={String(link.url)}
                         target="_blank"
                         rel="noreferrer"
@@ -167,13 +167,13 @@ export function ContactPage() {
 
         {/* Contact Form */}
         <div className="group relative animate-fade-in" style={{ animationDelay: '300ms' }}>
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-500 animate-pulse-glow" />
-          <div className="relative bg-white rounded-2xl p-8 shadow-xl border border-slate-100 card-animated">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-[#C77DFF] via-[#9D4EDD] to-[#C77DFF] rounded-3xl blur-sm opacity-[0.06] group-hover:blur-md group-hover:opacity-[0.14] transition-all duration-600 ease-out" />
+          <div className="relative bg-[#0B1320]/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/[0.06] hover:border-white/[0.12] transition-all duration-600 ease-out card-animated">
             <div className="flex items-center gap-3 mb-6">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 group-hover:scale-110 group-hover:rotate-3 transition-transform">
-                <Send className="w-5 h-5 text-white animate-bounce-subtle" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#C77DFF]/10 border border-[#C77DFF]/15 group-hover:bg-[#C77DFF]/15 group-hover:border-[#C77DFF]/25 transition-all duration-500 ease-out">
+                <Send className="w-5 h-5 text-[#C77DFF]" />
               </div>
-              <h2 className="text-xl font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">Send a Message</h2>
+              <h2 className="text-xl font-bold text-white group-hover:text-[#C77DFF] transition-colors">Send a Message</h2>
             </div>
 
             <form
@@ -200,54 +200,54 @@ export function ContactPage() {
             >
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="animate-fade-in" style={{ animationDelay: '350ms' }}>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Name</label>
+                  <label className="block text-sm font-medium text-[#C9D1D9] mb-1.5">Name</label>
                   <input
-                    className={`w-full rounded-xl border ${errors.name ? 'border-red-300 focus:border-red-500 focus:ring-red-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-200'} px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 hover:border-indigo-300 hover:shadow-sm`}
+                    className={`w-full rounded-xl border ${errors.name ? 'border-red-400 focus:border-red-500 focus:ring-red-400/30' : 'border-white/10 focus:border-[#C77DFF] focus:ring-[#C77DFF]/30'} bg-[#0B1320]/50 text-white placeholder-white/60 px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 hover:border-[#C77DFF]/50 hover:shadow-sm`}
                     placeholder="John Doe"
                     value={formValues.name}
                     onChange={(event) => handleChange('name', event.target.value)}
                   />
-                  {errors.name && <p className="mt-1 text-sm text-red-500 animate-slide-up">{errors.name}</p>}
+                  {errors.name && <p className="mt-1 text-sm text-red-400 animate-slide-up">{errors.name}</p>}
                 </div>
                 <div className="animate-fade-in" style={{ animationDelay: '400ms' }}>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+                  <label className="block text-sm font-medium text-[#C9D1D9] mb-1.5">Email</label>
                   <input
-                    className={`w-full rounded-xl border ${errors.email ? 'border-red-300 focus:border-red-500 focus:ring-red-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-200'} px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 hover:border-indigo-300 hover:shadow-sm`}
+                    className={`w-full rounded-xl border ${errors.email ? 'border-red-400 focus:border-red-500 focus:ring-red-400/30' : 'border-white/10 focus:border-[#C77DFF] focus:ring-[#C77DFF]/30'} bg-[#0B1320]/50 text-white placeholder-white/60 px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 hover:border-[#C77DFF]/50 hover:shadow-sm`}
                     placeholder="john@example.com"
                     type="email"
                     value={formValues.email}
                     onChange={(event) => handleChange('email', event.target.value)}
                   />
-                  {errors.email && <p className="mt-1 text-sm text-red-500 animate-slide-up">{errors.email}</p>}
+                  {errors.email && <p className="mt-1 text-sm text-red-400 animate-slide-up">{errors.email}</p>}
                 </div>
               </div>
               
               <div className="animate-fade-in" style={{ animationDelay: '450ms' }}>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Subject</label>
+                <label className="block text-sm font-medium text-[#C9D1D9] mb-1.5">Subject</label>
                 <input
-                  className={`w-full rounded-xl border ${errors.subject ? 'border-red-300 focus:border-red-500 focus:ring-red-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-200'} px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 hover:border-indigo-300 hover:shadow-sm`}
+                  className={`w-full rounded-xl border ${errors.subject ? 'border-red-400 focus:border-red-500 focus:ring-red-400/30' : 'border-white/10 focus:border-[#C77DFF] focus:ring-[#C77DFF]/30'} bg-[#0B1320]/50 text-white placeholder-white/60 px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 hover:border-[#C77DFF]/50 hover:shadow-sm`}
                   placeholder="Project Inquiry"
                   value={formValues.subject}
                   onChange={(event) => handleChange('subject', event.target.value)}
                 />
-                {errors.subject && <p className="mt-1 text-sm text-red-500 animate-slide-up">{errors.subject}</p>}
+                {errors.subject && <p className="mt-1 text-sm text-red-400 animate-slide-up">{errors.subject}</p>}
               </div>
               
               <div className="animate-fade-in" style={{ animationDelay: '500ms' }}>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Message</label>
+                <label className="block text-sm font-medium text-[#C9D1D9] mb-1.5">Message</label>
                 <textarea
-                  className={`w-full rounded-xl border ${errors.message ? 'border-red-300 focus:border-red-500 focus:ring-red-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-200'} px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 resize-none hover:border-indigo-300 hover:shadow-sm`}
+                  className={`w-full rounded-xl border ${errors.message ? 'border-red-400 focus:border-red-500 focus:ring-red-400/30' : 'border-white/10 focus:border-[#C77DFF] focus:ring-[#C77DFF]/30'} bg-[#0B1320]/50 text-white placeholder-white/60 px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 resize-none hover:border-[#C77DFF]/50 hover:shadow-sm`}
                   placeholder="Tell me about your project..."
                   rows={5}
                   value={formValues.message}
                   onChange={(event) => handleChange('message', event.target.value)}
                 />
-                {errors.message && <p className="mt-1 text-sm text-red-500 animate-slide-up">{errors.message}</p>}
+                {errors.message && <p className="mt-1 text-sm text-red-400 animate-slide-up">{errors.message}</p>}
               </div>
               
               <div className="flex items-center gap-4 pt-2 animate-fade-in" style={{ animationDelay: '550ms' }}>
                 <button 
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:scale-100 btn-animated group/btn" 
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#C77DFF] text-[#0B1320] font-semibold rounded-xl shadow-lg shadow-[#C77DFF]/30 hover:shadow-2xl hover:shadow-[#C77DFF]/40 hover:-translate-y-1 hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:scale-100 btn-animated group/btn" 
                   type="submit" 
                   disabled={isSubmitting}
                 >
@@ -265,7 +265,7 @@ export function ContactPage() {
                 </button>
                 
                 {success && (
-                  <div className="flex items-center gap-2 text-emerald-600 animate-slide-in-left">
+                  <div className="flex items-center gap-2 text-[#C77DFF] animate-slide-in-left">
                     <CheckCircle2 className="w-5 h-5 animate-bounce-subtle" />
                     <span className="font-medium">{success}</span>
                   </div>

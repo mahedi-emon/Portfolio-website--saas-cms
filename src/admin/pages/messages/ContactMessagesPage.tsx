@@ -30,7 +30,7 @@ export function ContactMessagesPage() {
         header: 'Status',
         render: (row: MessageItem) => (
           <select
-            className="rounded border border-slate-200 px-2 py-1 text-xs"
+            className="rounded border border-white/10 bg-[#0B1320]/60 px-2 py-1 text-xs text-[#C9D1D9]"
             value={row.status ?? 'new'}
             onChange={(event) => {
               const nextStatus = event.target.value as MessageItem['status'];
@@ -51,7 +51,7 @@ export function ContactMessagesPage() {
         key: 'id',
         header: 'Detail',
         render: (row: MessageItem) => (
-          <Link className="text-slate-600 underline" to={`/admin/messages/${row.id}`}>
+          <Link className="text-[#C77DFF] underline" to={`/admin/messages/${row.id}`}>
             View
           </Link>
         ),
@@ -63,10 +63,10 @@ export function ContactMessagesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Contact Messages</h1>
-        <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">Manage inbound inquiries and updates.</p>
+        <h1 className="text-2xl font-semibold text-white">Contact Messages</h1>
+        <p className="mt-1 text-sm text-[#C9D1D9]">Manage inbound inquiries and updates.</p>
       </div>
-      <div className="rounded border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="rounded border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm">
         <DataTable
           columns={columns}
           rows={rows}

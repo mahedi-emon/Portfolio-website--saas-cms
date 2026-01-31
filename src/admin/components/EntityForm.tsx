@@ -166,14 +166,14 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
               field.type === 'socialLinks' || field.type === 'textarea' || field.name === 'pageIntroText';
             return (
               <div key={field.name} className={`space-y-2 ${isWideField ? 'md:col-span-2' : ''}`}>
-              <label className="block text-sm font-medium text-slate-700">
+              <label className="block text-sm font-medium text-[#C9D1D9]">
                 <span className="flex items-center gap-1">
                   {field.label}
-                  {field.required && <span className="text-indigo-500">*</span>}
+                  {field.required && <span className="text-[#C77DFF]">*</span>}
                 </span>
                 {field.type === 'image' ? (
                   <input
-                    className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 file:mr-3 file:rounded-lg file:border-0 file:bg-indigo-100 file:px-4 file:py-2 file:text-sm file:font-medium file:text-indigo-600 hover:file:bg-indigo-200 transition-colors"
+                    className="mt-2 w-full rounded-xl border border-white/10 bg-[#0B1320]/60 px-4 py-3 text-sm text-[#C9D1D9] file:mr-3 file:rounded-lg file:border-0 file:bg-[#C77DFF]/20 file:px-4 file:py-2 file:text-sm file:font-medium file:text-[#C77DFF] hover:file:bg-[#C77DFF]/30 transition-colors"
                     type="file"
                     accept="image/*"
                     onChange={(event) => {
@@ -186,23 +186,23 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                   />
                 ) : field.type === 'textarea' ? (
                   <textarea
-                    className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all min-h-[120px] resize-y"
+                    className="mt-2 w-full rounded-xl border border-white/10 bg-[#0B1320]/50 px-4 py-3 text-sm text-[#C9D1D9] focus:outline-none focus:ring-2 focus:ring-[#C77DFF]/20 focus:border-[#C77DFF] transition-all min-h-[120px] resize-y"
                     value={String(getNested(values, field.name) ?? '')}
                     onChange={(event) => handleChange(field.name, event.target.value)}
                   />
                 ) : field.type === 'checkbox' ? (
                   <div className="mt-2 flex items-center">
                     <input
-                      className="h-5 w-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 transition-colors"
+                      className="h-5 w-5 rounded border-white/10 text-[#C77DFF] focus:ring-[#C77DFF] transition-colors"
                       type="checkbox"
                       checked={Boolean(getNested(values, field.name))}
                       onChange={(event) => handleChange(field.name, event.target.checked)}
                     />
-                    <span className="ml-2 text-slate-600">Enable</span>
+                    <span className="ml-2 text-[#C9D1D9]">Enable</span>
                   </div>
                 ) : field.type === 'list' ? (
                   <input
-                    className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                    className="mt-2 w-full rounded-xl border border-white/10 bg-[#0B1320]/50 px-4 py-3 text-sm text-[#C9D1D9] focus:outline-none focus:ring-2 focus:ring-[#C77DFF]/20 focus:border-[#C77DFF] transition-all"
                     type="text"
                     placeholder="Comma-separated values"
                     value={
@@ -243,16 +243,16 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                       const Icon = iconMap[iconKey] ?? iconMap.custom;
                       const label = formatPlatformLabel(String(platformKey), detected.label);
                       return (
-                        <div key={`${field.name}-${index}`} className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50/50 p-4">
+                        <div key={`${field.name}-${index}`} className="flex flex-col gap-3 rounded-xl border border-white/10 bg-[#0B1320]/60 p-4">
                           <div className="flex items-center gap-3">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100">
-                              <Icon className="h-4 w-4 text-indigo-600" />
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#C77DFF]/20">
+                              <Icon className="h-4 w-4 text-[#C77DFF]" />
                             </div>
-                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">{label}</span>
+                            <span className="text-xs font-semibold uppercase tracking-wider text-white/60">{label}</span>
                           </div>
                           <div className="flex flex-col gap-2 md:flex-row md:items-center">
                             <input
-                              className="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                              className="flex-1 rounded-xl border border-white/10 bg-[#0B1320]/50 px-4 py-2.5 text-sm text-[#C9D1D9] focus:outline-none focus:ring-2 focus:ring-[#C77DFF]/20 focus:border-[#C77DFF] transition-all"
                               placeholder="https://"
                               value={String(link.url ?? '')}
                               onChange={(event) => {
@@ -290,7 +290,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                           <div className="flex flex-wrap items-center gap-2">
                             <button
                               type="button"
-                              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                              className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-[#0B1320]/50 px-4 py-2.5 text-sm font-medium text-[#C9D1D9] hover:bg-white/5 transition-colors"
                               onClick={() => {
                                 const current = Array.isArray(getNested(values, field.name))
                                   ? ([...(getNested(values, field.name) as SocialLinkItem[])] as SocialLinkItem[])
@@ -305,7 +305,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                             {hasAnyLinks && (
                               <button
                                 type="submit"
-                                className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 hover:shadow-lg hover:shadow-indigo-500/30 disabled:cursor-not-allowed disabled:opacity-50 transition-all"
+                                className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-[#C77DFF]/20 hover:shadow-lg hover:shadow-[#C77DFF]/30 disabled:cursor-not-allowed disabled:opacity-50 transition-all"
                                 disabled={hasEmptyLink || hasInvalidLink}
                               >
                                 <Save className="w-4 h-4" />
@@ -316,7 +316,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                               <button
                                 type="button"
                                 onClick={onCancel}
-                                className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                                className="rounded-xl border border-white/10 px-4 py-2.5 text-sm font-medium text-[#C9D1D9] hover:bg-white/5 transition-colors"
                               >
                                 Cancel
                               </button>
@@ -328,7 +328,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                   </div>
                 ) : (
                   <input
-                    className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                    className="mt-2 w-full rounded-xl border border-white/10 bg-[#0B1320]/50 px-4 py-3 text-sm text-[#C9D1D9] focus:outline-none focus:ring-2 focus:ring-[#C77DFF]/20 focus:border-[#C77DFF] transition-all"
                     type={field.type ?? 'text'}
                     value={String(getNested(values, field.name) ?? '')}
                     onChange={(event) => handleChange(field.name, event.target.value)}
@@ -347,23 +347,23 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
         </div>
 
         {mediaFields.length > 0 && (
-          <aside className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-indigo-50/30 p-5">
-            <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">Media Preview</div>
+          <aside className="rounded-2xl border border-white/10 bg-gradient-to-br from-[#0B1320]/60 to-[#C77DFF]/10 p-5">
+            <div className="text-xs font-semibold uppercase tracking-wider text-white/60">Media Preview</div>
             <div className="mt-4 space-y-4">
               {mediaFields.map((field) => {
                 const value = getNested(values, field.name);
                 if (!value) return null;
                 return (
                   <div key={field.name} className="space-y-2">
-                    <div className="text-xs text-slate-500">{field.label}</div>
+                    <div className="text-xs text-white/60">{field.label}</div>
                     {field.type === 'image' ? (
                       <img
                         src={String(value)}
                         alt="Preview"
-                        className="h-24 w-full rounded-xl border border-slate-200 object-cover shadow-sm"
+                        className="h-24 w-full rounded-xl border border-white/10 object-cover shadow-sm"
                       />
                     ) : (
-                      <a className="text-sm text-indigo-600 hover:text-indigo-700 font-medium underline transition-colors" href={String(value)} target="_blank" rel="noreferrer">
+                      <a className="text-sm text-[#C77DFF] hover:text-[#9D4EDD] font-medium underline transition-colors" href={String(value)} target="_blank" rel="noreferrer">
                         Download file
                       </a>
                     )}
@@ -378,7 +378,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
         <div className="flex items-center gap-3 pt-2">
           <button 
             type="submit" 
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 hover:shadow-lg hover:shadow-indigo-500/30 transition-all"
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-[#C77DFF]/20 hover:shadow-lg hover:shadow-[#C77DFF]/30 transition-all"
           >
             <Save className="w-4 h-4" />
             {submitLabel ?? 'Save'}
@@ -387,7 +387,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
             <button
               type="button"
               onClick={onCancel}
-              className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+              className="rounded-xl border border-white/10 px-5 py-2.5 text-sm font-medium text-[#C9D1D9] hover:bg-white/5 transition-colors"
             >
               Cancel
             </button>

@@ -293,7 +293,8 @@
         "company": "Nimbus Labs",
         "role": "Senior Full-Stack Engineer",
         "startDate": "2022-04-01",
-        "endDate": "2025-12-01"
+        "endDate": "2025-12-01",
+        "description": "Led development of multi-tenant SaaS analytics platform, architected scalable microservices infrastructure, and mentored junior engineers on best practices."
       },
       {
         "id": "exp-2",
@@ -302,7 +303,8 @@
         "company": "Vantage Health",
         "role": "Lead Frontend Engineer",
         "startDate": "2019-02-01",
-        "endDate": "2022-03-01"
+        "endDate": "2022-03-01",
+        "description": "Spearheaded frontend architecture migration to React with TypeScript, built design system adopted across 5 product teams, and reduced bundle size by 42%."
       },
       {
         "id": "exp-3",
@@ -311,7 +313,8 @@
         "company": "Northwind Analytics",
         "role": "Software Engineer",
         "startDate": "2016-06-01",
-        "endDate": "2019-01-01"
+        "endDate": "2019-01-01",
+        "description": "Developed data visualization dashboards and RESTful APIs, collaborated with product teams to deliver customer-facing analytics features."
       }
     ],
     "blogs": [
@@ -321,7 +324,13 @@
         "orderIndex": 1,
         "title": "Scaling React Apps Without the Pain",
         "slug": "scaling-react-apps",
-        "excerpt": "Patterns for structure, state management, and performance as your app grows."
+        "excerpt": "Patterns for structure, state management, and performance as your app grows.",
+        "content": "<p>As React applications grow in complexity, maintaining a clean and scalable architecture becomes crucial. In this post, we'll explore proven patterns for structuring large React codebases.</p><h2>Project Structure</h2><p>A well-organized folder structure is the foundation of any scalable app. Consider organizing by feature rather than by type.</p><h2>State Management</h2><p>Choose your state management solution wisely. For most applications, a combination of React Context and local state works well.</p><h2>Performance Optimization</h2><p>Use React.memo, useMemo, and useCallback strategically. Profile your app before optimizing.</p>",
+        "coverImageUrl": "https://placehold.co/800x400?text=React+Scaling",
+        "author": "Alex Morgan",
+        "publishedDate": "2024-12-15",
+        "readTime": 8,
+        "tags": ["React", "Architecture", "Performance"]
       },
       {
         "id": "blog-2",
@@ -329,7 +338,13 @@
         "orderIndex": 2,
         "title": "A Practical Guide to Multi-Tenant SaaS",
         "slug": "multi-tenant-saas-guide",
-        "excerpt": "Trade-offs, data isolation strategies, and operational considerations."
+        "excerpt": "Trade-offs, data isolation strategies, and operational considerations.",
+        "content": "<p>Building multi-tenant SaaS applications requires careful consideration of data isolation, security, and scalability.</p><h2>Tenant Isolation Strategies</h2><p>There are three main approaches: database-per-tenant, schema-per-tenant, and shared tables with tenant IDs.</p><h2>Security Considerations</h2><p>Always validate tenant context at the API layer. Never trust client-side tenant identifiers.</p><h2>Operational Excellence</h2><p>Implement proper monitoring and alerting per tenant to catch issues early.</p>",
+        "coverImageUrl": "https://placehold.co/800x400?text=Multi-Tenant+SaaS",
+        "author": "Alex Morgan",
+        "publishedDate": "2024-11-20",
+        "readTime": 12,
+        "tags": ["SaaS", "Architecture", "Database"]
       },
       {
         "id": "blog-3",
@@ -337,7 +352,13 @@
         "orderIndex": 3,
         "title": "Observability Basics for Product Teams",
         "slug": "observability-basics",
-        "excerpt": "How to ship features faster with logs, metrics, and traces."
+        "excerpt": "How to ship features faster with logs, metrics, and traces.",
+        "content": "<p>Observability is not just for ops teams. Product engineers benefit immensely from understanding how their code behaves in production.</p><h2>The Three Pillars</h2><p>Logs, metrics, and traces form the foundation of observability. Each serves a different purpose.</p><h2>Getting Started</h2><p>Start with structured logging. Use correlation IDs to trace requests across services.</p><h2>Actionable Alerts</h2><p>Set up alerts that lead to action. Avoid alert fatigue by being selective.</p>",
+        "coverImageUrl": "https://placehold.co/800x400?text=Observability",
+        "author": "Alex Morgan",
+        "publishedDate": "2024-10-05",
+        "readTime": 6,
+        "tags": ["DevOps", "Observability", "Engineering"]
       }
     ],
     "testimonials": [

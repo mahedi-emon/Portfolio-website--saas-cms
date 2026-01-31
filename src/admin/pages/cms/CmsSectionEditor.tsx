@@ -64,9 +64,9 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
 
   if (!schema) {
     return (
-      <div className="rounded-2xl border border-slate-200 bg-white p-8">
-        <h1 className="text-lg font-semibold text-slate-900">Unknown section</h1>
-        <p className="mt-2 text-sm text-slate-500">Section not found.</p>
+      <div className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-8">
+        <h1 className="text-lg font-semibold text-white">Unknown section</h1>
+        <p className="mt-2 text-sm text-white/60">Section not found.</p>
       </div>
     );
   }
@@ -83,12 +83,12 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
       return (
         <div className="space-y-6 animate-fade-in">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">{schema.title}</h1>
-            <p className="mt-1 text-slate-500">Manage {schema.title.toLowerCase()} content.</p>
+            <h1 className="text-3xl font-bold text-white">{schema.title}</h1>
+            <p className="mt-1 text-white/60">Manage {schema.title.toLowerCase()} content.</p>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-indigo-600">Contact Details</h2>
+          <div className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm hover:shadow-md transition-shadow">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-[#C77DFF]">Contact Details</h2>
             <div className="mt-5">
               <EntityForm
                 fields={contactInfoFields}
@@ -99,8 +99,8 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-indigo-600">Social Links</h2>
+          <div className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm hover:shadow-md transition-shadow">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-[#C77DFF]">Social Links</h2>
             <div className="mt-5">
               <EntityForm
                 fields={socialLinksFields}
@@ -111,8 +111,8 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-indigo-600">Hire Me CTA</h2>
+          <div className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm hover:shadow-md transition-shadow">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-[#C77DFF]">Hire Me CTA</h2>
             <div className="mt-5">
               <EntityForm
                 fields={hireMeFields}
@@ -128,10 +128,10 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
     return (
       <div className="space-y-6 animate-fade-in">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">{schema.title}</h1>
-          <p className="mt-1 text-slate-500">Manage {schema.title.toLowerCase()} content.</p>
+          <h1 className="text-3xl font-bold text-white">{schema.title}</h1>
+          <p className="mt-1 text-white/60">Manage {schema.title.toLowerCase()} content.</p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm hover:shadow-md transition-shadow">
           <EntityForm
             fields={schema.fields}
             initialValues={values}
@@ -163,12 +163,12 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
   return (
       <div className="space-y-6 animate-fade-in">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">{schema.title}</h1>
-        <p className="mt-1 text-slate-500">Manage {schema.title.toLowerCase()} entries.</p>
+        <h1 className="text-3xl font-bold text-white">{schema.title}</h1>
+        <p className="mt-1 text-white/60">Manage {schema.title.toLowerCase()} entries.</p>
       </div>
 
       {!isTechStack && (
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm hover:shadow-md transition-shadow">
           <EntityForm
             fields={schema.fields}
             initialValues={editingItem}
@@ -188,7 +188,7 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
       )}
 
       {!isTechStack && !isReorderList && (
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm">
           <DataTable
             columns={tableColumns}
             rows={rows}
@@ -200,13 +200,13 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
       )}
 
       {isReorderList && !isTechStack && (
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm">
           <ul role="list" className="space-y-3">
             {rows.map((item, index) => (
               <li
                 key={item.id}
                 role="listitem"
-                className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/50 px-5 py-4 hover:bg-slate-100/50 transition-colors"
+                className="flex items-center justify-between rounded-xl border border-white/10 bg-[#0B1320]/60 px-5 py-4 hover:bg-white/5 transition-colors"
                 draggable
                 onDragStart={(event) => {
                   setDragId(item.id);
@@ -223,12 +223,12 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                 }}
               >
                 <div className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100 text-sm font-semibold text-indigo-600">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#C77DFF]/20 text-sm font-semibold text-[#C77DFF]">
                     {index + 1}
                   </span>
                   <button
                     type="button"
-                    className="cursor-grab text-slate-400 hover:text-slate-600 transition-colors"
+                    className="cursor-grab text-white/60 hover:text-[#C9D1D9] transition-colors"
                     aria-label={`Reorder ${schema.title} item`}
                     aria-grabbed={dragId === item.id}
                     draggable
@@ -240,12 +240,12 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                   >
                     ⠿
                   </button>
-                  <strong className="text-sm font-medium text-slate-800">{String(item.title ?? item.slug ?? item.id)}</strong>
+                  <strong className="text-sm font-medium text-white">{String(item.title ?? item.slug ?? item.id)}</strong>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs hover:bg-slate-100 transition-colors"
+                    className="rounded-lg border border-white/10 px-2.5 py-1.5 text-xs text-[#C9D1D9] hover:bg-white/10 transition-colors"
                     aria-label="Move item up"
                     onClick={() =>
                       replaceCollection(collectionKey, applyOrderIndex(moveItem(rows, item.id, 'up')) as CollectionItem[])
@@ -255,7 +255,7 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                   </button>
                   <button
                     type="button"
-                    className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs hover:bg-slate-100 transition-colors"
+                    className="rounded-lg border border-white/10 px-2.5 py-1.5 text-xs text-[#C9D1D9] hover:bg-white/10 transition-colors"
                     aria-label="Move item down"
                     onClick={() =>
                       replaceCollection(collectionKey, applyOrderIndex(moveItem(rows, item.id, 'down')) as CollectionItem[])
@@ -265,7 +265,7 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                   </button>
                   <button
                     type="button"
-                    className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-xs font-medium text-indigo-600 hover:bg-indigo-100 transition-colors"
+                    className="rounded-lg border border-[#C77DFF]/30 bg-[#C77DFF]/10 px-3 py-1.5 text-xs font-medium text-[#C77DFF] hover:bg-[#C77DFF]/20 transition-colors"
                     onClick={() => setEditingId(item.id)}
                   >
                     Edit
@@ -286,8 +286,8 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
 
       {isTechStack && (
         <div className="space-y-6">
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">Create Category</h2>
+          <div className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-white">Create Category</h2>
             <div className="mt-4">
               <EntityForm
                 fields={schema.fields}
@@ -309,7 +309,7 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
               const editingToolRow = editingToolId ? toolRows.find((tool) => tool.id === editingToolId) : undefined;
 
               return (
-                <li key={category.id} role="listitem" className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+                <li key={category.id} role="listitem" className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm hover:shadow-md transition-shadow">
                   <details
                     open
                     draggable
@@ -331,7 +331,7 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                       <div className="flex items-center gap-3">
                         <button
                           type="button"
-                          className="cursor-grab text-slate-400 hover:text-slate-600 transition-colors"
+                          className="cursor-grab text-white/60 hover:text-[#C9D1D9] transition-colors"
                           aria-label={`Reorder category ${category.categoryName}`}
                           aria-grabbed={dragId === category.id}
                           draggable
@@ -344,14 +344,14 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                           ⠿
                         </button>
                         <div>
-                          <div className="text-base font-semibold text-slate-800">{String(category.categoryName)}</div>
-                          <div className="text-xs text-slate-500">{toolRows.length} tools</div>
+                          <div className="text-base font-semibold text-white">{String(category.categoryName)}</div>
+                          <div className="text-xs text-white/60">{toolRows.length} tools</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
                         <button
                           type="button"
-                          className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs hover:bg-slate-100 transition-colors"
+                          className="rounded-lg border border-white/10 px-2.5 py-1.5 text-xs text-[#C9D1D9] hover:bg-white/10 transition-colors"
                           aria-label="Move category up"
                           onClick={() =>
                             replaceCollection(
@@ -364,7 +364,7 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                         </button>
                         <button
                           type="button"
-                          className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs hover:bg-slate-100 transition-colors"
+                          className="rounded-lg border border-white/10 px-2.5 py-1.5 text-xs text-[#C9D1D9] hover:bg-white/10 transition-colors"
                           aria-label="Move category down"
                           onClick={() =>
                             replaceCollection(
@@ -378,7 +378,7 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                       </div>
                     </summary>
                     <div className="mt-5 space-y-5">
-                      <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-5">
+                      <div className="rounded-xl border border-white/10 bg-[#0B1320]/60 p-5">
                         <EntityForm
                           fields={schema.fields}
                           initialValues={category}
@@ -401,8 +401,8 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                         </div>
                       </div>
 
-                      <div className="rounded-xl border border-slate-100 bg-white p-5">
-                        <h3 className="text-sm font-semibold text-slate-700">Tools</h3>
+                      <div className="rounded-xl border border-white/10 bg-[#0B1320]/50 p-5">
+                        <h3 className="text-sm font-semibold text-[#C9D1D9]">Tools</h3>
                         <div className="mt-4">
                           <EntityForm
                             fields={[...toolFormFields]}
@@ -448,7 +448,7 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                             <li
                               key={tool.id}
                               role="listitem"
-                              className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/30 px-4 py-3 hover:bg-slate-100/50 transition-colors"
+                              className="flex items-center justify-between rounded-xl border border-white/10 bg-[#0B1320]/60 px-4 py-3 hover:bg-white/5 transition-colors"
                               draggable
                               onDragStart={(event) => {
                                 setDragTool({ categoryId: category.id, toolId: tool.id });
@@ -471,7 +471,7 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                               <div className="flex items-center gap-3">
                                 <button
                                   type="button"
-                                  className="cursor-grab text-slate-400 hover:text-slate-600 transition-colors"
+                                  className="cursor-grab text-white/60 hover:text-[#C9D1D9] transition-colors"
                                   aria-label={`Reorder tool ${tool.name}`}
                                   aria-grabbed={dragTool?.toolId === tool.id}
                                   draggable
@@ -483,13 +483,13 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                                 >
                                   ⠿
                                 </button>
-                                <strong className="text-sm font-medium text-slate-800">{tool.name}</strong>
-                                <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-600">{tool.proficiencyLevel}%</span>
+                                <strong className="text-sm font-medium text-white">{tool.name}</strong>
+                                <span className="rounded-full bg-[#C77DFF]/20 px-2 py-0.5 text-xs font-medium text-[#C77DFF]">{tool.proficiencyLevel}%</span>
                               </div>
                               <div className="flex items-center gap-2">
                                 <button
                                   type="button"
-                                  className="rounded-lg border border-slate-200 px-2 py-1 text-xs hover:bg-slate-100 transition-colors"
+                                  className="rounded-lg border border-white/10 px-2 py-1 text-xs text-[#C9D1D9] hover:bg-white/10 transition-colors"
                                   aria-label="Move tool up"
                                   onClick={() =>
                                     updateItem(collectionKey, category.id, {
@@ -502,7 +502,7 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                                 </button>
                                 <button
                                   type="button"
-                                  className="rounded-lg border border-slate-200 px-2 py-1 text-xs hover:bg-slate-100 transition-colors"
+                                  className="rounded-lg border border-white/10 px-2 py-1 text-xs text-[#C9D1D9] hover:bg-white/10 transition-colors"
                                   aria-label="Move tool down"
                                   onClick={() =>
                                     updateItem(collectionKey, category.id, {
@@ -515,7 +515,7 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                                 </button>
                                 <button
                                   type="button"
-                                  className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-600 hover:bg-indigo-100 transition-colors"
+                                  className="rounded-lg border border-[#C77DFF]/30 bg-[#C77DFF]/10 px-3 py-1 text-xs font-medium text-[#C77DFF] hover:bg-[#C77DFF]/20 transition-colors"
                                   onClick={() => setEditingTool({ categoryId: category.id, toolId: tool.id })}
                                 >
                                   Edit

@@ -33,7 +33,7 @@ export function ResumeLibraryPage() {
       key: 'status',
       header: 'Status',
       render: (row: ResumeItem) => (
-        <span className={row.status === 'active' ? 'text-emerald-600' : 'text-slate-500'}>
+        <span className={row.status === 'active' ? 'text-emerald-400' : 'text-white/60'}>
           {row.status ?? 'inactive'}
         </span>
       ),
@@ -43,7 +43,7 @@ export function ResumeLibraryPage() {
       header: 'Preview',
       render: (row: ResumeItem) =>
         row.fileUrl ? (
-          <a className="text-slate-600 underline" href={row.fileUrl} target="_blank" rel="noreferrer">
+          <a className="text-[#C77DFF] underline" href={row.fileUrl} target="_blank" rel="noreferrer">
             Preview
           </a>
         ) : (
@@ -55,7 +55,7 @@ export function ResumeLibraryPage() {
       header: 'Download',
       render: (row: ResumeItem) =>
         row.fileUrl ? (
-          <a className="text-slate-600 underline" href={row.fileUrl} target="_blank" rel="noreferrer">
+          <a className="text-[#C77DFF] underline" href={row.fileUrl} target="_blank" rel="noreferrer">
             Download
           </a>
         ) : (
@@ -67,12 +67,12 @@ export function ResumeLibraryPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Resume Library</h1>
-        <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">Manage resume files and set the active resume for the public site.</p>
+        <h1 className="text-2xl font-semibold text-white">Resume Library</h1>
+        <p className="mt-1 text-sm text-[#C9D1D9]">Manage resume files and set the active resume for the public site.</p>
       </div>
 
-      <div className="rounded border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Add or Edit Resume</h2>
+      <div className="rounded border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-white">Add or Edit Resume</h2>
         <div className="mt-4">
           <EntityForm
             fields={[...formFields]}
@@ -96,13 +96,13 @@ export function ResumeLibraryPage() {
         </div>
       </div>
 
-      <div className="rounded border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="rounded border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Resume List</h2>
-          <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+          <h2 className="text-lg font-semibold text-white">Resume List</h2>
+          <div className="flex items-center gap-2 text-sm text-[#C9D1D9]">
             <span>Active Resume</span>
             <select
-              className="rounded border border-slate-200 bg-white px-2 py-1 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+              className="rounded border border-white/10 bg-[#0B1320]/60 px-2 py-1 text-sm text-[#C9D1D9]"
               value={activeResumeId ?? ''}
               onChange={(event) => {
                 if (!event.target.value) return;

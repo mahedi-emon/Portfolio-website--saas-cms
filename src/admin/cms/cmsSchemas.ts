@@ -171,6 +171,7 @@ export const sectionSchemas: Record<string, SectionSchema> = {
       { name: 'role', label: 'Role', required: true },
       { name: 'startDate', label: 'Start Date', type: 'date' },
       { name: 'endDate', label: 'End Date', type: 'date' },
+      { name: 'description', label: 'Description', type: 'textarea' },
     ],
   },
   blogs: {
@@ -183,6 +184,12 @@ export const sectionSchemas: Record<string, SectionSchema> = {
       { name: 'title', label: 'Title', required: true },
       { name: 'slug', label: 'Slug', required: true },
       { name: 'excerpt', label: 'Excerpt', type: 'textarea' },
+      { name: 'content', label: 'Content', type: 'textarea' },
+      { name: 'coverImageUrl', label: 'Cover Image URL', type: 'image' },
+      { name: 'author', label: 'Author' },
+      { name: 'publishedDate', label: 'Published Date', type: 'date' },
+      { name: 'readTime', label: 'Read Time (minutes)', type: 'number' },
+      { name: 'tags', label: 'Tags (comma separated)', type: 'list' },
     ],
   },
   testimonials: {

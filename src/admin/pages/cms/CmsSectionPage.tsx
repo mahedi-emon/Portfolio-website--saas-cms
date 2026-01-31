@@ -5,9 +5,9 @@ export function CmsSectionPage() {
   const { sectionKey } = useParams();
   if (!sectionKey) {
     return (
-      <div>
-        <h1>Unknown section</h1>
-        <p>Section not found.</p>
+      <div className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-8">
+        <h1 className="text-lg font-semibold text-white">Unknown section</h1>
+        <p className="mt-2 text-sm text-white/60">Section not found.</p>
       </div>
     );
   }
