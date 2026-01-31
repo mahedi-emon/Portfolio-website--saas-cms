@@ -85,7 +85,6 @@ export function HomePage() {
                         <div className="h-8 w-8 rounded border" />
                       )}
                       <div className="text-sm font-medium">{tool.name}</div>
-                      <div className="ml-auto text-xs text-slate-500">{tool.proficiencyLevel}%</div>
                     </div>
                     <div className="h-2 w-full overflow-hidden rounded border">
                       <div

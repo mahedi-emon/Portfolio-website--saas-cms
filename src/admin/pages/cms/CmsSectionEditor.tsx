@@ -3,6 +3,7 @@ import { DataTable } from '../../components/DataTable';
 import { EntityForm } from '../../components/EntityForm';
 import { sectionSchemas } from '../../cms/cmsSchemas';
 import { useCms } from '../../../hooks/useCms';
+import { getToolLogoUrl } from '../../../utils/getToolLogoUrl';
 import type { CollectionItem, CollectionKey, SingletonKey } from '../../../context/CmsContext';
 
 export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
@@ -152,7 +153,10 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
 
   const toolFormFields = [
     { name: 'name', label: 'Tool Name', required: true },
-    { name: 'logoUrl', label: 'Logo URL' },
+    {
+      name: 'logoUrl',
+      label: 'Logo URL (optional — leave empty for auto logo, or paste a custom logo URL)',
+    },
     { name: 'proficiencyLevel', label: 'Proficiency (0-100)', type: 'number' },
   ] as const;
 
@@ -402,12 +406,16 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                             initialValues={editingToolRow}
                             submitLabel={editingToolId ? 'Update Tool' : 'Add Tool'}
                             onSubmit={(values) => {
+                              const resolvedLogoUrl =
+                                String(values.logoUrl ?? '').trim() ||
+                                getToolLogoUrl(String(values.name ?? ''));
                               const nextTools = editingToolId
                                 ? toolRows.map((tool) =>
                                     tool.id === editingToolId
                                       ? {
                                           ...tool,
                                           ...values,
+                                          logoUrl: resolvedLogoUrl,
                                           proficiencyLevel: Number(values.proficiencyLevel ?? tool.proficiencyLevel ?? 0),
                                         }
                                       : tool
@@ -417,7 +425,7 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                                     {
                                       id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
                                       name: String(values.name ?? ''),
-                                      logoUrl: String(values.logoUrl ?? ''),
+                                      logoUrl: resolvedLogoUrl,
                                       proficiencyLevel: Number(values.proficiencyLevel ?? 0),
                                     },
                                   ];
