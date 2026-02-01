@@ -41,53 +41,47 @@ export function ServicesPage() {
       </section>
 
       {/* Services Grid */}
-      <section>
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((service, index) => (
-            <article 
-              key={service.id} 
-              className="group relative animate-fade-in"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              {/* Ambient glow - always on, increases on hover */}
-              <div className={`absolute -inset-1 bg-gradient-to-r ${gradients[index % gradients.length]} rounded-3xl blur-sm opacity-[0.06] group-hover:blur-md group-hover:opacity-[0.14] transition-all duration-600 ease-out`} />
-              
-              <div className="relative h-full bg-[#0B1320]/80 backdrop-blur-sm rounded-2xl p-8 border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:border-white/[0.12] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:-translate-y-1 transition-all duration-600 ease-out">
-                {/* Icon */}
-                <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#C77DFF]/10 border border-[#C77DFF]/15 mb-6 group-hover:bg-[#C77DFF]/15 group-hover:border-[#C77DFF]/25 transition-all duration-500 ease-out">
-                  <Zap className="w-7 h-7 text-[#C77DFF]" />
+      {services.length > 0 && (
+        <section>
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {services.map((service, index) => (
+              <article 
+                key={service.id} 
+                className="group relative animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                {/* Ambient glow - always on, increases on hover */}
+                <div className={`absolute -inset-1 bg-gradient-to-r ${gradients[index % gradients.length]} rounded-3xl blur-sm opacity-[0.06] group-hover:blur-md group-hover:opacity-[0.14] transition-all duration-600 ease-out`} />
+                
+                <div className="relative h-full bg-[#0B1320]/80 backdrop-blur-sm rounded-2xl p-8 border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:border-white/[0.12] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:-translate-y-1 transition-all duration-600 ease-out">
+                  {/* Icon */}
+                  <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#C77DFF]/10 border border-[#C77DFF]/15 mb-6 group-hover:bg-[#C77DFF]/15 group-hover:border-[#C77DFF]/25 transition-all duration-500 ease-out">
+                    <Zap className="w-7 h-7 text-[#C77DFF]" />
+                  </div>
+
+                  {/* Content */}
+                  <h2 className="text-xl font-bold text-white mb-3 group-hover:text-white transition-colors duration-500">
+                    {service.title}
+                  </h2>
+                  <p className="text-[#C9D1D9] leading-relaxed mb-6">
+                    {service.summary}
+                  </p>
+
+                  {/* Learn More Link */}
+                  <div className="flex items-center gap-2 text-[#C77DFF]/70 font-medium text-sm group-hover:text-[#C77DFF] group-hover:gap-3 transition-all duration-500">
+                    <span>Learn more</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
+                  </div>
                 </div>
-
-                {/* Content */}
-                <h2 className="text-xl font-bold text-white mb-3 group-hover:text-white transition-colors duration-500">
-                  {service.title}
-                </h2>
-                <p className="text-[#C9D1D9] leading-relaxed mb-6">
-                  {service.summary}
-                </p>
-
-                {/* Learn More Link */}
-                <div className="flex items-center gap-2 text-[#C77DFF]/70 font-medium text-sm group-hover:text-[#C77DFF] group-hover:gap-3 transition-all duration-500">
-                  <span>Learn more</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        {services.length === 0 && (
-          <div className="text-center py-16 animate-fade-in">
-            <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-[#0B1320]/60 mb-4 animate-bounce-subtle">
-              <Zap className="w-10 h-10 text-white/60" />
-            </div>
-            <p className="text-white/60 text-lg">No services available yet.</p>
+              </article>
+            ))}
           </div>
-        )}
-      </section>
+        </section>
+      )}
 
       {/* CTA Section */}
-      <section className="relative animate-fade-in overflow-hidden">
+      {services.length > 0 && (
+        <section className="relative animate-fade-in overflow-hidden">
         {/* Dark glass background with subtle border */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1320] via-[#0B1320]/95 to-[#0B1320] rounded-3xl" />
         <div className="absolute inset-0 border border-white/10 rounded-3xl" />
@@ -112,7 +106,8 @@ export function ServicesPage() {
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </a>
         </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 }

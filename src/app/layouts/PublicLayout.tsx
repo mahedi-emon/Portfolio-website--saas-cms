@@ -30,6 +30,13 @@ export function PublicLayout() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleNavClick = (e: React.MouseEvent, targetPath: string) => {
+    if (location.pathname === targetPath) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   const navLinks = [
     { to: '/', label: 'Home', end: true },
     { to: '/about', label: 'About' },
@@ -54,6 +61,7 @@ export function PublicLayout() {
           <div className="flex items-center min-w-[210px]">
             <NavLink 
               to="/" 
+              onClick={(e) => handleNavClick(e, '/')}
               className="group flex items-center gap-3 text-xl font-bold tracking-tight"
             >
               <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-[#C77DFF] text-[#0B1320] shadow-lg shadow-[#C77DFF]/30 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-[#C77DFF]/50">
@@ -82,6 +90,7 @@ export function PublicLayout() {
                   key={link.to}
                   to={link.to}
                   end={link.end}
+                  onClick={(e) => handleNavClick(e, link.to)}
                   className={({ isActive }) => `
                     relative px-4 py-2 text-sm font-medium transition-all duration-300 group animate-fade-in rounded-lg
                     ${isActive 
@@ -149,6 +158,7 @@ export function PublicLayout() {
                   key={link.to}
                   to={link.to}
                   end={link.end}
+                  onClick={(e) => handleNavClick(e, link.to)}
                   className={({ isActive }) => `
                     relative rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 group overflow-hidden
                     ${isActive 

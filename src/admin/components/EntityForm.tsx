@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { z } from 'zod';
-import { Plus, X, Save, AlertCircle } from 'lucide-react';
+import { Plus, X, Save, AlertCircle, Upload, Image as ImageIcon, ChevronDown } from 'lucide-react';
 import type { FieldSchema } from '../cms/cmsSchemas';
 import { detectSocialPlatform, formatPlatformLabel } from '../../utils/detectSocialPlatform';
 import { iconMap } from '../../utils/iconMap';
@@ -133,6 +133,7 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
   const initial = useMemo(() => buildInitial(fields, initialValues), [fields, initialValues]);
   const [values, setValues] = useState<Record<string, unknown>>(initial);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [dragOver, setDragOver] = useState<string | null>(null);
   const hasSocialLinksField = useMemo(() => fields.some((field) => field.type === 'socialLinks'), [fields]);
 
   const mediaFields = useMemo(
@@ -146,6 +147,30 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
 
   const handleChange = (name: string, value: unknown) => {
     setValues((prev) => setNested(prev, name, value));
+  };
+
+  // Handle file drop for image fields
+  const handleFileDrop = useCallback((fieldName: string, file: File) => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = () => handleChange(fieldName, reader.result ?? '');
+    reader.readAsDataURL(file);
+  }, []);
+
+  const handleDragOver = (e: React.DragEvent, fieldName: string) => {
+    e.preventDefault();
+    setDragOver(fieldName);
+  };
+
+  const handleDragLeave = () => {
+    setDragOver(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, fieldName: string) => {
+    e.preventDefault();
+    setDragOver(null);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFileDrop(fieldName, file);
   };
 
   return (
@@ -172,21 +197,70 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                   {field.required && <span className="text-[#C77DFF]">*</span>}
                 </span>
                 {field.type === 'image' ? (
-                  <input
-                    className="mt-2 w-full rounded-xl border border-white/10 bg-[#0B1320]/60 px-4 py-3 text-sm text-[#C9D1D9] file:mr-3 file:rounded-lg file:border-0 file:bg-[#C77DFF]/20 file:px-4 file:py-2 file:text-sm file:font-medium file:text-[#C77DFF] hover:file:bg-[#C77DFF]/30 transition-colors"
-                    type="file"
-                    accept="image/*"
-                    onChange={(event) => {
-                      const file = event.target.files?.[0];
-                      if (!file) return;
-                      const reader = new FileReader();
-                      reader.onload = () => handleChange(field.name, reader.result ?? '');
-                      reader.readAsDataURL(file);
-                    }}
-                  />
+                  <div
+                    className={`mt-2 relative rounded-xl border-2 border-dashed transition-all ${
+                      dragOver === field.name 
+                        ? 'border-[#C77DFF] bg-[#C77DFF]/10' 
+                        : 'border-white/20 hover:border-[#C77DFF]/50'
+                    }`}
+                    onDragOver={(e) => handleDragOver(e, field.name)}
+                    onDragLeave={handleDragLeave}
+                    onDrop={(e) => handleDrop(e, field.name)}
+                  >
+                    <input
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      type="file"
+                      accept="image/*"
+                      onChange={(event) => {
+                        const file = event.target.files?.[0];
+                        if (file) handleFileDrop(field.name, file);
+                      }}
+                    />
+                    <div className="flex flex-col items-center justify-center p-6 text-center">
+                      {getNested(values, field.name) ? (
+                        <div className="relative group">
+                          <img 
+                            src={String(getNested(values, field.name))} 
+                            alt="Preview" 
+                            className="h-20 w-20 rounded-xl object-cover border border-white/10"
+                          />
+                          <div className="absolute inset-0 bg-black/50 rounded-xl opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                            <span className="text-xs text-white">Change</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#C77DFF]/20 mb-3">
+                            <Upload className="w-5 h-5 text-[#C77DFF]" />
+                          </div>
+                          <p className="text-sm text-[#C9D1D9]">
+                            <span className="text-[#C77DFF] font-medium">Click to upload</span> or drag and drop
+                          </p>
+                          <p className="text-xs text-white/40 mt-1">PNG, JPG, GIF up to 5MB</p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ) : field.type === 'select' ? (
+                  <div className="relative mt-2">
+                    <select
+                      className="w-full appearance-none rounded-xl border border-white/10 bg-[#0B1320]/50 px-4 py-3 pr-10 text-sm text-[#C9D1D9] focus:outline-none focus:ring-2 focus:ring-[#C77DFF]/20 focus:border-[#C77DFF] transition-all cursor-pointer"
+                      value={String(getNested(values, field.name) ?? '')}
+                      onChange={(event) => handleChange(field.name, event.target.value)}
+                    >
+                      <option value="" className="bg-[#0B1320]">Select {field.label}...</option>
+                      {field.options?.map((option) => (
+                        <option key={option} value={option} className="bg-[#0B1320]">
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none" />
+                  </div>
                 ) : field.type === 'textarea' ? (
                   <textarea
-                    className="mt-2 w-full rounded-xl border border-white/10 bg-[#0B1320]/50 px-4 py-3 text-sm text-[#C9D1D9] focus:outline-none focus:ring-2 focus:ring-[#C77DFF]/20 focus:border-[#C77DFF] transition-all min-h-[120px] resize-y"
+                    className="mt-2 w-full rounded-xl border border-white/10 bg-[#0B1320]/50 px-4 py-3 text-sm text-[#C9D1D9] focus:outline-none focus:ring-2 focus:ring-[#C77DFF]/20 focus:border-[#C77DFF] transition-all min-h-[120px] resize-y placeholder:text-white/30"
+                    placeholder={field.placeholder}
                     value={String(getNested(values, field.name) ?? '')}
                     onChange={(event) => handleChange(field.name, event.target.value)}
                   />
@@ -328,8 +402,9 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                   </div>
                 ) : (
                   <input
-                    className="mt-2 w-full rounded-xl border border-white/10 bg-[#0B1320]/50 px-4 py-3 text-sm text-[#C9D1D9] focus:outline-none focus:ring-2 focus:ring-[#C77DFF]/20 focus:border-[#C77DFF] transition-all"
+                    className="mt-2 w-full rounded-xl border border-white/10 bg-[#0B1320]/50 px-4 py-3 text-sm text-[#C9D1D9] focus:outline-none focus:ring-2 focus:ring-[#C77DFF]/20 focus:border-[#C77DFF] transition-all placeholder:text-white/30"
                     type={field.type ?? 'text'}
+                    placeholder={field.placeholder}
                     value={String(getNested(values, field.name) ?? '')}
                     onChange={(event) => handleChange(field.name, event.target.value)}
                   />
@@ -348,24 +423,32 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
 
         {mediaFields.length > 0 && (
           <aside className="rounded-2xl border border-white/10 bg-gradient-to-br from-[#0B1320]/60 to-[#C77DFF]/10 p-5">
-            <div className="text-xs font-semibold uppercase tracking-wider text-white/60">Media Preview</div>
-            <div className="mt-4 space-y-4">
+            <div className="flex items-center gap-2 mb-4">
+              <ImageIcon className="w-4 h-4 text-[#C77DFF]" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-white/60">Media Preview</span>
+            </div>
+            <div className="space-y-4">
               {mediaFields.map((field) => {
                 const value = getNested(values, field.name);
-                if (!value) return null;
                 return (
                   <div key={field.name} className="space-y-2">
                     <div className="text-xs text-white/60">{field.label}</div>
-                    {field.type === 'image' ? (
-                      <img
-                        src={String(value)}
-                        alt="Preview"
-                        className="h-24 w-full rounded-xl border border-white/10 object-cover shadow-sm"
-                      />
+                    {value ? (
+                      <div className="relative group">
+                        <img
+                          src={String(value)}
+                          alt="Preview"
+                          className="w-full aspect-square rounded-xl border border-white/10 object-cover shadow-lg transition-transform group-hover:scale-[1.02]"
+                        />
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-3">
+                          <span className="text-xs text-white font-medium">Click upload area to change</span>
+                        </div>
+                      </div>
                     ) : (
-                      <a className="text-sm text-[#C77DFF] hover:text-[#9D4EDD] font-medium underline transition-colors" href={String(value)} target="_blank" rel="noreferrer">
-                        Download file
-                      </a>
+                      <div className="w-full aspect-square rounded-xl border border-dashed border-white/20 bg-[#0B1320]/40 flex flex-col items-center justify-center">
+                        <ImageIcon className="w-8 h-8 text-white/20 mb-2" />
+                        <span className="text-xs text-white/30">No image uploaded</span>
+                      </div>
                     )}
                   </div>
                 );

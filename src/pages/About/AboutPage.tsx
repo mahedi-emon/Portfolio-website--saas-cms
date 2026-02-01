@@ -143,26 +143,68 @@ export function AboutPage() {
                   <h2 className="text-2xl font-bold text-white hover:text-[#C77DFF] transition-colors">Education</h2>
                 </div>
                 <div className="space-y-4">
-                  {education.map((item, index) => (
-                    <article 
-                      key={item.id} 
-                      className="group p-6 rounded-2xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] hover:-translate-y-1 transition-all duration-600 ease-out card-animated"
-                      style={{ animationDelay: `${index * 100}ms` }}
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <h3 className="text-lg font-semibold text-white group-hover:text-[#C77DFF] transition-colors">
-                            {item.institution}
-                          </h3>
-                          <p className="text-[#C77DFF] font-medium">{item.degree}</p>
-                          <p className="text-[#C9D1D9]">{item.field}</p>
+                  {education.map((item, index) => {
+                    const startYear = item.startDate ? new Date(item.startDate).getFullYear() : null;
+                    const endYear = item.endDate ? new Date(item.endDate).getFullYear() : 'Present';
+                    const dateRange = startYear ? `${startYear} - ${endYear}` : (item.endDate ? new Date(item.endDate).getFullYear() : '');
+                    
+                    // Get initials for institution logo placeholder
+                    const initials = (item.institution ?? '')
+                      .split(' ')
+                      .map((word: string) => word[0])
+                      .join('')
+                      .slice(0, 2)
+                      .toUpperCase();
+                    
+                    return (
+                      <article 
+                        key={item.id} 
+                        className="group p-5 rounded-2xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-300 ease-out"
+                        style={{ animationDelay: `${index * 100}ms` }}
+                      >
+                        <div className="flex gap-4">
+                          {/* Institution Logo - LinkedIn Style */}
+                          <div className="flex-shrink-0">
+                            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#1a1f35] to-[#0B1320] border border-white/10 flex items-center justify-center group-hover:border-[#C77DFF]/30 transition-colors">
+                              <span className="text-sm font-bold bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">
+                                {initials}
+                              </span>
+                            </div>
+                          </div>
+                          
+                          {/* Content - LinkedIn Style Layout */}
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-base font-semibold text-white group-hover:text-[#C77DFF] transition-colors leading-tight">
+                              {item.institution}
+                            </h3>
+                            <p className="text-[#C9D1D9] text-sm mt-0.5">
+                              {item.degree}{item.field ? `, ${item.field}` : ''}
+                            </p>
+                            {dateRange && (
+                              <p className="text-white/50 text-sm mt-0.5">
+                                {dateRange}
+                              </p>
+                            )}
+                            {item.grade && (
+                              <p className="text-white/60 text-sm mt-1">
+                                Grade: <span className="text-[#C9D1D9]">{item.grade}</span>
+                              </p>
+                            )}
+                            {item.activities && (
+                              <p className="text-white/60 text-sm mt-1">
+                                Activities and societies: <span className="text-[#C9D1D9]">{item.activities}</span>
+                              </p>
+                            )}
+                            {item.description && (
+                              <p className="text-white/70 text-sm mt-2 leading-relaxed">
+                                {item.description}
+                              </p>
+                            )}
+                          </div>
                         </div>
-                        <span className="px-3 py-1 rounded-full bg-[#0B1320]/50 text-sm text-[#C9D1D9] whitespace-nowrap">
-                          {item.endDate}
-                        </span>
-                      </div>
-                    </article>
-                  ))}
+                      </article>
+                    );
+                  })}
                 </div>
               </div>
             )}

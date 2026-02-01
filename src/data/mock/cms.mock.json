@@ -68,6 +68,9 @@
         "institution": "University of Washington",
         "degree": "BSc",
         "field": "Computer Science and Engineering",
+        "grade": "3.7 GPA",
+        "activities": "Programming Club, Hackathon Team",
+        "description": "Focused on systems, algorithms, and human-centered design.",
         "startDate": "2012-09-01",
         "endDate": "2016-06-01"
       },
@@ -78,6 +81,9 @@
         "institution": "Stanford Online",
         "degree": "Graduate Certificate",
         "field": "Machine Learning",
+        "grade": "Pass",
+        "activities": "ML Study Group",
+        "description": "Completed applied ML coursework and capstone project.",
         "startDate": "2018-01-01",
         "endDate": "2018-08-01"
       }

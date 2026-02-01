@@ -36,6 +36,36 @@ export function BlogListPage() {
         </p>
       </section>
 
+      {/* Empty State - No blogs published yet */}
+      {blogs.length === 0 && (
+        <section className="animate-fade-in" style={{ animationDelay: '200ms' }}>
+          <div className="relative">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] rounded-3xl blur-sm opacity-[0.06]" />
+            
+            <div className="relative flex flex-col items-center justify-center py-20 px-8 bg-[#0B1320]/80 backdrop-blur-sm rounded-2xl border border-white/[0.06] text-center">
+              <div className="relative mb-6">
+                <div className="absolute inset-0 bg-[#C77DFF]/20 rounded-full blur-xl animate-pulse-glow" />
+                <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-[#0B1320]/80 border border-white/10">
+                  <BookOpen className="w-12 h-12 text-[#C77DFF] animate-bounce-subtle" />
+                </div>
+              </div>
+              
+              <h2 className="text-2xl font-bold text-white mb-3">
+                No Blog Posts Yet
+              </h2>
+              <p className="text-[#C9D1D9] max-w-md mb-6 leading-relaxed">
+                I'm currently working on some exciting content. Check back soon for articles on technology, development insights, and creative explorations.
+              </p>
+              
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#C77DFF]/10 border border-[#C77DFF]/20">
+                <Sparkles className="w-4 h-4 text-[#C77DFF] animate-spin-slow" />
+                <span className="text-sm text-[#C77DFF] font-medium">Coming Soon</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Featured Post */}
       {featuredPost && (
         <section className="animate-fade-in" style={{ animationDelay: '200ms' }}>
@@ -189,14 +219,6 @@ export function BlogListPage() {
         </section>
       )}
 
-      {blogs.length === 0 && (
-        <div className="text-center py-16 animate-fade-in">
-          <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-[#0B1320]/60 mb-4 animate-bounce-subtle">
-            <BookOpen className="w-10 h-10 text-white/60" />
-          </div>
-          <p className="text-white/60 text-lg">No blog posts available yet.</p>
-        </div>
-      )}
     </div>
   );
 }

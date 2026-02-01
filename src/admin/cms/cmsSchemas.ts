@@ -1,10 +1,12 @@
-export type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'date' | 'list' | 'image' | 'url' | 'socialLinks';
+export type FieldType = 'text' | 'textarea' | 'number' | 'checkbox' | 'date' | 'list' | 'image' | 'url' | 'socialLinks' | 'select';
 
 export type FieldSchema = {
   name: string;
   label: string;
   type?: FieldType;
   required?: boolean;
+  options?: string[]; // For select fields
+  placeholder?: string;
 };
 
 export type SectionSchema = {
@@ -65,11 +67,14 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     fields: [
       { name: 'status', label: 'Status', required: true },
       { name: 'orderIndex', label: 'Order Index', type: 'number' },
-      { name: 'institution', label: 'Institution', required: true },
-      { name: 'degree', label: 'Degree', required: true },
-      { name: 'field', label: 'Field', required: true },
+      { name: 'institution', label: 'Institution', required: true, placeholder: 'e.g., Harvard University' },
+      { name: 'degree', label: 'Degree', required: true, placeholder: 'e.g., Bachelor of Science' },
+      { name: 'field', label: 'Field of Study', required: true, placeholder: 'e.g., Computer Science' },
+      { name: 'grade', label: 'Grade (Optional)', type: 'text', placeholder: 'e.g., 3.8 GPA, First Class Honours, Cum Laude' },
+      { name: 'activities', label: 'Activities & Societies (Optional)', type: 'textarea', placeholder: 'e.g., Chess Club, Student Government, Dean\'s List' },
+      { name: 'description', label: 'Description (Optional)', type: 'textarea', placeholder: 'Describe your studies, achievements, or thesis...' },
       { name: 'startDate', label: 'Start Date', type: 'date' },
-      { name: 'endDate', label: 'End Date', type: 'date' },
+      { name: 'endDate', label: 'End Date (or expected)', type: 'date' },
     ],
   },
   skills: {
@@ -226,9 +231,13 @@ export const sectionSchemas: Record<string, SectionSchema> = {
     fields: [
       { name: 'status', label: 'Status', required: true },
       { name: 'orderIndex', label: 'Order Index', type: 'number' },
-      { name: 'name', label: 'Name', required: true },
-      { name: 'logoUrl', label: 'Logo URL', type: 'image' },
-      { name: 'websiteUrl', label: 'Website URL' },
+      { name: 'featured', label: 'Featured Client', type: 'checkbox' },
+      { name: 'name', label: 'Company Name', required: true },
+      { name: 'industry', label: 'Industry', type: 'select', options: ['Technology', 'Healthcare', 'Finance', 'Education', 'E-commerce', 'Media', 'Government', 'Non-profit', 'Startup', 'Enterprise', 'Other'] },
+      { name: 'logoUrl', label: 'Company Logo', type: 'image' },
+      { name: 'websiteUrl', label: 'Website URL', type: 'url', placeholder: 'https://example.com' },
+      { name: 'description', label: 'Project Description', type: 'textarea', placeholder: 'Brief description of your work with this client...' },
+      { name: 'projectDuration', label: 'Project Duration', placeholder: 'e.g., Jan 2023 - Dec 2023' },
     ],
   },
   techStackCategories: {

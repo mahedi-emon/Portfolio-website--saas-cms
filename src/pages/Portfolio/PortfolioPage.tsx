@@ -94,7 +94,7 @@ export function PortfolioPage() {
       </section>
 
       {/* Projects Tab */}
-      {activeTab === 'projects' && (
+      {activeTab === 'projects' && projects.length > 0 && (
         <section className="grid gap-8 md:grid-cols-2">
           {projects.map((project, index) => (
             <article key={project.id} className="group relative animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
@@ -156,19 +156,11 @@ export function PortfolioPage() {
             </article>
           ))}
           
-          {projects.length === 0 && (
-            <div className="col-span-2 text-center py-16 animate-fade-in">
-              <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-[#0B1320]/60 mb-4 animate-bounce-subtle">
-                <FolderGit2 className="w-10 h-10 text-white/60" />
-              </div>
-              <p className="text-white/60 text-lg">No projects available yet.</p>
-            </div>
-          )}
         </section>
       )}
 
       {/* Publications Tab */}
-      {activeTab === 'publications' && (
+      {activeTab === 'publications' && publications.length > 0 && (
         <section className="space-y-6">
           {publications.map((pub, index) => (
             <article key={pub.id} className="group relative animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
@@ -242,22 +234,15 @@ export function PortfolioPage() {
             </article>
           ))}
           
-          {publications.length === 0 && (
-            <div className="text-center py-16 animate-fade-in">
-              <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-[#0B1320]/60 mb-4 animate-bounce-subtle">
-                <BookOpen className="w-10 h-10 text-white/60" />
-              </div>
-              <p className="text-white/60 text-lg">No publications available yet.</p>
-            </div>
-          )}
         </section>
       )}
 
       {/* Achievements Tab */}
-      {activeTab === 'achievements' && (
+      {activeTab === 'achievements' && (achievements.length > 0 || certifications.length > 0) && (
         <section className="space-y-12">
           {/* Achievements */}
-          <div className="animate-fade-in">
+          {achievements.length > 0 && (
+            <div className="animate-fade-in">
             <div className="flex items-center gap-3 mb-6">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#C77DFF]/10 border border-[#C77DFF]/15 group-hover:bg-[#C77DFF]/15 group-hover:border-[#C77DFF]/25 transition-all duration-500 ease-out">
                 <Trophy className="w-5 h-5 text-[#C77DFF]" />
@@ -304,16 +289,12 @@ export function PortfolioPage() {
               ))}
             </div>
             
-            {achievements.length === 0 && (
-              <div className="text-center py-12 bg-[#0B1320]/60 rounded-2xl border border-white/10 animate-fade-in">
-                <Trophy className="w-12 h-12 text-white/60 mx-auto mb-3 animate-bounce-subtle" />
-                <p className="text-white/60">No achievements available yet.</p>
-              </div>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Certifications */}
-          <div className="animate-fade-in" style={{ animationDelay: '200ms' }}>
+          {certifications.length > 0 && (
+            <div className="animate-fade-in" style={{ animationDelay: '200ms' }}>
             <div className="flex items-center gap-3 mb-6">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#C77DFF]/10 border border-[#C77DFF]/15 group-hover:bg-[#C77DFF]/15 group-hover:border-[#C77DFF]/25 transition-all duration-500 ease-out">
                 <Award className="w-5 h-5 text-[#C77DFF]" />
@@ -378,13 +359,8 @@ export function PortfolioPage() {
               ))}
             </div>
             
-            {certifications.length === 0 && (
-              <div className="text-center py-12 bg-[#0B1320]/60 rounded-2xl border border-white/10 animate-fade-in">
-                <Award className="w-12 h-12 text-white/60 mx-auto mb-3 animate-bounce-subtle" />
-                <p className="text-white/60">No certifications available yet.</p>
-              </div>
-            )}
-          </div>
+            </div>
+          )}
         </section>
       )}
 
