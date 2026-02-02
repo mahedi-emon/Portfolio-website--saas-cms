@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { z } from 'zod';
-import { Plus, X, Save, AlertCircle, Upload, Image as ImageIcon, ChevronDown } from 'lucide-react';
+import { Plus, X, Save, AlertCircle, Upload, Image as ImageIcon, ChevronDown, FileText, Link as LinkIcon } from 'lucide-react';
 import type { FieldSchema } from '../cms/cmsSchemas';
 import { detectSocialPlatform, formatPlatformLabel } from '../../utils/detectSocialPlatform';
 import { iconMap } from '../../utils/iconMap';
+import { getStorageService, getBucketForField, isDataUrl } from '../../services/storage.service';
 
 export type EntityFormProps = {
   fields: FieldSchema[];
@@ -134,12 +135,17 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
   const [values, setValues] = useState<Record<string, unknown>>(initial);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [dragOver, setDragOver] = useState<string | null>(null);
+  const [urlInputMode, setUrlInputMode] = useState<Record<string, boolean>>({});
   const hasSocialLinksField = useMemo(() => fields.some((field) => field.type === 'socialLinks'), [fields]);
 
   const mediaFields = useMemo(
     () => fields.filter((field) => field.type === 'image'),
     [fields]
   );
+
+  // Get storage service for file uploads
+  // TODO [SUPABASE STORAGE]: This will automatically use Supabase when configured
+  const storageService = useMemo(() => getStorageService(), []);
 
   useEffect(() => {
     setValues(initial);
@@ -149,13 +155,58 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
     setValues((prev) => setNested(prev, name, value));
   };
 
-  // Handle file drop for image fields
-  const handleFileDrop = useCallback((fieldName: string, file: File) => {
-    if (!file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = () => handleChange(fieldName, reader.result ?? '');
-    reader.readAsDataURL(file);
-  }, []);
+  // Handle file drop for image/file fields
+  // TODO [SUPABASE STORAGE]: When Supabase is configured, this will upload to storage
+  const handleFileDrop = useCallback(async (fieldName: string, file: File, field: FieldSchema) => {
+    // Validate file type if specified
+    if (field.acceptedTypes) {
+      const acceptedList = field.acceptedTypes.split(',').map(t => t.trim());
+      const fileType = file.type;
+      const fileExt = '.' + file.name.split('.').pop()?.toLowerCase();
+      
+      const isAccepted = acceptedList.some(accepted => {
+        if (accepted.endsWith('/*')) {
+          return fileType.startsWith(accepted.replace('/*', '/'));
+        }
+        if (accepted.startsWith('.')) {
+          return fileExt === accepted.toLowerCase();
+        }
+        return fileType === accepted;
+      });
+      
+      if (!isAccepted) {
+        setErrors(prev => ({ ...prev, [fieldName]: `File type not accepted. Allowed: ${field.acceptedTypes}` }));
+        return;
+      }
+    }
+    
+    // Validate file size
+    const maxSize = (field.maxSizeMB ?? 10) * 1024 * 1024;
+    if (file.size > maxSize) {
+      setErrors(prev => ({ ...prev, [fieldName]: `File too large. Max: ${field.maxSizeMB ?? 10}MB` }));
+      return;
+    }
+    
+    // Clear any previous errors
+    setErrors(prev => {
+      const { [fieldName]: _, ...rest } = prev;
+      return rest;
+    });
+    
+    // Determine bucket based on field schema or name
+    const bucket = field.storageBucket ?? getBucketForField(fieldName);
+    
+    try {
+      // Use storage service to handle the upload
+      // In mock mode: converts to base64 data URL
+      // In Supabase mode: uploads to storage and returns public URL
+      const fileInfo = await storageService.uploadFile(file, { bucket });
+      handleChange(fieldName, fileInfo.url);
+    } catch (err) {
+      console.error('Upload error:', err);
+      setErrors(prev => ({ ...prev, [fieldName]: 'Failed to process file' }));
+    }
+  }, [storageService]);
 
   const handleDragOver = (e: React.DragEvent, fieldName: string) => {
     e.preventDefault();
@@ -166,11 +217,16 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
     setDragOver(null);
   };
 
-  const handleDrop = (e: React.DragEvent, fieldName: string) => {
+  const handleDrop = (e: React.DragEvent, fieldName: string, field: FieldSchema) => {
     e.preventDefault();
     setDragOver(null);
     const file = e.dataTransfer.files[0];
-    if (file) handleFileDrop(fieldName, file);
+    if (file) handleFileDrop(fieldName, file, field);
+  };
+
+  // Toggle between URL input and file upload modes
+  const toggleUrlMode = (fieldName: string) => {
+    setUrlInputMode(prev => ({ ...prev, [fieldName]: !prev[fieldName] }));
   };
 
   return (
@@ -197,49 +253,171 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                   {field.required && <span className="text-[#C77DFF]">*</span>}
                 </span>
                 {field.type === 'image' ? (
-                  <div
-                    className={`mt-2 relative rounded-xl border-2 border-dashed transition-all ${
-                      dragOver === field.name 
-                        ? 'border-[#C77DFF] bg-[#C77DFF]/10' 
-                        : 'border-white/20 hover:border-[#C77DFF]/50'
-                    }`}
-                    onDragOver={(e) => handleDragOver(e, field.name)}
-                    onDragLeave={handleDragLeave}
-                    onDrop={(e) => handleDrop(e, field.name)}
-                  >
-                    <input
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                      type="file"
-                      accept="image/*"
-                      onChange={(event) => {
-                        const file = event.target.files?.[0];
-                        if (file) handleFileDrop(field.name, file);
-                      }}
-                    />
-                    <div className="flex flex-col items-center justify-center p-6 text-center">
-                      {getNested(values, field.name) ? (
-                        <div className="relative group">
-                          <img 
-                            src={String(getNested(values, field.name))} 
-                            alt="Preview" 
-                            className="h-20 w-20 rounded-xl object-cover border border-white/10"
-                          />
-                          <div className="absolute inset-0 bg-black/50 rounded-xl opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                            <span className="text-xs text-white">Change</span>
-                          </div>
-                        </div>
-                      ) : (
-                        <>
-                          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#C77DFF]/20 mb-3">
-                            <Upload className="w-5 h-5 text-[#C77DFF]" />
-                          </div>
-                          <p className="text-sm text-[#C9D1D9]">
-                            <span className="text-[#C77DFF] font-medium">Click to upload</span> or drag and drop
-                          </p>
-                          <p className="text-xs text-white/40 mt-1">PNG, JPG, GIF up to 5MB</p>
-                        </>
-                      )}
+                  <div className="mt-2 space-y-2">
+                    {/* Toggle between upload and URL input */}
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        type="button"
+                        onClick={() => toggleUrlMode(field.name)}
+                        className="text-xs text-white/40 hover:text-[#C77DFF] transition-colors flex items-center gap-1"
+                      >
+                        {urlInputMode[field.name] ? (
+                          <>
+                            <Upload className="w-3 h-3" />
+                            Switch to upload
+                          </>
+                        ) : (
+                          <>
+                            <LinkIcon className="w-3 h-3" />
+                            Use URL instead
+                          </>
+                        )}
+                      </button>
                     </div>
+                    
+                    {urlInputMode[field.name] ? (
+                      /* URL Input Mode */
+                      <input
+                        className="w-full rounded-xl border border-white/10 bg-[#0B1320]/50 px-4 py-3 text-sm text-[#C9D1D9] focus:outline-none focus:ring-2 focus:ring-[#C77DFF]/20 focus:border-[#C77DFF] transition-all placeholder:text-white/30"
+                        type="url"
+                        placeholder="https://example.com/image.jpg"
+                        value={String(getNested(values, field.name) ?? '')}
+                        onChange={(event) => handleChange(field.name, event.target.value)}
+                      />
+                    ) : (
+                      /* File Upload Mode */
+                      <div
+                        className={`relative rounded-xl border-2 border-dashed transition-all ${
+                          dragOver === field.name 
+                            ? 'border-[#C77DFF] bg-[#C77DFF]/10' 
+                            : 'border-white/20 hover:border-[#C77DFF]/50'
+                        }`}
+                        onDragOver={(e) => handleDragOver(e, field.name)}
+                        onDragLeave={handleDragLeave}
+                        onDrop={(e) => handleDrop(e, field.name, field)}
+                      >
+                        <input
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                          type="file"
+                          accept={field.acceptedTypes ?? 'image/*'}
+                          onChange={(event) => {
+                            const file = event.target.files?.[0];
+                            if (file) handleFileDrop(field.name, file, field);
+                          }}
+                        />
+                        <div className="flex flex-col items-center justify-center p-6 text-center">
+                          {getNested(values, field.name) ? (
+                            <div className="relative group">
+                              <img 
+                                src={String(getNested(values, field.name))} 
+                                alt="Preview" 
+                                className="h-20 w-20 rounded-xl object-cover border border-white/10"
+                              />
+                              <div className="absolute inset-0 bg-black/50 rounded-xl opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                <span className="text-xs text-white">Change</span>
+                              </div>
+                            </div>
+                          ) : (
+                            <>
+                              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#C77DFF]/20 mb-3">
+                                <Upload className="w-5 h-5 text-[#C77DFF]" />
+                              </div>
+                              <p className="text-sm text-[#C9D1D9]">
+                                <span className="text-[#C77DFF] font-medium">Click to upload</span> or drag and drop
+                              </p>
+                              <p className="text-xs text-white/40 mt-1">
+                                {field.acceptedTypes ?? 'PNG, JPG, GIF'} up to {field.maxSizeMB ?? 5}MB
+                              </p>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : field.type === 'file' ? (
+                  /* File Upload Field (non-image files like PDFs) */
+                  <div className="mt-2 space-y-2">
+                    {/* Toggle between upload and URL input */}
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        type="button"
+                        onClick={() => toggleUrlMode(field.name)}
+                        className="text-xs text-white/40 hover:text-[#C77DFF] transition-colors flex items-center gap-1"
+                      >
+                        {urlInputMode[field.name] ? (
+                          <>
+                            <Upload className="w-3 h-3" />
+                            Switch to upload
+                          </>
+                        ) : (
+                          <>
+                            <LinkIcon className="w-3 h-3" />
+                            Use URL instead
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    
+                    {urlInputMode[field.name] ? (
+                      /* URL Input Mode */
+                      <input
+                        className="w-full rounded-xl border border-white/10 bg-[#0B1320]/50 px-4 py-3 text-sm text-[#C9D1D9] focus:outline-none focus:ring-2 focus:ring-[#C77DFF]/20 focus:border-[#C77DFF] transition-all placeholder:text-white/30"
+                        type="url"
+                        placeholder="https://example.com/file.pdf"
+                        value={String(getNested(values, field.name) ?? '')}
+                        onChange={(event) => handleChange(field.name, event.target.value)}
+                      />
+                    ) : (
+                      /* File Upload Mode */
+                      <div
+                        className={`relative rounded-xl border-2 border-dashed transition-all ${
+                          dragOver === field.name 
+                            ? 'border-[#C77DFF] bg-[#C77DFF]/10' 
+                            : 'border-white/20 hover:border-[#C77DFF]/50'
+                        }`}
+                        onDragOver={(e) => handleDragOver(e, field.name)}
+                        onDragLeave={handleDragLeave}
+                        onDrop={(e) => handleDrop(e, field.name, field)}
+                      >
+                        <input
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                          type="file"
+                          accept={field.acceptedTypes ?? '*'}
+                          onChange={(event) => {
+                            const file = event.target.files?.[0];
+                            if (file) handleFileDrop(field.name, file, field);
+                          }}
+                        />
+                        <div className="flex flex-col items-center justify-center p-6 text-center">
+                          {getNested(values, field.name) ? (
+                            <div className="flex items-center gap-3 p-3 rounded-xl bg-[#0B1320]/60 border border-white/10">
+                              <FileText className="w-8 h-8 text-[#C77DFF]" />
+                              <div className="text-left">
+                                <p className="text-sm text-[#C9D1D9] font-medium truncate max-w-[200px]">
+                                  {isDataUrl(getNested(values, field.name)) 
+                                    ? 'File uploaded' 
+                                    : String(getNested(values, field.name)).split('/').pop() ?? 'File'
+                                  }
+                                </p>
+                                <p className="text-xs text-white/40">Click to replace</p>
+                              </div>
+                            </div>
+                          ) : (
+                            <>
+                              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#C77DFF]/20 mb-3">
+                                <FileText className="w-5 h-5 text-[#C77DFF]" />
+                              </div>
+                              <p className="text-sm text-[#C9D1D9]">
+                                <span className="text-[#C77DFF] font-medium">Click to upload</span> or drag and drop
+                              </p>
+                              <p className="text-xs text-white/40 mt-1">
+                                {field.acceptedTypes ?? 'Any file'} up to {field.maxSizeMB ?? 10}MB
+                              </p>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ) : field.type === 'select' ? (
                   <div className="relative mt-2">

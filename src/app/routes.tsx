@@ -11,6 +11,8 @@ import { BlogPostPage } from '../pages/Blog/BlogPostPage';
 import { ServicesPage } from '../pages/Services/ServicesPage';
 import { ContactPage } from '../pages/Contact/ContactPage';
 import { ProjectDetailPage } from '../pages/Projects/ProjectDetailPage';
+import { PublicationsPage } from '../pages/Publications/PublicationsPage';
+import { NotFoundPage } from '../pages/NotFound/NotFoundPage';
 import { AdminLoginPage } from '../admin/pages/Login/AdminLoginPage';
 import { AuthCallbackPage } from '../admin/pages/AuthCallback/AuthCallbackPage';
 import { DashboardHomePage } from '../admin/pages/Dashboard/DashboardHomePage';
@@ -29,10 +31,12 @@ export function AppRoutes() {
         <Route path="about" element={<AboutPage />} />
         <Route path="portfolio" element={<PortfolioPage />} />
         <Route path="portfolio/:slug" element={<ProjectDetailPage />} />
+        <Route path="publications" element={<PublicationsPage />} />
         <Route path="blog" element={<BlogListPage />} />
         <Route path="blog/:slug" element={<BlogPostPage />} />
         <Route path="services" element={<ServicesPage />} />
         <Route path="contact" element={<ContactPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
 
       {/* Admin (no Supabase yet; guarded by mock auth context) */}
@@ -72,9 +76,6 @@ export function AppRoutes() {
         <Route path="messages" element={<ContactMessagesPage />} />
         <Route path="messages/:id" element={<ContactMessageDetailPage />} />
       </Route>
-
-      {/* Not found */}
-      <Route path="*" element={null} />
     </Routes>
   );
 }

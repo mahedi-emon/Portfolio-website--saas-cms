@@ -1,42 +1,41 @@
 {
   "singletons": {
     "hero": {
-      "fullName": "Alex Morgan",
-      "headline": "Hi, I'm Alex — I build scalable web apps",
-      "subheadline": "Senior full-stack engineer specializing in React, TypeScript, and cloud-native systems.",
+      "fullName": "Mahedi Hasan Emon",
+      "headline": "Hi, I'm Mahedi — Full-Stack Software Engineer & AI Researcher",
+      "subheadline": "Django & React Developer | ML, NLP & Deep Learning Researcher | REST APIs Specialist",
+      "heroImageUrl": "",
       "ctaPrimaryLabel": "View Portfolio",
       "ctaPrimaryHref": "/portfolio",
       "ctaSecondaryLabel": "Contact",
       "ctaSecondaryHref": "/contact"
     },
     "about": {
-      "fullName": "Alex Morgan",
-      "tagline": "Senior full-stack engineer & SaaS founder",
+      "fullName": "Mahedi Hasan Emon",
+      "tagline": "Full-Stack Software Engineer | Django & React | ML, NLP & Deep Learning Researcher",
       "title": "About Me",
-      "bio": "I design and ship production-grade web platforms with a focus on performance, accessibility, and maintainability. Over the last 10+ years I've led teams building SaaS products, internal tools, and public-facing apps.",
-      "profileImageUrl": "https://placehold.co/320x320?text=Profile",
-      "currentRole": "Senior Full-Stack Engineer",
-      "researchInterest": "Scalable SaaS architectures and observability-driven development",
+      "bio": "I am a Computer Science and Engineering graduate from Daffodil International University (CGPA: 3.93/4.00) with a strong background in software engineering, machine learning, natural language processing, and deep learning. I specialize in building scalable, secure, and high-performance full-stack applications using Django and React. I design robust backend systems, RESTful APIs, and database-driven applications while ensuring clean architecture and performance optimization. My goal is to bridge software engineering and artificial intelligence to build intelligent, data-driven, and scalable real-world systems.",
+      "profileImageUrl": "https://placehold.co/320x320?text=MHE",
+      "currentRole": "Full-Stack Software Engineer & AI Researcher",
+      "researchInterest": "Machine Learning, Natural Language Processing, Deep Learning, and AI-driven systems",
       "highlights": [
-        "10+ years building SaaS and enterprise tools",
-        "React, TypeScript, Node.js, Postgres",
-        "Design systems, performance, and DX"
+        "BSc in Computer Science & Engineering (CGPA: 3.93/4.00)",
+        "Django, React, REST APIs, PostgreSQL, MySQL",
+        "Machine Learning, NLP, Deep Learning Research",
+        "Published researcher at IDAA 2025 Conference"
       ]
     },
     "contact": {
-      "pageIntroText": "Have a project or collaboration in mind? Let’s connect.",
+      "pageIntroText": "Feel free to connect with me for collaboration, research opportunities, or development projects.",
       "hireMeLabel": "Hire Me",
       "contactInfo": {
-        "email": "alex.morgan@example.com",
-        "phone": "+1 (555) 123-4567",
-        "location": "Seattle, WA"
+        "email": "mahedi.emon62@gmail.com",
+        "phone": "",
+        "location": "Dhaka, Bangladesh"
       },
       "socialLinks": [
-        { "url": "https://linkedin.com/in/example", "platform": "linkedin", "iconKey": "linkedin" },
-        { "url": "https://github.com/example", "platform": "github", "iconKey": "github" },
-        { "url": "https://x.com/example", "platform": "twitter", "iconKey": "twitter" },
-        { "url": "https://scholar.google.com/citations?user=example", "platform": "google_scholar", "iconKey": "google_scholar" },
-        { "url": "https://example.com", "platform": "custom", "iconKey": "custom" }
+        { "url": "https://linkedin.com/in/mahediemon", "platform": "linkedin", "iconKey": "linkedin" },
+        { "url": "https://github.com/mahediemon", "platform": "github", "iconKey": "github" }
       ]
     },
     "resumeSettings": {
@@ -48,16 +47,9 @@
       {
         "id": "resume-1",
         "status": "active",
-        "title": "Alex Morgan - Resume",
+        "title": "Mahedi Hasan Emon - Resume",
         "fileUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
         "uploadedAt": "2026-01-05"
-      },
-      {
-        "id": "resume-2",
-        "status": "inactive",
-        "title": "Alex Morgan - CV",
-        "fileUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-        "uploadedAt": "2025-09-18"
       }
     ],
     "education": [
@@ -65,64 +57,77 @@
         "id": "edu-1",
         "status": "published",
         "orderIndex": 1,
-        "institution": "University of Washington",
-        "degree": "BSc",
+        "institution": "Daffodil International University-DIU",
+        "degree": "Bachelor of Science",
         "field": "Computer Science and Engineering",
-        "grade": "3.7 GPA",
-        "activities": "Programming Club, Hackathon Team",
-        "description": "Focused on systems, algorithms, and human-centered design.",
-        "startDate": "2012-09-01",
-        "endDate": "2016-06-01"
+        "grade": "CGPA 3.93/4.00",
+        "activities": "IEEE DIU Student Branch, HRDI Campus Ambassador, DIU-CPC",
+        "description": "Focused on software engineering, machine learning, natural language processing, and deep learning. Completed final year defense project CampusHat and published research at IDAA 2025.",
+        "startDate": "2022-05-01",
+        "endDate": "2026-04-01"
       },
       {
         "id": "edu-2",
         "status": "published",
         "orderIndex": 2,
-        "institution": "Stanford Online",
-        "degree": "Graduate Certificate",
-        "field": "Machine Learning",
-        "grade": "Pass",
-        "activities": "ML Study Group",
-        "description": "Completed applied ML coursework and capstone project.",
+        "institution": "Dhaka City College",
+        "degree": "Higher Secondary Certificate (HSC)",
+        "field": "Science",
+        "grade": "GPA 5.00",
+        "activities": "Mathematics, Physics",
+        "description": "",
         "startDate": "2018-01-01",
-        "endDate": "2018-08-01"
+        "endDate": "2020-01-01"
       }
     ],
     "skills": [
-      { "id": "skill-1", "status": "published", "orderIndex": 1, "name": "TypeScript", "level": 5 },
-      { "id": "skill-2", "status": "published", "orderIndex": 2, "name": "React", "level": 5 },
-      { "id": "skill-3", "status": "published", "orderIndex": 3, "name": "Node.js", "level": 4 },
-      { "id": "skill-4", "status": "published", "orderIndex": 4, "name": "PostgreSQL", "level": 4 },
-      { "id": "skill-5", "status": "published", "orderIndex": 5, "name": "AWS", "level": 3 }
+      { "id": "skill-1", "status": "published", "orderIndex": 1, "name": "Django", "level": 5 },
+      { "id": "skill-2", "status": "published", "orderIndex": 2, "name": "React.js", "level": 5 },
+      { "id": "skill-3", "status": "published", "orderIndex": 3, "name": "REST APIs", "level": 5 },
+      { "id": "skill-4", "status": "published", "orderIndex": 4, "name": "Python", "level": 5 },
+      { "id": "skill-5", "status": "published", "orderIndex": 5, "name": "Deep Learning", "level": 4 },
+      { "id": "skill-6", "status": "published", "orderIndex": 6, "name": "Machine Learning", "level": 4 },
+      { "id": "skill-7", "status": "published", "orderIndex": 7, "name": "Natural Language Processing (NLP)", "level": 4 },
+      { "id": "skill-8", "status": "published", "orderIndex": 8, "name": "PostgreSQL", "level": 4 },
+      { "id": "skill-9", "status": "published", "orderIndex": 9, "name": "MySQL", "level": 4 },
+      { "id": "skill-10", "status": "published", "orderIndex": 10, "name": "JavaScript", "level": 4 },
+      { "id": "skill-11", "status": "published", "orderIndex": 11, "name": "Tailwind CSS", "level": 4 },
+      { "id": "skill-12", "status": "published", "orderIndex": 12, "name": "Bi-LSTM", "level": 4 },
+      { "id": "skill-13", "status": "published", "orderIndex": 13, "name": "Bangla-BERT", "level": 4 },
+      { "id": "skill-14", "status": "published", "orderIndex": 14, "name": "Git", "level": 4 },
+      { "id": "skill-15", "status": "published", "orderIndex": 15, "name": "Docker", "level": 3 },
+      { "id": "skill-16", "status": "published", "orderIndex": 16, "name": "Node.js", "level": 3 },
+      { "id": "skill-17", "status": "published", "orderIndex": 17, "name": "HTMX", "level": 4 },
+      { "id": "skill-18", "status": "published", "orderIndex": 18, "name": "Streamlit", "level": 3 }
     ],
     "services": [
       {
         "id": "service-1",
         "status": "published",
         "orderIndex": 1,
-        "title": "SaaS Architecture",
-        "summary": "System design, multi-tenant architecture, and scalable API design."
+        "title": "Full-Stack Web Development",
+        "summary": "Building scalable, secure, and high-performance web applications using Django and React with clean architecture."
       },
       {
         "id": "service-2",
         "status": "published",
         "orderIndex": 2,
-        "title": "Frontend Engineering",
-        "summary": "Design systems, performance optimization, and complex React apps."
+        "title": "REST API Development",
+        "summary": "Designing robust backend systems, RESTful APIs, and database-driven applications with performance optimization."
       },
       {
         "id": "service-3",
         "status": "published",
         "orderIndex": 3,
-        "title": "Backend & APIs",
-        "summary": "Node.js services, Postgres modeling, and integrations."
+        "title": "AI & Machine Learning Solutions",
+        "summary": "Developing AI-driven systems with expertise in Machine Learning, NLP, and Deep Learning."
       },
       {
         "id": "service-4",
         "status": "published",
         "orderIndex": 4,
-        "title": "Product Engineering",
-        "summary": "MVP to scale, roadmap execution, and engineering leadership."
+        "title": "Database Design & Management",
+        "summary": "PostgreSQL, MySQL, SQL Server database design, optimization, and management."
       }
     ],
     "projects": [
@@ -130,64 +135,31 @@
         "id": "project-1",
         "status": "published",
         "orderIndex": 1,
-        "slug": "saas-analytics-platform",
-        "title": "SaaS Analytics Platform",
-        "summary": "Multi-tenant analytics dashboard with role-based access and live metrics.",
-        "description": "Built a scalable analytics product with tenant isolation, advanced filters, and audit trails.",
-        "coverImageUrl": "https://placehold.co/800x500?text=Analytics",
-        "galleryImages": [
-          "https://placehold.co/600x400?text=Dash+1",
-          "https://placehold.co/600x400?text=Dash+2"
-        ],
-        "githubUrl": "https://github.com/example/analytics",
-        "liveDemoUrl": "https://example.com/analytics",
-        "techStack": ["React", "TypeScript", "PostgreSQL"],
+        "slug": "campushat-marketplace",
+        "title": "CampusHat – A Campus-Based Online Marketplace",
+        "summary": "Final-Year Defense Project designed to solve real-life campus commerce problems.",
+        "description": "CampusHat is my Final-Year Defense Project, designed to solve real-life campus commerce problems by providing a secure, scalable, and organized digital marketplace for university students. Built with Django backend and React frontend with comprehensive features for campus e-commerce.",
+        "coverImageUrl": "https://placehold.co/800x500?text=CampusHat",
+        "galleryImages": [],
+        "githubUrl": "",
+        "liveDemoUrl": "",
+        "techStack": ["Django", "React.js", "PostgreSQL", "REST APIs", "Tailwind CSS"],
         "featured": true
       },
       {
         "id": "project-2",
         "status": "published",
         "orderIndex": 2,
-        "slug": "design-system-toolkit",
-        "title": "Design System Toolkit",
-        "summary": "Reusable React component library with theming and accessibility audits.",
-        "description": "Delivered a component library with tokens, theming, and usage analytics.",
-        "coverImageUrl": "https://placehold.co/800x500?text=Design+System",
-        "galleryImages": ["https://placehold.co/600x400?text=UI+Kit"],
-        "githubUrl": "https://github.com/example/design-system",
-        "liveDemoUrl": "https://example.com/design-system",
-        "techStack": ["React", "Storybook", "CSS"],
-        "featured": true
-      },
-      {
-        "id": "project-3",
-        "status": "published",
-        "orderIndex": 3,
-        "slug": "devops-cost-optimizer",
-        "title": "DevOps Cost Optimizer",
-        "summary": "Automated cloud cost optimization with scheduled reports and alerts.",
-        "description": "Identified infra waste and generated weekly savings reports with alerts.",
-        "coverImageUrl": "https://placehold.co/800x500?text=Cost+Optimizer",
+        "slug": "bangla-document-classification",
+        "title": "Hybrid Ensemble Bangla Document Classification System",
+        "summary": "Research-driven AI system combining Bangla-BERT and Bi-LSTM models for NLP.",
+        "description": "Django-Based Bangla Document Classification Using Deep Learning is a research-driven AI system developed to classify Bangla news articles using a hybrid ensemble of Bangla-BERT and Bi-LSTM models. This project was presented at IDAA 2025 International Conference.",
+        "coverImageUrl": "https://placehold.co/800x500?text=Bangla+NLP",
         "galleryImages": [],
         "githubUrl": "",
-        "liveDemoUrl": "https://example.com/cost-optimizer",
-        "techStack": ["Node.js", "AWS", "PostgreSQL"],
-        "featured": false
-      },
-      {
-        "id": "project-4",
-        "status": "published",
-        "orderIndex": 4,
-        "slug": "customer-success-portal",
-        "title": "Customer Success Portal",
-        "summary": "B2B portal with ticketing, knowledge base, and account insights.",
-        "description": "Unified support workflows with knowledge base search and account visibility.",
-        "coverImageUrl": "https://placehold.co/800x500?text=Portal",
-        "galleryImages": ["https://placehold.co/600x400?text=Portal+UI"],
-        "githubUrl": "",
-        "liveDemoUrl": "https://example.com/portal",
-        "techStack": ["React", "Node.js", "PostgreSQL"],
-        "featured": false
+        "liveDemoUrl": "",
+        "techStack": ["Django", "Deep Learning", "Bangla-BERT", "Bi-LSTM", "NLP"],
+        "featured": true
       }
     ],
     "publications": [
@@ -195,59 +167,20 @@
         "id": "pub-1",
         "status": "published",
         "orderIndex": 1,
-        "slug": "scalable-multi-tenant-architectures",
-        "title": "Scalable Multi-Tenant Architectures for Data-Intensive SaaS",
-        "authors": ["Alex Morgan", "Priya Raman", "Hannah Lee"],
-        "venue": "Proceedings of the ACM on Cloud Computing Systems",
-        "year": "2023",
-        "abstract": "A multi-tenant architecture approach focused on performance isolation and cost efficiency.",
-        "paperUrl": "https://doi.org/10.0000/placeholder.saas.2023.001",
-        "pdfUrl": "https://example.com/papers/saas-multi-tenant-2023.pdf",
-        "coverImageUrl": "https://placehold.co/800x500?text=Publication+1",
-        "citation": "Morgan, A., Raman, P., Lee, H. (2023). Scalable Multi-Tenant Architectures for Data-Intensive SaaS. PACM CCS."
-      },
-      {
-        "id": "pub-2",
-        "status": "published",
-        "orderIndex": 2,
-        "slug": "observability-driven-development",
-        "title": "Observability-Driven Development in Distributed Product Teams",
-        "authors": ["Alex Morgan", "Miguel Santos"],
-        "venue": "International Conference on Software Engineering (ICSE)",
-        "year": "2022",
-        "abstract": "A field study on using observability practices to accelerate delivery and reduce incidents.",
-        "paperUrl": "https://doi.org/10.0000/placeholder.icse.2022.045",
-        "pdfUrl": "https://example.com/papers/observability-icse-2022.pdf",
-        "coverImageUrl": "https://placehold.co/800x500?text=Publication+2",
-        "citation": "Morgan, A., Santos, M. (2022). Observability-Driven Development in Distributed Product Teams. ICSE."
-      },
-      {
-        "id": "pub-3",
-        "status": "published",
-        "orderIndex": 3,
-        "title": "Latency Budgets for Frontend Platforms at Scale",
-        "authors": ["Alex Morgan", "Nadia Kim"],
-        "venue": "IEEE Software",
-        "year": "2021",
-        "abstract": "Guidelines for setting and enforcing latency budgets in large frontend platforms.",
-        "paperUrl": "https://doi.org/10.0000/placeholder.ieee.2021.112",
-        "pdfUrl": "https://example.com/papers/latency-budgets-2021.pdf",
-        "coverImageUrl": "https://placehold.co/800x500?text=Publication+3",
-        "citation": "Morgan, A., Kim, N. (2021). Latency Budgets for Frontend Platforms at Scale. IEEE Software."
-      },
-      {
-        "id": "pub-4",
-        "status": "published",
-        "orderIndex": 4,
-        "title": "Design System Governance: A Case Study in Enterprise UI Consistency",
-        "authors": ["Alex Morgan", "Sofia Patel", "Jordan Wells"],
-        "venue": "CHI Conference on Human Factors in Computing Systems",
-        "year": "2020",
-        "abstract": "A governance model for maintaining design consistency across enterprise teams.",
-        "paperUrl": "https://doi.org/10.0000/placeholder.chi.2020.210",
-        "pdfUrl": "https://example.com/papers/design-system-governance-2020.pdf",
-        "coverImageUrl": "https://placehold.co/800x500?text=Publication+4",
-        "citation": "Morgan, A., Patel, S., Wells, J. (2020). Design System Governance. CHI."
+        "slug": "bangla-document-classification-bert-bilstm",
+        "title": "Enhancing Bangla Document Classification Using a Hybrid Ensemble of Bangla-BERT and Bi-LSTM Models",
+        "authors": ["Mahedi Hasan Emon"],
+        "venue": "International Conference on Intelligent Data Analysis and Applications (IDAA 2025)",
+        "year": "2025",
+        "abstract": "This paper proposes a hybrid ensemble approach combining Bangla-BERT and Bi-LSTM models for Bangla document classification, achieving high accuracy and improved generalization. The work was accepted and presented at the IDAA 2025 conference at Daffodil International University.",
+        "paperUrl": "",
+        "pdfUrl": "",
+        "coverImageUrl": "https://placehold.co/800x500?text=IDAA+2025",
+        "citation": "Emon, M. H. (2025). Enhancing Bangla Document Classification Using a Hybrid Ensemble of Bangla-BERT and Bi-LSTM Models. IDAA 2025.",
+        "publisher": "",
+        "publishedDate": "",
+        "doi": "",
+        "externalUrl": ""
       }
     ],
     "certifications": [
@@ -255,40 +188,40 @@
         "id": "cert-1",
         "status": "published",
         "orderIndex": 1,
-        "certificateTitle": "AWS Certified Solutions Architect – Associate",
-        "issuer": "Amazon Web Services",
-        "issueDate": "2023-05-01",
-        "expiryDate": "2026-05-01",
-        "credentialId": "AWS-123456",
-        "credentialUrl": "https://example.com/credentials/aws-architect",
-        "certificateImageUrl": "https://placehold.co/640x420?text=AWS+Certificate",
-        "certificateFileUrl": "https://example.com/certificates/aws-architect.pdf"
+        "certificateTitle": "Full Stack Web Development with Django 5, TailwindCSS, HTMX",
+        "issuer": "Udemy",
+        "issueDate": "2026-01-01",
+        "expiryDate": "",
+        "credentialId": "UC-50223aa5-feb0-48bd-a797-3cb7a6d98d6f",
+        "credentialUrl": "",
+        "certificateImageUrl": "https://placehold.co/640x420?text=Django+Certificate",
+        "certificateFileUrl": ""
       },
       {
         "id": "cert-2",
         "status": "published",
         "orderIndex": 2,
-        "certificateTitle": "Professional Scrum Master I",
-        "issuer": "Scrum.org",
-        "issueDate": "2021-10-01",
+        "certificateTitle": "The Complete Full-Stack Web Development Bootcamp",
+        "issuer": "Udemy",
+        "issueDate": "2025-10-01",
         "expiryDate": "",
-        "credentialId": "PSM-I-778899",
-        "credentialUrl": "https://example.com/credentials/psm1",
-        "certificateImageUrl": "https://placehold.co/640x420?text=PSM+Certificate",
-        "certificateFileUrl": "https://example.com/certificates/psm1.pdf"
+        "credentialId": "UC-9b977845-1f85-4d6c-902a-3de7d8cc5ce2",
+        "credentialUrl": "",
+        "certificateImageUrl": "https://placehold.co/640x420?text=Fullstack+Certificate",
+        "certificateFileUrl": ""
       },
       {
         "id": "cert-3",
         "status": "published",
         "orderIndex": 3,
-        "certificateTitle": "Google Cloud Digital Leader",
-        "issuer": "Google Cloud",
-        "issueDate": "2022-07-01",
-        "expiryDate": "2025-07-01",
-        "credentialId": "GCDL-334455",
-        "credentialUrl": "https://example.com/credentials/gcdl",
-        "certificateImageUrl": "https://placehold.co/640x420?text=GCP+Certificate",
-        "certificateFileUrl": "https://example.com/certificates/gcdl.pdf"
+        "certificateTitle": "Database Systems Training (MySQL, Oracle, SQL Server)",
+        "issuer": "Bangladesh Computer Council (BCC) – ICT Division, Bangladesh",
+        "issueDate": "2025-04-01",
+        "expiryDate": "",
+        "credentialId": "EDGE-DSTS-106-2384-00023",
+        "credentialUrl": "",
+        "certificateImageUrl": "https://placehold.co/640x420?text=Database+Certificate",
+        "certificateFileUrl": ""
       }
     ],
     "experience": [
@@ -296,75 +229,57 @@
         "id": "exp-1",
         "status": "published",
         "orderIndex": 1,
-        "company": "Nimbus Labs",
-        "role": "Senior Full-Stack Engineer",
-        "startDate": "2022-04-01",
+        "company": "Daffodil International University-DIU",
+        "role": "AI Researcher (Machine Learning, NLP, Deep Learning)",
+        "startDate": "2025-02-01",
         "endDate": "2025-12-01",
-        "description": "Led development of multi-tenant SaaS analytics platform, architected scalable microservices infrastructure, and mentored junior engineers on best practices."
+        "description": "Conducted research on Bangla document classification using hybrid deep learning and ensemble models. Developed a hybrid ensemble framework combining Bangla-BERT and Bi-LSTM architectures. Performed data preprocessing, model training, evaluation, and performance optimization for NLP tasks. Published and presented research at IDAA 2025 International Conference."
       },
       {
         "id": "exp-2",
         "status": "published",
         "orderIndex": 2,
-        "company": "Vantage Health",
-        "role": "Lead Frontend Engineer",
-        "startDate": "2019-02-01",
-        "endDate": "2022-03-01",
-        "description": "Spearheaded frontend architecture migration to React with TypeScript, built design system adopted across 5 product teams, and reduced bundle size by 42%."
+        "company": "Human Resource Development Institute-HRDI",
+        "role": "Campus Ambassador",
+        "startDate": "2023-09-01",
+        "endDate": "2026-01-01",
+        "description": "Served as Campus Ambassador at Daffodil International University, promoting professional development opportunities and connecting students with career resources."
       },
       {
         "id": "exp-3",
         "status": "published",
         "orderIndex": 3,
-        "company": "Northwind Analytics",
-        "role": "Software Engineer",
-        "startDate": "2016-06-01",
-        "endDate": "2019-01-01",
-        "description": "Developed data visualization dashboards and RESTful APIs, collaborated with product teams to deliver customer-facing analytics features."
+        "company": "IEEE DIU Student Branch",
+        "role": "Executive Member",
+        "startDate": "2023-08-01",
+        "endDate": "2026-01-01",
+        "description": "Active executive member contributing to technical events, workshops, and student engagement activities at Daffodil International University."
+      },
+      {
+        "id": "exp-4",
+        "status": "published",
+        "orderIndex": 4,
+        "company": "Daffodil International University-DIU",
+        "role": "Student Associate",
+        "startDate": "2024-03-01",
+        "endDate": "2024-12-01",
+        "description": "Worked as a Student Associate at creative International of Daffodil International University (YKSG-01), supporting various university initiatives and student services."
       }
     ],
     "blogs": [
       {
         "id": "blog-1",
-        "status": "published",
+        "status": "draft",
         "orderIndex": 1,
-        "title": "Scaling React Apps Without the Pain",
-        "slug": "scaling-react-apps",
-        "excerpt": "Patterns for structure, state management, and performance as your app grows.",
-        "content": "<p>As React applications grow in complexity, maintaining a clean and scalable architecture becomes crucial. In this post, we'll explore proven patterns for structuring large React codebases.</p><h2>Project Structure</h2><p>A well-organized folder structure is the foundation of any scalable app. Consider organizing by feature rather than by type.</p><h2>State Management</h2><p>Choose your state management solution wisely. For most applications, a combination of React Context and local state works well.</p><h2>Performance Optimization</h2><p>Use React.memo, useMemo, and useCallback strategically. Profile your app before optimizing.</p>",
-        "coverImageUrl": "https://placehold.co/800x400?text=React+Scaling",
-        "author": "Alex Morgan",
-        "publishedDate": "2024-12-15",
-        "readTime": 8,
-        "tags": ["React", "Architecture", "Performance"]
-      },
-      {
-        "id": "blog-2",
-        "status": "published",
-        "orderIndex": 2,
-        "title": "A Practical Guide to Multi-Tenant SaaS",
-        "slug": "multi-tenant-saas-guide",
-        "excerpt": "Trade-offs, data isolation strategies, and operational considerations.",
-        "content": "<p>Building multi-tenant SaaS applications requires careful consideration of data isolation, security, and scalability.</p><h2>Tenant Isolation Strategies</h2><p>There are three main approaches: database-per-tenant, schema-per-tenant, and shared tables with tenant IDs.</p><h2>Security Considerations</h2><p>Always validate tenant context at the API layer. Never trust client-side tenant identifiers.</p><h2>Operational Excellence</h2><p>Implement proper monitoring and alerting per tenant to catch issues early.</p>",
-        "coverImageUrl": "https://placehold.co/800x400?text=Multi-Tenant+SaaS",
-        "author": "Alex Morgan",
-        "publishedDate": "2024-11-20",
-        "readTime": 12,
-        "tags": ["SaaS", "Architecture", "Database"]
-      },
-      {
-        "id": "blog-3",
-        "status": "published",
-        "orderIndex": 3,
-        "title": "Observability Basics for Product Teams",
-        "slug": "observability-basics",
-        "excerpt": "How to ship features faster with logs, metrics, and traces.",
-        "content": "<p>Observability is not just for ops teams. Product engineers benefit immensely from understanding how their code behaves in production.</p><h2>The Three Pillars</h2><p>Logs, metrics, and traces form the foundation of observability. Each serves a different purpose.</p><h2>Getting Started</h2><p>Start with structured logging. Use correlation IDs to trace requests across services.</p><h2>Actionable Alerts</h2><p>Set up alerts that lead to action. Avoid alert fatigue by being selective.</p>",
-        "coverImageUrl": "https://placehold.co/800x400?text=Observability",
-        "author": "Alex Morgan",
-        "publishedDate": "2024-10-05",
-        "readTime": 6,
-        "tags": ["DevOps", "Observability", "Engineering"]
+        "title": "Coming Soon",
+        "slug": "coming-soon",
+        "excerpt": "Blog posts are on the way.",
+        "content": "<p>Stay tuned for upcoming articles.</p>",
+        "coverImageUrl": "https://placehold.co/800x400?text=Coming+Soon",
+        "author": "Mahedi Hasan Emon",
+        "publishedDate": "2026-02-01",
+        "readTime": 3,
+        "tags": ["Updates"]
       }
     ],
     "testimonials": [
@@ -372,22 +287,15 @@
         "id": "testi-1",
         "status": "published",
         "orderIndex": 1,
-        "author": "Priya Raman",
-        "quote": "Alex consistently ships high-quality features and raises the bar for code quality across the team."
+        "author": "Md Abdullah Al Maruf",
+        "quote": "I have worked closely with Mahedi Hasan Emon at DIU-CPC, IEEE DIU Student Branch, and HRDI, and it has been an amazing experience. He is dedicated, collaborative, and truly a real-life problem solver. Working with him has always been a valuable and positive experience."
       },
       {
         "id": "testi-2",
         "status": "published",
         "orderIndex": 2,
-        "author": "Miguel Santos",
-        "quote": "A thoughtful engineer with strong product instincts. Helped us scale our platform without losing velocity."
-      },
-      {
-        "id": "testi-3",
-        "status": "published",
-        "orderIndex": 3,
-        "author": "Hannah Lee",
-        "quote": "Excellent collaborator and mentor. The new design system improved delivery speed by 30%."
+        "author": "Munawar Mesbah Shraban",
+        "quote": "I had the pleasure of working with Mahedi Hasan Emon as a Student Associate at Yunus Khan Scholar Garden-1, DIU. He is dedicated, cooperative, and always supportive. Working with him was truly enriching, and I believe he will be a valuable asset in any team or organization."
       }
     ],
     "achievements": [
@@ -395,186 +303,125 @@
         "id": "ach-1",
         "status": "published",
         "orderIndex": 1,
-        "title": "Led a 6-person team to ship a multi-tenant analytics platform",
-        "issuer": "Nimbus Labs",
-        "year": "2024",
-        "description": "Delivered an enterprise analytics platform with role-based access and audit-ready reporting.",
+        "title": "Certificate of Appreciation – IDAA 2025 International Conference",
+        "issuer": "International Conference on Intelligent Data Analysis and Applications",
+        "year": "2025",
+        "description": "Presented and published research at the International Conference on Intelligent Data Analysis and Applications (IDAA 2025) at Daffodil International University. The work focused on Bangla document classification using AI & NLP.",
         "certificateImageUrl": "",
         "certificateFileUrl": "",
-        "externalLink": "https://example.com/case-studies/analytics"
-      },
-      {
-        "id": "ach-2",
-        "status": "published",
-        "orderIndex": 2,
-        "title": "Reduced frontend bundle size by 42%",
-        "issuer": "Vantage Health",
-        "year": "2023",
-        "description": "Introduced code-splitting and dependency auditing across the frontend platform.",
-        "certificateImageUrl": "",
-        "certificateFileUrl": "",
-        "externalLink": "https://example.com/blog/perf-optimization"
-      },
-      {
-        "id": "ach-3",
-        "status": "published",
-        "orderIndex": 3,
-        "title": "Authored internal platform standards adopted across 5 teams",
-        "issuer": "Northwind Analytics",
-        "year": "2022",
-        "description": "Defined engineering standards for testing, monitoring, and release processes.",
-        "certificateImageUrl": "",
-        "certificateFileUrl": "",
-        "externalLink": "https://example.com/standards"
-      }
-    ],
-    "clients": [
-      {
-        "id": "client-1",
-        "status": "published",
-        "orderIndex": 1,
-        "name": "Northwind",
-        "logoUrl": "https://placehold.co/160x80?text=Northwind",
-        "websiteUrl": "https://example.com"
-      },
-      {
-        "id": "client-2",
-        "status": "published",
-        "orderIndex": 2,
-        "name": "Vantage Health",
-        "logoUrl": "https://placehold.co/160x80?text=Vantage",
-        "websiteUrl": "https://example.com"
-      },
-      {
-        "id": "client-3",
-        "status": "published",
-        "orderIndex": 3,
-        "name": "Nimbus Labs",
-        "logoUrl": "https://placehold.co/160x80?text=Nimbus",
-        "websiteUrl": "https://example.com"
-      },
-      {
-        "id": "client-4",
-        "status": "published",
-        "orderIndex": 4,
-        "name": "Atlas Mobility",
-        "logoUrl": "https://placehold.co/160x80?text=Atlas",
-        "websiteUrl": "https://example.com"
+        "externalLink": ""
       }
     ],
     "techStackCategories": [
       {
-        "id": "tech-1",
+        "id": "tech-cat-1",
         "status": "published",
         "orderIndex": 1,
-        "categoryName": "Frontend",
+        "categoryName": "Backend Development",
         "tools": [
-          {
-            "id": "tool-1",
-            "name": "React",
-            "logoUrl": "https://placehold.co/64x64?text=React",
-            "proficiencyLevel": 92
-          },
-          {
-            "id": "tool-2",
-            "name": "TypeScript",
-            "logoUrl": "https://placehold.co/64x64?text=TS",
-            "proficiencyLevel": 90
-          },
-          {
-            "id": "tool-3",
-            "name": "Tailwind CSS",
-            "logoUrl": "https://placehold.co/64x64?text=TW",
-            "proficiencyLevel": 86
-          }
+          { "id": "tool-1", "name": "Django", "logoUrl": "", "proficiencyLevel": 90 },
+          { "id": "tool-2", "name": "REST APIs", "logoUrl": "", "proficiencyLevel": 90 },
+          { "id": "tool-3", "name": "Python", "logoUrl": "", "proficiencyLevel": 95 },
+          { "id": "tool-4", "name": "Node.js", "logoUrl": "", "proficiencyLevel": 70 }
         ]
       },
       {
-        "id": "tech-2",
+        "id": "tech-cat-2",
         "status": "published",
         "orderIndex": 2,
-        "categoryName": "Backend",
+        "categoryName": "Frontend Development",
         "tools": [
-          {
-            "id": "tool-4",
-            "name": "Node.js",
-            "logoUrl": "https://placehold.co/64x64?text=Node",
-            "proficiencyLevel": 88
-          },
-          {
-            "id": "tool-5",
-            "name": "PostgreSQL",
-            "logoUrl": "https://placehold.co/64x64?text=PG",
-            "proficiencyLevel": 82
-          },
-          {
-            "id": "tool-6",
-            "name": "GraphQL",
-            "logoUrl": "https://placehold.co/64x64?text=GQL",
-            "proficiencyLevel": 75
-          }
+          { "id": "tool-5", "name": "React.js", "logoUrl": "", "proficiencyLevel": 85 },
+          { "id": "tool-6", "name": "JavaScript", "logoUrl": "", "proficiencyLevel": 85 },
+          { "id": "tool-7", "name": "Tailwind CSS", "logoUrl": "", "proficiencyLevel": 90 },
+          { "id": "tool-8", "name": "HTMX", "logoUrl": "", "proficiencyLevel": 80 },
+          { "id": "tool-9", "name": "HTML", "logoUrl": "", "proficiencyLevel": 95 },
+          { "id": "tool-10", "name": "CSS", "logoUrl": "", "proficiencyLevel": 90 },
+          { "id": "tool-11", "name": "Bootstrap", "logoUrl": "", "proficiencyLevel": 85 }
         ]
       },
       {
-        "id": "tech-3",
+        "id": "tech-cat-3",
         "status": "published",
         "orderIndex": 3,
-        "categoryName": "Cloud & DevOps",
+        "categoryName": "AI & Machine Learning",
         "tools": [
-          {
-            "id": "tool-7",
-            "name": "AWS",
-            "logoUrl": "https://placehold.co/64x64?text=AWS",
-            "proficiencyLevel": 78
-          },
-          {
-            "id": "tool-8",
-            "name": "Docker",
-            "logoUrl": "https://placehold.co/64x64?text=Docker",
-            "proficiencyLevel": 81
-          },
-          {
-            "id": "tool-9",
-            "name": "Terraform",
-            "logoUrl": "https://placehold.co/64x64?text=TF",
-            "proficiencyLevel": 70
-          }
+          { "id": "tool-12", "name": "Deep Learning", "logoUrl": "", "proficiencyLevel": 80 },
+          { "id": "tool-13", "name": "Machine Learning", "logoUrl": "", "proficiencyLevel": 80 },
+          { "id": "tool-14", "name": "Natural Language Processing (NLP)", "logoUrl": "", "proficiencyLevel": 80 },
+          { "id": "tool-15", "name": "Bi-LSTM", "logoUrl": "", "proficiencyLevel": 75 },
+          { "id": "tool-16", "name": "Bangla-BERT", "logoUrl": "", "proficiencyLevel": 75 },
+          { "id": "tool-17", "name": "BERT (Language Model)", "logoUrl": "", "proficiencyLevel": 75 },
+          { "id": "tool-18", "name": "Streamlit", "logoUrl": "", "proficiencyLevel": 70 },
+          { "id": "tool-19", "name": "Explainable AI (XAI / SHAP)", "logoUrl": "", "proficiencyLevel": 65 }
+        ]
+      },
+      {
+        "id": "tech-cat-4",
+        "status": "published",
+        "orderIndex": 4,
+        "categoryName": "Databases",
+        "tools": [
+          { "id": "tool-20", "name": "PostgreSQL", "logoUrl": "", "proficiencyLevel": 85 },
+          { "id": "tool-21", "name": "MySQL", "logoUrl": "", "proficiencyLevel": 85 },
+          { "id": "tool-22", "name": "Microsoft SQL Server", "logoUrl": "", "proficiencyLevel": 75 },
+          { "id": "tool-23", "name": "Oracle Database", "logoUrl": "", "proficiencyLevel": 70 },
+          { "id": "tool-24", "name": "Database Design", "logoUrl": "", "proficiencyLevel": 80 }
+        ]
+      },
+      {
+        "id": "tech-cat-5",
+        "status": "published",
+        "orderIndex": 5,
+        "categoryName": "Tools & DevOps",
+        "tools": [
+          { "id": "tool-25", "name": "Git", "logoUrl": "", "proficiencyLevel": 85 },
+          { "id": "tool-26", "name": "Docker", "logoUrl": "", "proficiencyLevel": 70 },
+          { "id": "tool-27", "name": "Postman", "logoUrl": "", "proficiencyLevel": 85 },
+          { "id": "tool-28", "name": "VS Code", "logoUrl": "", "proficiencyLevel": 90 }
+        ]
+      },
+      {
+        "id": "tech-cat-6",
+        "status": "published",
+        "orderIndex": 6,
+        "categoryName": "Research & Other Skills",
+        "tools": [
+          { "id": "tool-29", "name": "Research Skills", "logoUrl": "", "proficiencyLevel": 85 },
+          { "id": "tool-30", "name": "Agile Software Development", "logoUrl": "", "proficiencyLevel": 80 },
+          { "id": "tool-31", "name": "REST API Development", "logoUrl": "", "proficiencyLevel": 90 },
+          { "id": "tool-32", "name": "Full-Stack Development", "logoUrl": "", "proficiencyLevel": 85 },
+          { "id": "tool-33", "name": "Web Development", "logoUrl": "", "proficiencyLevel": 90 },
+          { "id": "tool-34", "name": "Cybersecurity", "logoUrl": "", "proficiencyLevel": 60 },
+          { "id": "tool-35", "name": "Artificial Intelligence (AI)", "logoUrl": "", "proficiencyLevel": 75 }
         ]
       }
     ],
+    "clients": [
+      {
+        "id": "client-placeholder",
+        "status": "draft",
+        "orderIndex": 0,
+        "name": "Example Client",
+        "logoUrl": "",
+        "websiteUrl": "",
+        "industry": "",
+        "projectDuration": "",
+        "featured": false
+      }
+    ],
+    "portfolio": [],
     "contactMessages": [
       {
-        "id": "msg-1",
-        "name": "Jordan Wells",
-        "email": "jordan.wells@example.com",
-        "subject": "Project inquiry",
-        "message": "Hi Alex, I'd love to discuss a potential SaaS build for our team. Are you available next week?",
-        "status": "new",
-        "createdAt": "2024-11-12T09:30:00Z",
+        "id": "msg-placeholder",
+        "name": "Placeholder",
+        "email": "placeholder@example.com",
+        "subject": "Placeholder",
+        "message": "This is a placeholder message for type inference.",
+        "status": "archived",
+        "createdAt": "2024-01-01T00:00:00.000Z",
         "handledBy": "",
         "handledAt": ""
-      },
-      {
-        "id": "msg-2",
-        "name": "Priya Raman",
-        "email": "priya.raman@example.com",
-        "subject": "Conference collaboration",
-        "message": "Your recent paper on multi-tenant systems was great. Interested in a joint workshop submission?",
-        "status": "read",
-        "createdAt": "2024-11-08T14:05:00Z",
-        "handledBy": "admin",
-        "handledAt": "2024-11-08T15:10:00Z"
-      },
-      {
-        "id": "msg-3",
-        "name": "Sofia Patel",
-        "email": "sofia.patel@example.com",
-        "subject": "Speaking opportunity",
-        "message": "We are organizing a frontend performance summit and would love you to speak about observability.",
-        "status": "archived",
-        "createdAt": "2024-10-29T18:45:00Z",
-        "handledBy": "admin",
-        "handledAt": "2024-11-01T10:00:00Z"
       }
     ]
   }

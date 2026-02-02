@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { DataTable } from '../../components/DataTable';
 import { useCms } from '../../../hooks/useCms';
+import { Inbox } from 'lucide-react';
 import type { CollectionItem } from '../../../context/CmsContext';
 
 type MessageItem = CollectionItem & {
@@ -66,14 +67,29 @@ export function ContactMessagesPage() {
         <h1 className="text-2xl font-semibold text-white">Contact Messages</h1>
         <p className="mt-1 text-sm text-[#C9D1D9]">Manage inbound inquiries and updates.</p>
       </div>
-      <div className="rounded border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm">
-        <DataTable
-          columns={columns}
-          rows={rows}
-          rowKey={(row) => row.id}
-          onDelete={(row) => deleteContactMessage(row.id)}
-        />
-      </div>
+      
+      {rows.length > 0 ? (
+        <div className="rounded border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm">
+          <DataTable
+            columns={columns}
+            rows={rows}
+            rowKey={(row) => row.id}
+            onDelete={(row) => deleteContactMessage(row.id)}
+          />
+        </div>
+      ) : (
+        <div className="rounded-xl border border-white/10 bg-[#0B1320]/80 p-12 shadow-sm">
+          <div className="flex flex-col items-center justify-center text-center">
+            <div className="w-16 h-16 rounded-full bg-[#C77DFF]/10 flex items-center justify-center mb-4">
+              <Inbox className="w-8 h-8 text-[#C77DFF]" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">No Messages Yet</h3>
+            <p className="text-[#C9D1D9] max-w-md">
+              Contact messages from the public contact form will appear here.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -28,7 +28,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useCms } from '../../hooks/useCms';
 
 export function AdminLayout() {
-  const { role, refresh } = useAuth();
+  const { role, signOut } = useAuth();
   const { data } = useCms();
   const navigate = useNavigate();
   const location = useLocation();
@@ -353,9 +353,8 @@ export function AdminLayout() {
                     <button
                       type="button"
                       className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-[#C77DFF] hover:bg-[#C77DFF]/10 transition-colors"
-                      onClick={() => {
-                        localStorage.removeItem('portfolio.mockAuth');
-                        refresh();
+                      onClick={async () => {
+                        await signOut();
                         navigate('/admin/login');
                       }}
                     >

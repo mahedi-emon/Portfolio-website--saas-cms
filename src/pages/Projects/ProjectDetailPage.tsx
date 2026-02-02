@@ -22,11 +22,11 @@ export function ProjectDetailPage() {
           <h1 className="text-2xl font-bold text-white mb-2">Project not found</h1>
           <p className="text-[#C9D1D9] mb-6">We couldn't find the project you're looking for.</p>
           <Link 
-            to="/projects"
+            to="/portfolio"
             className="inline-flex items-center gap-2 px-6 py-3 bg-[#C77DFF] text-[#0B1320] font-semibold rounded-xl shadow-lg shadow-[#C77DFF]/20 hover:shadow-xl hover:shadow-[#C77DFF]/30 hover:-translate-y-1 transition-all duration-300 btn-animated group"
           >
             <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            Back to Projects
+            Back to Portfolio
           </Link>
         </div>
       </div>
@@ -36,11 +36,11 @@ export function ProjectDetailPage() {
   return (
     <article className="space-y-12 pb-16">
       <Link 
-        to="/projects"
+        to="/portfolio"
         className="inline-flex items-center gap-2 text-[#C9D1D9] hover:text-[#C77DFF] hover:-translate-x-1 transition-all duration-300 group animate-fade-in"
       >
         <ArrowLeft className="w-5 h-5 group-hover:animate-wiggle" />
-        Back to Projects
+        Back to Portfolio
       </Link>
 
       <header className="relative animate-slide-up">

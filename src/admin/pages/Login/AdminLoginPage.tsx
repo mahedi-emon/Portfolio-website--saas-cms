@@ -1,14 +1,42 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
-import { Lock, Mail, ArrowRight, Sparkles } from 'lucide-react';
+import { Lock, Mail, ArrowRight, Sparkles, AlertCircle, Loader2 } from 'lucide-react';
 
 export function AdminLoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { refresh } = useAuth();
+  const { signIn, isLoading, error, clearError } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [localError, setLocalError] = useState<string | null>(null);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setLocalError(null);
+    clearError();
+
+    // Basic validation
+    if (!email.trim()) {
+      setLocalError('Please enter your email address');
+      return;
+    }
+    if (!password) {
+      setLocalError('Please enter your password');
+      return;
+    }
+
+    const { success, error: signInError } = await signIn(email, password);
+    
+    if (success) {
+      const next = new URLSearchParams(location.search).get('next') ?? '/admin/dashboard';
+      navigate(next, { replace: true });
+    } else if (signInError) {
+      setLocalError(signInError);
+    }
+  };
+
+  const displayError = localError || error;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0B1320] via-[#0B1320] to-[#0B1320]/80 flex items-center justify-center px-4 py-10 relative overflow-hidden">
@@ -34,21 +62,15 @@ export function AdminLoginPage() {
 
         {/* Login Card */}
         <div className="rounded-3xl bg-[#0B1320]/80 backdrop-blur-xl border border-white/10 p-8 shadow-2xl">
-          <div className="flex items-center gap-2 text-sm text-[#C77DFF] bg-[#C77DFF]/10 border border-[#C77DFF]/20 rounded-xl px-4 py-3 mb-6">
-            <Lock className="w-4 h-4" />
-            <span>Demo mode: Any credentials will work</span>
-          </div>
+          {/* Error Display */}
+          {displayError && (
+            <div className="flex items-center gap-2 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 mb-6">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              <span>{displayError}</span>
+            </div>
+          )}
 
-          <form
-            className="space-y-5"
-            onSubmit={(event) => {
-              event.preventDefault();
-              localStorage.setItem('portfolio.mockAuth', '{"isAuthenticated":true,"role":"admin"}');
-              refresh();
-              const next = new URLSearchParams(location.search).get('next') ?? '/admin/dashboard';
-              navigate(next);
-            }}
-          >
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-[#C9D1D9] mb-2">
                 Email Address
@@ -56,11 +78,13 @@ export function AdminLoginPage() {
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
                 <input
-                  className="w-full rounded-xl bg-[#0B1320]/60 border border-white/10 px-4 py-3 pl-12 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#C77DFF] focus:border-transparent transition-all"
+                  className="w-full rounded-xl bg-[#0B1320]/60 border border-white/10 px-4 py-3 pl-12 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#C77DFF] focus:border-transparent transition-all disabled:opacity-50"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   placeholder="admin@example.com"
                   type="email"
+                  autoComplete="email"
+                  disabled={isLoading}
                 />
               </div>
             </div>
@@ -72,21 +96,33 @@ export function AdminLoginPage() {
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
                 <input
-                  className="w-full rounded-xl bg-[#0B1320]/60 border border-white/10 px-4 py-3 pl-12 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#C77DFF] focus:border-transparent transition-all"
+                  className="w-full rounded-xl bg-[#0B1320]/60 border border-white/10 px-4 py-3 pl-12 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#C77DFF] focus:border-transparent transition-all disabled:opacity-50"
                   type="password"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   placeholder="••••••••"
+                  autoComplete="current-password"
+                  disabled={isLoading}
                 />
               </div>
             </div>
 
             <button
               type="submit"
-              className="group w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-[#C77DFF]/30 hover:shadow-xl hover:shadow-[#C77DFF]/40 transition-all duration-300 hover:-translate-y-0.5"
+              disabled={isLoading}
+              className="group w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-[#C77DFF]/30 hover:shadow-xl hover:shadow-[#C77DFF]/40 transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
             >
-              Sign In
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Signing in...
+                </>
+              ) : (
+                <>
+                  Sign In
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </>
+              )}
             </button>
           </form>
 

@@ -28,8 +28,8 @@ export function BlogListPage() {
           <span className="text-sm font-medium text-[#C77DFF]">My Blog</span>
         </div>
         
-        <h1 className="text-4xl lg:text-5xl font-bold mb-6 animate-fade-in text-white">
-          Thoughts & <span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent text-shimmer hover:animate-wiggle inline-block">Insights</span>
+        <h1 className="text-4xl lg:text-5xl font-bold mb-6 animate-fade-in text-white leading-tight overflow-visible">
+          Thoughts & <span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent text-shimmer hover:animate-wiggle inline-block pb-1">Insights</span>
         </h1>
         <p className="text-lg text-[#C9D1D9] max-w-2xl mx-auto animate-slide-up">
           Exploring ideas, sharing knowledge, and documenting my journey through code and creativity.

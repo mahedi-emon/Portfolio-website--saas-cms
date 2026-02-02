@@ -86,14 +86,9 @@ export function HomePage() {
         <div className="relative grid lg:grid-cols-2 gap-12 lg:gap-8 items-center w-full">
           {/* Content */}
           <div className="space-y-8 lg:pr-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0B1320]/60 border border-white/10 animate-slide-in-left hover:scale-105 hover:border-[#C77DFF]/50 transition-all cursor-default backdrop-blur-sm">
-              <Sparkles className="w-4 h-4 text-[#C77DFF] animate-spin-slow" />
-              <span className="text-sm font-medium text-[#C9D1D9]">Available for freelance work</span>
-            </div>
-            
-            <h1 className="text-5xl lg:text-7xl font-bold leading-[1.15] animate-slide-up text-white">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.15] animate-slide-up text-white">
               Hi, I'm{' '}
-              <span className="bg-gradient-to-r from-[#C77DFF] via-[#E0AAFF] to-[#9D4EDD] bg-[length:200%_auto] bg-clip-text text-transparent inline-block pb-2 animate-gradient-x">
+              <span className="bg-gradient-to-r from-[#C77DFF] via-[#E0AAFF] to-[#9D4EDD] bg-[length:200%_auto] bg-clip-text text-transparent inline pb-2 animate-gradient-x whitespace-nowrap">
                 {hero.fullName ?? about.fullName ?? 'Full Name'}
               </span>
             </h1>
@@ -137,40 +132,66 @@ export function HomePage() {
 
           {/* Profile Image / Visual */}
           <div className="relative hidden lg:flex justify-center items-center lg:pl-8">
-            <div className="absolute w-80 h-80 bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] rounded-full opacity-20 blur-3xl animate-morph" />
-            <div className="relative">
-              {about.profileImageUrl ? (
+            {/* Background glow with entrance animation */}
+            <div className="absolute w-80 h-80 bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] rounded-full opacity-20 blur-3xl animate-hero-glow-entrance" />
+            
+            <div className="relative animate-hero-entrance">
+              {hero.heroImageUrl ? (
                 <div className="relative group">
-                  {/* Animated gradient border */}
-                  <div className="absolute -inset-1 bg-gradient-to-r from-[#C77DFF] via-[#E0AAFF] to-[#9D4EDD] rounded-3xl opacity-75 blur-sm group-hover:opacity-100 transition-opacity animate-gradient-border" />
-                  <div className="absolute -inset-4 bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] rounded-3xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity" />
+                  {/* Spinning gradient border - outer ring */}
+                  <div className="absolute -inset-3 rounded-3xl overflow-hidden">
+                    <div
+                      className="absolute inset-0 animate-spin-border"
+                      style={{ background: 'conic-gradient(from 0deg, #C77DFF, #9D4EDD, #E0AAFF, #C77DFF, #9D4EDD, #C77DFF)' }}
+                    />
+                  </div>
+                  {/* Inner mask to create border effect */}
+                  <div className="absolute -inset-1 bg-[#0B1320] rounded-3xl" />
+                  
+                  {/* Secondary spinning glow (reverse direction) */}
+                  <div className="absolute -inset-4 rounded-3xl overflow-hidden opacity-40 group-hover:opacity-70 transition-opacity">
+                    <div className="absolute inset-0 blur-xl animate-reverse-spin" 
+                         style={{ background: 'conic-gradient(from 180deg, #C77DFF, transparent, #9D4EDD, transparent, #C77DFF)' }} />
+                  </div>
+                  
+                  {/* Gradient glow pulse */}
+                  <div className="absolute -inset-6 bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity animate-pulse" />
+                  
                   <img 
-                    className="relative w-80 h-80 rounded-3xl object-cover border-4 border-white/10 shadow-2xl shadow-[#C77DFF]/20 transition-all duration-500 group-hover:scale-[1.02] group-hover:rotate-1 group-hover:border-[#C77DFF]/50" 
-                    src={about.profileImageUrl} 
+                    className="relative w-80 h-80 rounded-3xl object-cover border-4 border-white/10 shadow-2xl shadow-[#C77DFF]/20 transition-all duration-500 group-hover:scale-[1.02] group-hover:border-[#C77DFF]/50" 
+                    src={hero.heroImageUrl} 
                     alt="Profile" 
                   />
                 </div>
               ) : (
                 <div className="relative group">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-[#C77DFF] via-[#E0AAFF] to-[#9D4EDD] rounded-3xl opacity-50 blur-sm animate-gradient-border" />
+                  {/* Spinning gradient border for placeholder */}
+                  <div className="absolute -inset-3 rounded-3xl overflow-hidden">
+                    <div
+                      className="absolute inset-0 animate-spin-border"
+                      style={{ background: 'conic-gradient(from 0deg, #C77DFF, #9D4EDD, #E0AAFF, #C77DFF, #9D4EDD, #C77DFF)' }}
+                    />
+                  </div>
+                  <div className="absolute -inset-1 bg-[#0B1320] rounded-3xl" />
+                  
                   <div className="relative w-80 h-80 rounded-3xl bg-gradient-to-br from-[#1a1f35] to-[#0B1320] border-4 border-white/10 shadow-2xl flex items-center justify-center overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-[#C77DFF]/10 to-transparent" />
                     <span className="text-7xl font-bold bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">
-                      {(about.fullName ?? hero.fullName ?? 'U').split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
+                      {(hero.fullName ?? about.fullName ?? 'U').split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
                     </span>
                   </div>
                 </div>
               )}
               
-              {/* Floating Elements - Ink Purple Theme */}
-              <div className="absolute -top-6 -right-6 p-4 bg-[#0B1320]/60 border border-white/10 rounded-2xl shadow-xl shadow-[#C77DFF]/10 floating hover:scale-110 hover:border-[#C77DFF]/50 transition-all cursor-pointer">
-                <Zap className="w-8 h-8 text-[#C77DFF]" />
+              {/* Floating Elements with Sparkle Animations */}
+              <div className="absolute -top-6 -right-6 p-4 bg-[#0B1320]/80 backdrop-blur-sm border border-[#C77DFF]/30 rounded-2xl shadow-xl shadow-[#C77DFF]/20 animate-sparkle-entrance-1 animate-sparkle-1 hover:scale-110 hover:border-[#C77DFF]/60 transition-all cursor-pointer">
+                <Zap className="w-8 h-8 text-[#C77DFF] drop-shadow-[0_0_8px_rgba(199,125,255,0.5)]" />
               </div>
-              <div className="absolute -bottom-6 -left-6 p-4 bg-[#0B1320]/60 border border-white/10 rounded-2xl shadow-xl shadow-[#C77DFF]/10 floating-delayed hover:scale-110 hover:border-[#C77DFF]/50 transition-all cursor-pointer">
-                <Rocket className="w-8 h-8 text-[#C77DFF]" />
+              <div className="absolute -bottom-6 -left-6 p-4 bg-[#0B1320]/80 backdrop-blur-sm border border-[#C77DFF]/30 rounded-2xl shadow-xl shadow-[#C77DFF]/20 animate-sparkle-entrance-2 animate-sparkle-2 hover:scale-110 hover:border-[#C77DFF]/60 transition-all cursor-pointer">
+                <Rocket className="w-8 h-8 text-[#C77DFF] drop-shadow-[0_0_8px_rgba(199,125,255,0.5)]" />
               </div>
-              <div className="absolute top-1/2 -right-12 p-3 bg-[#0B1320]/60 border border-white/10 rounded-xl shadow-lg animate-bounce-subtle delay-300">
-                <Sparkles className="w-6 h-6 text-[#9D4EDD]" />
+              <div className="absolute top-1/2 -right-12 p-3 bg-[#0B1320]/80 backdrop-blur-sm border border-[#9D4EDD]/30 rounded-xl shadow-lg shadow-[#9D4EDD]/20 animate-sparkle-entrance-3 animate-sparkle-3 hover:scale-110 transition-all cursor-pointer">
+                <Sparkles className="w-6 h-6 text-[#9D4EDD] drop-shadow-[0_0_8px_rgba(157,78,221,0.5)]" />
               </div>
             </div>
           </div>
@@ -219,7 +240,11 @@ export function HomePage() {
           </div>
           
           <div className="space-y-6">
-            <p className="text-lg text-[#C9D1D9] leading-relaxed hover:text-white transition-colors duration-300">{about.bio}</p>
+            <p className="text-lg text-[#C9D1D9] leading-relaxed hover:text-white transition-colors duration-300">
+              {about.bio && about.bio.length > 200 
+                ? `${about.bio.slice(0, 200).trim()}...` 
+                : about.bio}
+            </p>
             
             <div className="grid sm:grid-cols-2 gap-4">
               {about.currentRole && (
@@ -299,17 +324,20 @@ export function HomePage() {
                 <div className="space-y-4">
                   {(category.tools ?? []).map((tool: { id: string; name: string; logoUrl: string; proficiencyLevel: number }) => (
                     <div key={tool.id} className="flex items-center gap-4 group/item">
-                      <div className="relative">
-                        {tool.logoUrl ? (
+                      <div className="relative w-10 h-10">
+                        <div className="absolute inset-0 rounded-xl bg-[#0B1320]/50 border border-white/10 flex items-center justify-center">
+                          <Code2 className="w-5 h-5 text-white/60" />
+                        </div>
+                        {tool.logoUrl && (
                           <img 
-                            className="w-10 h-10 rounded-xl object-contain p-1 bg-[#0B1320]/50 border border-white/10 group-hover/item:border-[#C77DFF]/50 transition-colors" 
+                            className="absolute inset-0 w-10 h-10 rounded-xl object-contain p-1 bg-[#0B1320]/50 border border-white/10 group-hover/item:border-[#C77DFF]/50 transition-colors" 
                             src={tool.logoUrl} 
                             alt={tool.name} 
+                            loading="lazy"
+                            onError={(event) => {
+                              event.currentTarget.style.display = 'none';
+                            }}
                           />
-                        ) : (
-                          <div className="w-10 h-10 rounded-xl bg-[#0B1320]/50 border border-white/10 flex items-center justify-center">
-                            <Code2 className="w-5 h-5 text-white/60" />
-                          </div>
                         )}
                       </div>
                       <div className="flex-1">

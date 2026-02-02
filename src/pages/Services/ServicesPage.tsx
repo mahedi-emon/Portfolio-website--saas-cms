@@ -1,4 +1,4 @@
-import { Sparkles, Zap, ArrowRight } from 'lucide-react';
+import { Sparkles, Zap, ArrowRight, Inbox } from 'lucide-react';
 import { useCms } from '../../hooks/useCms';
 
 const gradients = [
@@ -75,6 +75,21 @@ export function ServicesPage() {
                 </div>
               </article>
             ))}
+          </div>
+        </section>
+      )}
+
+      {/* Services Empty State */}
+      {services.length === 0 && (
+        <section className="animate-fade-in">
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="w-20 h-20 rounded-full bg-[#C77DFF]/10 flex items-center justify-center mb-6">
+              <Inbox className="w-10 h-10 text-[#C77DFF]" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">No Services Yet</h3>
+            <p className="text-[#C9D1D9] max-w-md">
+              Services will appear here once they are added and published through the admin panel.
+            </p>
           </div>
         </section>
       )}

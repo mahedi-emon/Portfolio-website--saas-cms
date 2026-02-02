@@ -150,10 +150,7 @@ export function Footer() {
         <div className="pt-8 border-t border-white/10 animate-fade-in" style={{ animationDelay: '400ms' }}>
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-1 text-sm text-white/60">
-              <span>© {year} {about.fullName ?? 'Portfolio'}.</span>
-              <span className="hidden sm:inline">Made with</span>
-              <Heart className="w-4 h-4 text-[#C77DFF] hidden sm:inline mx-1 animate-heartbeat" />
-              <span className="hidden sm:inline">All rights reserved.</span>
+              <span>© {year} {about.fullName ?? 'Portfolio'}. All rights reserved.</span>
             </div>
             <div className="flex gap-6 text-sm text-white/60">
               {legalLinks.map((link) => (

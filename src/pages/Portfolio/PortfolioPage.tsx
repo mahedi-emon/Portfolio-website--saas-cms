@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useCms } from '../../hooks/useCms';
-import { Sparkles, FolderGit2, BookOpen, Trophy, Award, ExternalLink, Github, FileText, Eye } from 'lucide-react';
+import { Sparkles, FolderGit2, BookOpen, Trophy, Award, ExternalLink, Github, FileText, Eye, Inbox } from 'lucide-react';
 import { CertificateModal } from '../../components/common/CertificateModal';
 
 const tabs = ['projects', 'publications', 'achievements'] as const;
@@ -159,6 +159,21 @@ export function PortfolioPage() {
         </section>
       )}
 
+      {/* Projects Empty State */}
+      {activeTab === 'projects' && projects.length === 0 && (
+        <section className="animate-fade-in">
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="w-20 h-20 rounded-full bg-[#C77DFF]/10 flex items-center justify-center mb-6">
+              <Inbox className="w-10 h-10 text-[#C77DFF]" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">No Projects Yet</h3>
+            <p className="text-[#C9D1D9] max-w-md">
+              Projects will appear here once they are added and published.
+            </p>
+          </div>
+        </section>
+      )}
+
       {/* Publications Tab */}
       {activeTab === 'publications' && publications.length > 0 && (
         <section className="space-y-6">
@@ -234,6 +249,21 @@ export function PortfolioPage() {
             </article>
           ))}
           
+        </section>
+      )}
+
+      {/* Publications Empty State */}
+      {activeTab === 'publications' && publications.length === 0 && (
+        <section className="animate-fade-in">
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="w-20 h-20 rounded-full bg-[#C77DFF]/10 flex items-center justify-center mb-6">
+              <Inbox className="w-10 h-10 text-[#C77DFF]" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">No Publications Yet</h3>
+            <p className="text-[#C9D1D9] max-w-md">
+              Publications will appear here once they are added and published.
+            </p>
+          </div>
         </section>
       )}
 
@@ -361,6 +391,21 @@ export function PortfolioPage() {
             
             </div>
           )}
+        </section>
+      )}
+
+      {/* Achievements Empty State */}
+      {activeTab === 'achievements' && achievements.length === 0 && certifications.length === 0 && (
+        <section className="animate-fade-in">
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="w-20 h-20 rounded-full bg-[#C77DFF]/10 flex items-center justify-center mb-6">
+              <Inbox className="w-10 h-10 text-[#C77DFF]" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">No Achievements Yet</h3>
+            <p className="text-[#C9D1D9] max-w-md">
+              Achievements and certifications will appear here once they are added and published.
+            </p>
+          </div>
         </section>
       )}
 

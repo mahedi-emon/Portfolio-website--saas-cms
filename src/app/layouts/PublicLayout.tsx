@@ -58,7 +58,7 @@ export function PublicLayout() {
       >
         <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between px-6 sm:px-8 lg:px-12 xl:px-16">
           {/* Logo and Name Container */}
-          <div className="flex items-center min-w-[210px]">
+          <div className="flex items-center min-w-[280px]">
             <NavLink 
               to="/" 
               onClick={(e) => handleNavClick(e, '/')}
