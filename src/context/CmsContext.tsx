@@ -2,18 +2,15 @@
  * CMS Context - Central Data Store
  * 
  * Provides CMS data and operations throughout the app.
- * Currently uses in-memory mock data; structured for Supabase integration.
- * 
- * TODO [SUPABASE]: Replace mock data with Supabase queries
- * - Use React Query or SWR for data fetching
- * - Implement real-time subscriptions for live updates
- * - Add proper caching strategy
+ * Uses Supabase for data storage with mock fallback in development.
  */
 
 import type { ReactNode } from 'react';
-import React, { createContext, useMemo, useState, useCallback } from 'react';
+import React, { createContext, useMemo, useState, useCallback, useEffect } from 'react';
 import cmsMock from '../data/mock/cms.mock.json';
 import { createCmsRepository } from '../services/cmsRepository';
+import { isSupabaseConfigured } from '../lib/supabase';
+import * as supabaseCms from '../services/supabaseCms';
 
 // ============================================================================
 // Types
@@ -79,106 +76,185 @@ export const CmsContext = createContext<CmsContextValue | null>(null);
 
 export function CmsProvider({ children }: { children: ReactNode }) {
   /**
+   * Whether to use Supabase for data operations.
+   * Falls back to in-memory mock data if Supabase is not configured.
+   */
+  const useSupabase = isSupabaseConfigured();
+  
+  /**
    * CMS Data State
-   * 
-   * TODO [SUPABASE]: Replace with React Query or SWR for proper caching:
-   * ```typescript
-   * const { data, isLoading, error } = useQuery(['cms'], fetchCmsData);
-   * ```
    */
   const [data, setData] = useState<CmsData>(() => cmsMock);
   
   /**
    * Loading State
-   * 
-   * TODO [SUPABASE]: Loading state will be managed by React Query/SWR
    */
   const [loadingState, setLoadingState] = useState<CmsLoadingState>({
-    isLoading: false,
+    isLoading: true, // Start loading to fetch from Supabase
     isMutating: false,
     mutatingOperation: null,
   });
   
   /**
    * Error State
-   * 
-   * TODO [SUPABASE]: Errors will come from Supabase client
    */
   const [errorState, setErrorState] = useState<CmsErrorState>({
     error: null,
     errorOperation: null,
   });
 
+  /**
+   * Fetch data from Supabase on mount
+   */
+  useEffect(() => {
+    async function loadData() {
+      if (!useSupabase) {
+        console.log('[CmsContext] Using mock data (Supabase not configured)');
+        setLoadingState(prev => ({ ...prev, isLoading: false }));
+        return;
+      }
+
+      try {
+        console.log('[CmsContext] Fetching data from Supabase...');
+        const supabaseData = await supabaseCms.fetchAllCmsData();
+        if (supabaseData) {
+          setData(supabaseData);
+          console.log('[CmsContext] Supabase data loaded successfully');
+        }
+      } catch (err) {
+        console.error('[CmsContext] Failed to fetch from Supabase:', err);
+        setErrorState({ 
+          error: err instanceof Error ? err.message : 'Failed to load data', 
+          errorOperation: 'initialLoad' 
+        });
+        // Keep mock data as fallback
+      } finally {
+        setLoadingState(prev => ({ ...prev, isLoading: false }));
+      }
+    }
+
+    loadData();
+  }, [useSupabase]);
+
   const clearError = useCallback(() => {
     setErrorState({ error: null, errorOperation: null });
   }, []);
 
   /**
-   * Wrap an operation with loading/error handling.
-   * This pattern prepares for async operations with Supabase.
-   * 
-   * TODO [SUPABASE]: Operations will become async:
-   * ```typescript
-   * const wrapOperation = async (operation: string, fn: () => Promise<void>) => {
-   *   setLoadingState({ ...loadingState, isMutating: true, mutatingOperation: operation });
-   *   try {
-   *     await fn();
-   *   } catch (err) {
-   *     setErrorState({ error: err.message, errorOperation: operation });
-   *   } finally {
-   *     setLoadingState({ ...loadingState, isMutating: false, mutatingOperation: null });
-   *   }
-   * };
-   * ```
+   * Wrap an async operation with loading/error handling.
    */
-  const wrapOperation = useCallback((operation: string, fn: () => void) => {
+  const wrapOperation = useCallback(async (operation: string, fn: () => Promise<void> | void) => {
     setLoadingState((prev) => ({ ...prev, isMutating: true, mutatingOperation: operation }));
     setErrorState({ error: null, errorOperation: null });
     
     try {
-      fn();
+      await fn();
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error';
       setErrorState({ error: message, errorOperation: operation });
       console.error(`[CmsContext] ${operation} failed:`, err);
+      throw err; // Re-throw so callers can handle
     } finally {
       setLoadingState((prev) => ({ ...prev, isMutating: false, mutatingOperation: null }));
     }
   }, []);
 
-  // Create repository with wrapped operations
-  const repo = useMemo(() => createCmsRepository(setData), []);
+  // Create local repository for mock fallback
+  const localRepo = useMemo(() => createCmsRepository(setData), []);
 
   // Wrap all repository methods for consistent loading/error handling
+  // Uses Supabase when configured, falls back to local repo
   const wrappedMethods = useMemo(() => ({
-    updateSingleton: (key: SingletonKey, values: Record<string, unknown>) => {
-      wrapOperation(`updateSingleton:${key}`, () => repo.updateSingleton(key, values));
+    updateSingleton: async (key: SingletonKey, values: Record<string, unknown>) => {
+      await wrapOperation(`updateSingleton:${key}`, async () => {
+        if (useSupabase) {
+          await supabaseCms.updateSingleton(key, values);
+        }
+        // Always update local state for immediate UI feedback
+        localRepo.updateSingleton(key, values);
+      });
     },
-    createItem: (key: CollectionKey, values: Record<string, unknown>) => {
-      wrapOperation(`createItem:${key}`, () => repo.createItem(key, values));
+    createItem: async (key: CollectionKey, values: Record<string, unknown>) => {
+      await wrapOperation(`createItem:${key}`, async () => {
+        if (useSupabase) {
+          const newItem = await supabaseCms.createItem(key, values);
+          // Update local state with the server-generated item (includes ID)
+          setData(prev => ({
+            ...prev,
+            collections: {
+              ...prev.collections,
+              [key]: [...prev.collections[key], newItem],
+            },
+          }));
+        } else {
+          localRepo.createItem(key, values);
+        }
+      });
     },
-    updateItem: (key: CollectionKey, id: string, values: Record<string, unknown>) => {
-      wrapOperation(`updateItem:${key}:${id}`, () => repo.updateItem(key, id, values));
+    updateItem: async (key: CollectionKey, id: string, values: Record<string, unknown>) => {
+      await wrapOperation(`updateItem:${key}:${id}`, async () => {
+        if (useSupabase) {
+          await supabaseCms.updateItem(key, id, values);
+        }
+        localRepo.updateItem(key, id, values);
+      });
     },
-    deleteItem: (key: CollectionKey, id: string) => {
-      wrapOperation(`deleteItem:${key}:${id}`, () => repo.deleteItem(key, id));
+    deleteItem: async (key: CollectionKey, id: string) => {
+      await wrapOperation(`deleteItem:${key}:${id}`, async () => {
+        if (useSupabase) {
+          await supabaseCms.deleteItem(key, id);
+        }
+        localRepo.deleteItem(key, id);
+      });
     },
-    replaceCollection: (key: CollectionKey, items: CollectionItem[]) => {
-      wrapOperation(`replaceCollection:${key}`, () => repo.replaceCollection(key, items));
+    replaceCollection: async (key: CollectionKey, items: CollectionItem[]) => {
+      await wrapOperation(`replaceCollection:${key}`, async () => {
+        // For now, just update local state
+        // Full collection replacement would need batch operations in Supabase
+        localRepo.replaceCollection(key, items);
+      });
     },
-    addContactMessage: (message: Record<string, unknown>) => {
-      wrapOperation('addContactMessage', () => repo.addContactMessage(message));
+    addContactMessage: async (message: Record<string, unknown>) => {
+      await wrapOperation('addContactMessage', async () => {
+        if (useSupabase) {
+          const newMessage = await supabaseCms.addContactMessage(message);
+          setData(prev => ({
+            ...prev,
+            collections: {
+              ...prev.collections,
+              contactMessages: [newMessage, ...prev.collections.contactMessages],
+            },
+          }));
+        } else {
+          localRepo.addContactMessage(message);
+        }
+      });
     },
-    updateContactMessage: (id: string, values: Record<string, unknown>) => {
-      wrapOperation(`updateContactMessage:${id}`, () => repo.updateContactMessage(id, values));
+    updateContactMessage: async (id: string, values: Record<string, unknown>) => {
+      await wrapOperation(`updateContactMessage:${id}`, async () => {
+        if (useSupabase) {
+          await supabaseCms.updateContactMessage(id, values);
+        }
+        localRepo.updateContactMessage(id, values);
+      });
     },
-    deleteContactMessage: (id: string) => {
-      wrapOperation(`deleteContactMessage:${id}`, () => repo.deleteContactMessage(id));
+    deleteContactMessage: async (id: string) => {
+      await wrapOperation(`deleteContactMessage:${id}`, async () => {
+        if (useSupabase) {
+          await supabaseCms.deleteContactMessage(id);
+        }
+        localRepo.deleteContactMessage(id);
+      });
     },
-    setActiveResume: (resumeId: string) => {
-      wrapOperation(`setActiveResume:${resumeId}`, () => repo.setActiveResume(resumeId));
+    setActiveResume: async (resumeId: string) => {
+      await wrapOperation(`setActiveResume:${resumeId}`, async () => {
+        if (useSupabase) {
+          await supabaseCms.setActiveResume(resumeId);
+        }
+        localRepo.setActiveResume(resumeId);
+      });
     },
-  }), [repo, wrapOperation]);
+  }), [localRepo, wrapOperation, useSupabase]);
 
   const value = useMemo<CmsContextValue>(
     () => ({

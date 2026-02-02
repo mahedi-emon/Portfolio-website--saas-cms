@@ -1,0 +1,622 @@
+/**
+ * Supabase CMS Service
+ * 
+ * Handles all database operations for the CMS using Supabase.
+ * Maps between frontend camelCase and database snake_case.
+ */
+
+import { supabase, isSupabaseConfigured, DB_TABLES, STORAGE_BUCKETS } from '../lib/supabase';
+import type { CmsData, CollectionKey, SingletonKey } from '../context/CmsContext';
+
+// ============================================================================
+// Type Definitions
+// ============================================================================
+
+type DbRow = Record<string, unknown>;
+
+// ============================================================================
+// Field Mapping: camelCase <-> snake_case
+// ============================================================================
+
+/**
+ * Convert snake_case to camelCase
+ */
+function toCamelCase(str: string): string {
+  return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+}
+
+/**
+ * Convert camelCase to snake_case
+ */
+function toSnakeCase(str: string): string {
+  return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+}
+
+/**
+ * Convert object keys from snake_case to camelCase
+ */
+function mapRowToFrontend<T extends DbRow>(row: T): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(row)) {
+    result[toCamelCase(key)] = value;
+  }
+  return result;
+}
+
+/**
+ * Convert object keys from camelCase to snake_case
+ */
+function mapFrontendToRow<T extends Record<string, unknown>>(obj: T): DbRow {
+  const result: DbRow = {};
+  for (const [key, value] of Object.entries(obj)) {
+    // Skip frontend-only fields
+    if (key === 'createdAt' || key === 'updatedAt') continue;
+    result[toSnakeCase(key)] = value;
+  }
+  return result;
+}
+
+// ============================================================================
+// Collection Key to Table Name Mapping
+// ============================================================================
+
+const collectionToTable: Record<CollectionKey, string> = {
+  education: DB_TABLES.EDUCATION,
+  skills: DB_TABLES.SKILLS,
+  services: DB_TABLES.SERVICES,
+  resumes: DB_TABLES.RESUMES,
+  projects: DB_TABLES.PROJECTS,
+  publications: DB_TABLES.PUBLICATIONS,
+  certifications: DB_TABLES.CERTIFICATIONS,
+  experience: DB_TABLES.EXPERIENCE,
+  blogs: DB_TABLES.BLOGS,
+  testimonials: DB_TABLES.TESTIMONIALS,
+  achievements: DB_TABLES.ACHIEVEMENTS,
+  clients: DB_TABLES.CLIENTS,
+  techStackCategories: DB_TABLES.TECH_STACK_CATEGORIES,
+  contactMessages: DB_TABLES.CONTACT_MESSAGES,
+  portfolio: DB_TABLES.PROJECTS, // Portfolio maps to projects table
+};
+
+const singletonToTable: Record<SingletonKey, string> = {
+  hero: DB_TABLES.HERO,
+  about: DB_TABLES.ABOUT,
+  contact: DB_TABLES.CONTACT,
+  resumeSettings: DB_TABLES.RESUME_SETTINGS,
+};
+
+// ============================================================================
+// Special Field Mappings (for renamed reserved keywords)
+// ============================================================================
+
+/**
+ * Special mappings for fields that were renamed to avoid PostgreSQL reserved keywords
+ */
+const specialFieldMappings: Record<string, Record<string, string>> = {
+  about: {
+    currentRole: 'current_job_role',
+    current_job_role: 'currentRole',
+  },
+  experience: {
+    role: 'job_role',
+    job_role: 'role',
+  },
+  publications: {
+    year: 'publication_year',
+    publication_year: 'year',
+  },
+  achievements: {
+    year: 'award_year',
+    award_year: 'year',
+  },
+};
+
+/**
+ * Apply special field mappings when converting to database format
+ */
+function applySpecialMappingsToDb(tableName: string, data: DbRow): DbRow {
+  const mappings = specialFieldMappings[tableName];
+  if (!mappings) return data;
+  
+  const result = { ...data };
+  for (const [frontendKey, dbKey] of Object.entries(mappings)) {
+    if (frontendKey in result && !frontendKey.includes('_')) {
+      result[dbKey] = result[toSnakeCase(frontendKey)];
+      delete result[toSnakeCase(frontendKey)];
+    }
+  }
+  return result;
+}
+
+/**
+ * Apply special field mappings when converting from database format
+ */
+function applySpecialMappingsFromDb(tableName: string, data: Record<string, unknown>): Record<string, unknown> {
+  const result = { ...data };
+  
+  // Handle about table
+  if (tableName === 'about' && 'currentJobRole' in result) {
+    result.currentRole = result.currentJobRole;
+    delete result.currentJobRole;
+  }
+  
+  // Handle experience table
+  if (tableName === 'experience' && 'jobRole' in result) {
+    result.role = result.jobRole;
+    delete result.jobRole;
+  }
+  
+  // Handle publications table
+  if (tableName === 'publications' && 'publicationYear' in result) {
+    result.year = result.publicationYear;
+    delete result.publicationYear;
+  }
+  
+  // Handle achievements table
+  if (tableName === 'achievements' && 'awardYear' in result) {
+    result.year = result.awardYear;
+    delete result.awardYear;
+  }
+  
+  return result;
+}
+
+// ============================================================================
+// Fetch All CMS Data
+// ============================================================================
+
+/**
+ * Fetch all CMS data from Supabase.
+ * Returns null if Supabase is not configured (falls back to mock data).
+ */
+export async function fetchAllCmsData(): Promise<CmsData | null> {
+  if (!isSupabaseConfigured() || !supabase) {
+    console.warn('[SupabaseCms] Not configured - using mock data');
+    return null;
+  }
+
+  try {
+    // Fetch all data in parallel
+    const [
+      heroResult,
+      aboutResult,
+      contactResult,
+      resumeSettingsResult,
+      educationResult,
+      skillsResult,
+      servicesResult,
+      resumesResult,
+      projectsResult,
+      publicationsResult,
+      certificationsResult,
+      experienceResult,
+      blogsResult,
+      testimonialsResult,
+      achievementsResult,
+      clientsResult,
+      techStackResult,
+      messagesResult,
+    ] = await Promise.all([
+      supabase.from(DB_TABLES.HERO).select('*').single(),
+      supabase.from(DB_TABLES.ABOUT).select('*').single(),
+      supabase.from(DB_TABLES.CONTACT).select('*').single(),
+      supabase.from(DB_TABLES.RESUME_SETTINGS).select('*').single(),
+      supabase.from(DB_TABLES.EDUCATION).select('*').order('order_index'),
+      supabase.from(DB_TABLES.SKILLS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.SERVICES).select('*').order('order_index'),
+      supabase.from(DB_TABLES.RESUMES).select('*'),
+      supabase.from(DB_TABLES.PROJECTS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.PUBLICATIONS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.CERTIFICATIONS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.EXPERIENCE).select('*').order('order_index'),
+      supabase.from(DB_TABLES.BLOGS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.TESTIMONIALS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.ACHIEVEMENTS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.CLIENTS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.TECH_STACK_CATEGORIES).select('*').order('order_index'),
+      supabase.from(DB_TABLES.CONTACT_MESSAGES).select('*').order('created_at', { ascending: false }),
+    ]);
+
+    // Transform hero data
+    const hero = heroResult.data ? mapRowToFrontend(heroResult.data as DbRow) : getDefaultHero();
+    
+    // Transform about data with special field mapping
+    let about = aboutResult.data ? mapRowToFrontend(aboutResult.data as DbRow) : getDefaultAbout();
+    about = applySpecialMappingsFromDb('about', about);
+    
+    // Transform contact data
+    const contactRow = contactResult.data ? mapRowToFrontend(contactResult.data as DbRow) : getDefaultContact();
+    const contact = {
+      pageIntroText: contactRow.pageIntroText || '',
+      hireMeLabel: contactRow.hireMeLabel || 'Hire Me',
+      contactInfo: {
+        email: contactRow.email || '',
+        phone: contactRow.phone || '',
+        location: contactRow.location || '',
+      },
+      socialLinks: contactRow.socialLinks || [],
+    };
+    
+    // Transform resume settings
+    const resumeSettings = resumeSettingsResult.data 
+      ? { activeResumeId: (resumeSettingsResult.data as DbRow).active_resume_id || null }
+      : { activeResumeId: null };
+
+    // Helper to transform collection rows
+    const transformCollection = (rows: DbRow[] | null, tableName?: string) => {
+      if (!rows) return [];
+      return rows.map(row => {
+        let mapped = mapRowToFrontend(row);
+        if (tableName) {
+          mapped = applySpecialMappingsFromDb(tableName, mapped);
+        }
+        return mapped;
+      });
+    };
+
+    return {
+      singletons: {
+        hero,
+        about,
+        contact,
+        resumeSettings,
+      },
+      collections: {
+        education: transformCollection(educationResult.data),
+        skills: transformCollection(skillsResult.data),
+        services: transformCollection(servicesResult.data),
+        resumes: transformCollection(resumesResult.data),
+        projects: transformCollection(projectsResult.data),
+        publications: transformCollection(publicationsResult.data, 'publications'),
+        certifications: transformCollection(certificationsResult.data),
+        experience: transformCollection(experienceResult.data, 'experience'),
+        blogs: transformCollection(blogsResult.data),
+        testimonials: transformCollection(testimonialsResult.data),
+        achievements: transformCollection(achievementsResult.data, 'achievements'),
+        clients: transformCollection(clientsResult.data),
+        techStackCategories: transformCollection(techStackResult.data),
+        contactMessages: transformCollection(messagesResult.data),
+        portfolio: [], // Empty - portfolio data comes from projects
+      },
+    } as CmsData;
+  } catch (error) {
+    console.error('[SupabaseCms] Failed to fetch CMS data:', error);
+    throw error;
+  }
+}
+
+// ============================================================================
+// Singleton Operations
+// ============================================================================
+
+/**
+ * Update a singleton record in Supabase.
+ */
+export async function updateSingleton(
+  key: SingletonKey,
+  values: Record<string, unknown>
+): Promise<void> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
+  const tableName = singletonToTable[key];
+  let dbValues = mapFrontendToRow(values);
+  
+  // Handle special contact structure
+  if (key === 'contact' && values.contactInfo) {
+    const contactInfo = values.contactInfo as Record<string, string>;
+    dbValues = {
+      ...dbValues,
+      email: contactInfo.email,
+      phone: contactInfo.phone,
+      location: contactInfo.location,
+    };
+    delete dbValues.contact_info;
+  }
+  
+  // Handle special about field mapping
+  if (key === 'about' && 'current_role' in dbValues) {
+    dbValues.current_job_role = dbValues.current_role;
+    delete dbValues.current_role;
+  }
+  
+  // Handle resumeSettings
+  if (key === 'resumeSettings' && 'active_resume_id' in dbValues) {
+    // Already in correct format
+  }
+  
+  dbValues.updated_at = new Date().toISOString();
+  
+  const { error } = await supabase
+    .from(tableName)
+    .update(dbValues)
+    .not('id', 'is', null); // Update the single row
+
+  if (error) throw error;
+}
+
+// ============================================================================
+// Collection Operations
+// ============================================================================
+
+/**
+ * Create a new item in a collection.
+ */
+export async function createItem(
+  key: CollectionKey,
+  values: Record<string, unknown>
+): Promise<Record<string, unknown>> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
+  const tableName = collectionToTable[key];
+  let dbValues = mapFrontendToRow(values);
+  
+  // Apply special field mappings based on collection type
+  if (key === 'experience' && 'role' in dbValues) {
+    dbValues.job_role = dbValues.role;
+    delete dbValues.role;
+  }
+  if (key === 'publications' && 'year' in dbValues) {
+    dbValues.publication_year = dbValues.year;
+    delete dbValues.year;
+  }
+  if (key === 'achievements' && 'year' in dbValues) {
+    dbValues.award_year = dbValues.year;
+    delete dbValues.year;
+  }
+  
+  // Remove id if present (let Supabase generate it)
+  delete dbValues.id;
+  
+  const { data, error } = await supabase
+    .from(tableName)
+    .insert(dbValues)
+    .select()
+    .single();
+
+  if (error) throw error;
+  
+  let result = mapRowToFrontend(data as DbRow);
+  result = applySpecialMappingsFromDb(key, result);
+  return result;
+}
+
+/**
+ * Update an existing item in a collection.
+ */
+export async function updateItem(
+  key: CollectionKey,
+  id: string,
+  values: Record<string, unknown>
+): Promise<void> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
+  const tableName = collectionToTable[key];
+  let dbValues = mapFrontendToRow(values);
+  
+  // Apply special field mappings
+  if (key === 'experience' && 'role' in dbValues) {
+    dbValues.job_role = dbValues.role;
+    delete dbValues.role;
+  }
+  if (key === 'publications' && 'year' in dbValues) {
+    dbValues.publication_year = dbValues.year;
+    delete dbValues.year;
+  }
+  if (key === 'achievements' && 'year' in dbValues) {
+    dbValues.award_year = dbValues.year;
+    delete dbValues.year;
+  }
+  
+  dbValues.updated_at = new Date().toISOString();
+  
+  const { error } = await supabase
+    .from(tableName)
+    .update(dbValues)
+    .eq('id', id);
+
+  if (error) throw error;
+}
+
+/**
+ * Delete an item from a collection.
+ */
+export async function deleteItem(
+  key: CollectionKey,
+  id: string
+): Promise<void> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
+  const tableName = collectionToTable[key];
+  
+  const { error } = await supabase
+    .from(tableName)
+    .delete()
+    .eq('id', id);
+
+  if (error) throw error;
+}
+
+// ============================================================================
+// Contact Messages
+// ============================================================================
+
+/**
+ * Add a contact message (public - no auth required).
+ */
+export async function addContactMessage(
+  message: Record<string, unknown>
+): Promise<Record<string, unknown>> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
+  const dbValues = {
+    name: message.name,
+    email: message.email,
+    subject: message.subject,
+    message: message.message,
+    status: 'new',
+  };
+  
+  const { data, error } = await supabase
+    .from(DB_TABLES.CONTACT_MESSAGES)
+    .insert(dbValues)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return mapRowToFrontend(data as DbRow);
+}
+
+/**
+ * Update a contact message (admin only).
+ */
+export async function updateContactMessage(
+  id: string,
+  values: Record<string, unknown>
+): Promise<void> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
+  const dbValues = mapFrontendToRow(values);
+  
+  const { error } = await supabase
+    .from(DB_TABLES.CONTACT_MESSAGES)
+    .update(dbValues)
+    .eq('id', id);
+
+  if (error) throw error;
+}
+
+/**
+ * Delete a contact message (admin only).
+ */
+export async function deleteContactMessage(id: string): Promise<void> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
+  const { error } = await supabase
+    .from(DB_TABLES.CONTACT_MESSAGES)
+    .delete()
+    .eq('id', id);
+
+  if (error) throw error;
+}
+
+// ============================================================================
+// Resume Operations
+// ============================================================================
+
+/**
+ * Set the active resume.
+ */
+export async function setActiveResume(resumeId: string): Promise<void> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
+  // Update all resumes to inactive, then set the selected one to active
+  await supabase
+    .from(DB_TABLES.RESUMES)
+    .update({ status: 'inactive', updated_at: new Date().toISOString() })
+    .neq('id', resumeId);
+    
+  await supabase
+    .from(DB_TABLES.RESUMES)
+    .update({ status: 'active', updated_at: new Date().toISOString() })
+    .eq('id', resumeId);
+  
+  // Update resume settings
+  await supabase
+    .from(DB_TABLES.RESUME_SETTINGS)
+    .update({ 
+      active_resume_id: resumeId,
+      updated_at: new Date().toISOString() 
+    })
+    .not('id', 'is', null);
+}
+
+// ============================================================================
+// Storage Operations
+// ============================================================================
+
+/**
+ * Upload a file to Supabase Storage.
+ */
+export async function uploadFile(
+  bucket: keyof typeof STORAGE_BUCKETS,
+  path: string,
+  file: File
+): Promise<string> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
+  const bucketName = STORAGE_BUCKETS[bucket];
+  
+  const { data, error } = await supabase.storage
+    .from(bucketName)
+    .upload(path, file, {
+      cacheControl: '3600',
+      upsert: true,
+    });
+
+  if (error) throw error;
+  
+  const { data: { publicUrl } } = supabase.storage
+    .from(bucketName)
+    .getPublicUrl(data.path);
+
+  return publicUrl;
+}
+
+/**
+ * Delete a file from Supabase Storage.
+ */
+export async function deleteFile(
+  bucket: keyof typeof STORAGE_BUCKETS,
+  path: string
+): Promise<void> {
+  if (!supabase) throw new Error('Supabase not configured');
+  
+  const bucketName = STORAGE_BUCKETS[bucket];
+  
+  const { error } = await supabase.storage
+    .from(bucketName)
+    .remove([path]);
+
+  if (error) throw error;
+}
+
+// ============================================================================
+// Default Values (fallbacks)
+// ============================================================================
+
+function getDefaultHero() {
+  return {
+    fullName: '',
+    headline: '',
+    subheadline: '',
+    heroImageUrl: '',
+    ctaPrimaryLabel: 'View Portfolio',
+    ctaPrimaryHref: '/portfolio',
+    ctaSecondaryLabel: 'Contact',
+    ctaSecondaryHref: '/contact',
+  };
+}
+
+function getDefaultAbout() {
+  return {
+    fullName: '',
+    tagline: '',
+    title: 'About Me',
+    bio: '',
+    profileImageUrl: '',
+    currentRole: '',
+    researchInterest: '',
+    highlights: [],
+  };
+}
+
+function getDefaultContact() {
+  return {
+    pageIntroText: '',
+    hireMeLabel: 'Hire Me',
+    email: '',
+    phone: '',
+    location: '',
+    socialLinks: [],
+  };
+}

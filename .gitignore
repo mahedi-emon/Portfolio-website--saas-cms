@@ -17,3 +17,5 @@ yarn-error.log*
 .cache/
 .parcel-cache/
 .vite/
+.md/
+.spl/ 

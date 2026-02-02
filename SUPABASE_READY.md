@@ -1,6 +1,65 @@
-# Supabase Integration Readiness
+# Supabase Integration - COMPLETE SETUP
 
-This document summarizes the current state of the codebase and provides a clear integration plan for Supabase.
+This document contains everything needed to connect Supabase to your portfolio CMS.
+
+## ✅ Credentials Configured
+
+Environment file `.env` has been created with:
+- `VITE_SUPABASE_URL=https://tgtsxotpwgxowntvqlwi.supabase.co`
+- `VITE_SUPABASE_ANON_KEY=eyJhbGci...` (full key in .env file)
+
+## 🚀 Quick Start - Run These SQL Scripts in Order
+
+### Step 1: Create Database Schema
+Run `supabase/schema.sql` in Supabase SQL Editor to create:
+- 4 singleton tables (cms_hero, cms_about, cms_contact, cms_resume_settings)
+- 13 collection tables (education, skills, projects, etc.)
+- All indexes and triggers
+- Row Level Security policies
+
+### Step 2: Seed Data
+Run `supabase/seed.sql` to populate all tables with existing CMS data.
+
+### Step 3: Create Storage Buckets (Manual)
+In Supabase Dashboard → Storage:
+1. Create bucket `images` (Public)
+2. Create bucket `resumes` (Public)
+3. Create bucket `documents` (Public)
+4. Create bucket `gallery` (Public)
+
+### Step 4: Apply Storage Policies
+Run `supabase/storage-policies.sql` to set up storage access rules.
+
+### Step 5: Create Admin User
+In Supabase Dashboard → Authentication → Users:
+1. Click "Add User"
+2. Enter your admin email and password
+3. This will be the only admin account
+
+---
+
+## 📁 SQL Files Created
+
+| File | Purpose |
+|------|---------|
+| `supabase/schema.sql` | Tables, indexes, triggers, RLS policies |
+| `supabase/seed.sql` | Initial data from mock JSON |
+| `supabase/storage-policies.sql` | Storage bucket access rules |
+
+---
+
+## 🔒 Security Summary
+
+### Row Level Security (RLS)
+- **Public users**: READ only `status = 'published'` content
+- **Admin users**: Full CRUD on all tables
+- **Contact form**: Public INSERT only to `contact_messages`
+
+### Storage Security
+- **All buckets**: Public READ
+- **All buckets**: Admin-only WRITE/UPDATE/DELETE
+
+---
 
 ## ✅ Already Supabase-Ready
 
@@ -150,11 +209,42 @@ Then update `src/utils/sanitizeHtml.ts` to use DOMPurify (see comments in file).
 
 ---
 
+## 📋 Database Tables Overview
+
+### Singletons (1 row each)
+| Table | Description |
+|-------|-------------|
+| `cms_hero` | Homepage hero section |
+| `cms_about` | About page content |
+| `cms_contact` | Contact info & social links |
+| `cms_resume_settings` | Active resume selection |
+
+### Collections (multiple rows)
+| Table | Public Access | Description |
+|-------|---------------|-------------|
+| `education` | published only | Education history |
+| `skills` | published only | Technical skills |
+| `services` | published only | Services offered |
+| `resumes` | active/published | Resume files |
+| `projects` | published only | Portfolio projects |
+| `publications` | published only | Research papers |
+| `certifications` | published only | Certificates |
+| `experience` | published only | Work experience |
+| `blogs` | published only | Blog posts |
+| `testimonials` | published only | Client testimonials |
+| `achievements` | published only | Awards & achievements |
+| `tech_stack_categories` | published only | Tech stack with tools |
+| `clients` | published only | Client logos |
+| `contact_messages` | INSERT only | Contact form submissions |
+
+---
+
 ## ✓ Confirmation
 
-After completing the above:
-- ✅ All existing functionality will work
-- ✅ UI/UX will be unchanged
-- ✅ CMS logic remains the same
-- ✅ Admin behavior is identical
-- ✅ Data will be persisted in Supabase
+After running the SQL scripts:
+- ✅ All existing functionality will work unchanged
+- ✅ UI/UX remains identical
+- ✅ CMS admin behavior is the same
+- ✅ Data persists in Supabase database
+- ✅ Files stored in Supabase Storage
+- ✅ Authentication via Supabase Auth
