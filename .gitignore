@@ -17,5 +17,10 @@ yarn-error.log*
 .cache/
 .parcel-cache/
 .vite/
-.md/
-.spl/ 
+
+
+supabase/
+
+
+SUPABASE_READY.md
+supabase/

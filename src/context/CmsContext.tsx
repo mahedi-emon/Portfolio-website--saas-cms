@@ -183,7 +183,7 @@ export function CmsProvider({ children }: { children: ReactNode }) {
             ...prev,
             collections: {
               ...prev.collections,
-              [key]: [...prev.collections[key], newItem],
+              [key]: [...prev.collections[key], newItem as CollectionItem],
             },
           }));
         } else {
@@ -222,7 +222,10 @@ export function CmsProvider({ children }: { children: ReactNode }) {
             ...prev,
             collections: {
               ...prev.collections,
-              contactMessages: [newMessage, ...prev.collections.contactMessages],
+              contactMessages: [
+                newMessage as typeof prev.collections.contactMessages[number],
+                ...prev.collections.contactMessages,
+              ],
             },
           }));
         } else {
