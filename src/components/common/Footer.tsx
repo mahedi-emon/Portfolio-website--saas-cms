@@ -1,28 +1,54 @@
 import { Mail, Phone, MapPin, ArrowUpRight, Heart } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useCms } from '../../hooks/useCms';
 import { detectSocialPlatform, formatPlatformLabel } from '../../utils/detectSocialPlatform';
 import { iconMap } from '../../utils/iconMap';
+import { useCallback } from 'react';
 
 export function Footer() {
   const { data } = useCms();
+  const navigate = useNavigate();
+  const location = useLocation();
   const about = data.singletons.about ?? {};
   const contact = data.singletons.contact ?? {};
   const contactInfo = contact.contactInfo ?? {};
   const socialLinks = Array.isArray(contact.socialLinks) ? contact.socialLinks : [];
   const quickLinks = [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Skills', href: '/#skills' },
-    { label: 'Portfolio', href: '/portfolio' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'Contact', href: '/contact' },
+    { label: 'Home', href: '/', isAnchor: false },
+    { label: 'About', href: '/about', isAnchor: false },
+    { label: 'Skills', href: '/#skills', isAnchor: true },
+    { label: 'Portfolio', href: '/portfolio', isAnchor: false },
+    { label: 'Blog', href: '/blog', isAnchor: false },
+    { label: 'Contact', href: '/contact', isAnchor: false },
   ];
   const legalLinks = [
     { label: 'Privacy Policy', href: '#' },
     { label: 'Terms', href: '#' },
   ];
   const year = new Date().getFullYear();
+
+  // Handle Skills/anchor link click - works from any page
+  const handleAnchorClick = useCallback((e: React.MouseEvent, hash: string) => {
+    e.preventDefault();
+    const elementId = hash.replace('/#', '');
+    
+    const scrollToElement = () => {
+      const element = document.getElementById(elementId);
+      if (element) {
+        const headerOffset = 100;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+      }
+    };
+
+    if (location.pathname === '/') {
+      scrollToElement();
+    } else {
+      navigate(`/${hash.replace('/', '')}`);
+      // The PublicLayout will handle scrolling after navigation
+    }
+  }, [location.pathname, navigate]);
 
   return (
     <footer className="relative w-full bg-[#0B1320] text-white overflow-hidden">
@@ -87,13 +113,24 @@ export function Footer() {
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={link.label} style={{ animationDelay: `${index * 50}ms` }}>
-                  <Link 
-                    className="group inline-flex items-center gap-2 text-white/60 hover:text-white hover:translate-x-1 transition-all duration-300" 
-                    to={link.href}
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C77DFF] opacity-0 group-hover:opacity-100 transition-opacity" />
-                    {link.label}
-                  </Link>
+                  {link.isAnchor ? (
+                    <button
+                      type="button"
+                      onClick={(e) => handleAnchorClick(e, link.href)}
+                      className="group inline-flex items-center gap-2 text-white/60 hover:text-white hover:translate-x-1 transition-all duration-300"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#C77DFF] opacity-0 group-hover:opacity-100 transition-opacity" />
+                      {link.label}
+                    </button>
+                  ) : (
+                    <Link 
+                      className="group inline-flex items-center gap-2 text-white/60 hover:text-white hover:translate-x-1 transition-all duration-300" 
+                      to={link.href}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#C77DFF] opacity-0 group-hover:opacity-100 transition-opacity" />
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

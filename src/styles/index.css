@@ -55,6 +55,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
   
   body {
@@ -63,6 +64,9 @@
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--bg-primary);
     color: var(--text-secondary);
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
   }
 
   ::selection {

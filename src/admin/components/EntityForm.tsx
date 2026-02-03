@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { z } from 'zod';
-import { Plus, X, Save, AlertCircle, Upload, Image as ImageIcon, ChevronDown, FileText, Link as LinkIcon } from 'lucide-react';
+import { Plus, X, Save, AlertCircle, Upload, Image as ImageIcon, ChevronDown, FileText, Link as LinkIcon, Check, Loader2 } from 'lucide-react';
 import type { FieldSchema } from '../cms/cmsSchemas';
 import { detectSocialPlatform, formatPlatformLabel } from '../../utils/detectSocialPlatform';
 import { iconMap } from '../../utils/iconMap';
@@ -136,6 +136,8 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [dragOver, setDragOver] = useState<string | null>(null);
   const [urlInputMode, setUrlInputMode] = useState<Record<string, boolean>>({});
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
   const hasSocialLinksField = useMemo(() => fields.some((field) => field.type === 'socialLinks'), [fields]);
 
   const mediaFields = useMemo(
@@ -232,12 +234,23 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
   return (
     <form
       className="space-y-6"
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
         const nextErrors = validateValues(fields, values);
         setErrors(nextErrors);
         if (Object.keys(nextErrors).length > 0) return;
-        onSubmit(values);
+        
+        setIsSaving(true);
+        setSaveSuccess(false);
+        try {
+          await Promise.resolve(onSubmit(values));
+          setSaveSuccess(true);
+          setTimeout(() => setSaveSuccess(false), 3000);
+        } catch (err) {
+          console.error('Save error:', err);
+        } finally {
+          setIsSaving(false);
+        }
       }}
     >
       <div className={mediaFields.length > 0 ? 'grid gap-6 lg:grid-cols-[2fr_1fr]' : ''}>
@@ -640,11 +653,26 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
       {!hasSocialLinksField && (
         <div className="flex items-center gap-3 pt-2">
           <button 
-            type="submit" 
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-[#C77DFF]/20 hover:shadow-lg hover:shadow-[#C77DFF]/30 transition-all"
+            type="submit"
+            disabled={isSaving}
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-[#C77DFF]/20 hover:shadow-lg hover:shadow-[#C77DFF]/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Save className="w-4 h-4" />
-            {submitLabel ?? 'Save'}
+            {isSaving ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Saving...
+              </>
+            ) : saveSuccess ? (
+              <>
+                <Check className="w-4 h-4" />
+                Saved!
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4" />
+                {submitLabel ?? 'Save'}
+              </>
+            )}
           </button>
           {onCancel && (
             <button
@@ -654,6 +682,12 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
             >
               Cancel
             </button>
+          )}
+          {saveSuccess && (
+            <span className="inline-flex items-center gap-1.5 text-sm font-medium text-green-400 animate-fade-in">
+              <Check className="w-4 h-4" />
+              Changes saved successfully!
+            </span>
           )}
         </div>
       )}
