@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
 import { DataTable } from '../../components/DataTable';
 import { EntityForm } from '../../components/EntityForm';
-import { sectionSchemas } from '../../cms/cmsSchemas';
+import { sectionSchemas, getStorageFields } from '../../cms/cmsSchemas';
 import { useCms } from '../../../hooks/useCms';
 import { getToolLogoUrl } from '../../../utils/getToolLogoUrl';
+import { deleteFile, extractFilePathFromUrl } from '../../../services/supabaseCms';
 import type { CollectionItem, CollectionKey, SingletonKey } from '../../../context/CmsContext';
 
 export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
@@ -194,7 +195,41 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
             rows={rows}
             rowKey={(row) => row.id}
             onEdit={(row) => setEditingId(row.id)}
-            onDelete={(row) => deleteItem(collectionKey, row.id)}
+            onDelete={async (row) => {
+              const itemTitle = (row as any).title || (row as any).name || (row as any).certificateTitle || 'this item';
+              if (!confirm(`Are you sure you want to delete "${itemTitle}"? This will permanently remove it from the database.`)) {
+                return;
+              }
+              
+              try {
+                // Get storage fields from schema
+                const storageFields = getStorageFields(schema);
+                
+                // Delete files from storage if they exist
+                for (const field of storageFields) {
+                  const fileUrl = (row as any)[field.name];
+                  if (fileUrl && typeof fileUrl === 'string' && field.storageBucket) {
+                    try {
+                      const filePath = extractFilePathFromUrl(fileUrl, field.storageBucket);
+                      if (filePath) {
+                        console.log(`Deleting ${field.label} from storage:`, filePath);
+                        await deleteFile(field.storageBucket, filePath);
+                      }
+                    } catch (fileError) {
+                      console.error(`Failed to delete ${field.label}:`, fileError);
+                      // Continue with other files and database deletion
+                    }
+                  }
+                }
+                
+                // Delete database record
+                await deleteItem(collectionKey, row.id);
+                alert('✓ Item deleted successfully!');
+              } catch (error) {
+                console.error('Failed to delete item:', error);
+                alert('Failed to delete item. Please try again.');
+              }
+            }}
           />
         </div>
       )}

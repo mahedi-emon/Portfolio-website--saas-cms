@@ -580,7 +580,9 @@ export function EntityForm({ fields, initialValues, onSubmit, onCancel, submitLa
                   </div>
                 ) : (
                   <input
-                    className="mt-2 w-full rounded-xl border border-white/10 bg-[#0B1320]/50 px-4 py-3 text-sm text-[#C9D1D9] focus:outline-none focus:ring-2 focus:ring-[#C77DFF]/20 focus:border-[#C77DFF] transition-all placeholder:text-white/30"
+                    className={`mt-2 w-full rounded-xl border border-white/10 bg-[#0B1320]/50 px-4 py-3 text-sm text-[#C9D1D9] focus:outline-none focus:ring-2 focus:ring-[#C77DFF]/20 focus:border-[#C77DFF] transition-all placeholder:text-white/30 ${
+                      field.type === 'date' ? '[&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:brightness-200 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-70 hover:[&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:scale-125' : ''
+                    }`}
                     type={field.type ?? 'text'}
                     placeholder={field.placeholder}
                     value={String(getNested(values, field.name) ?? '')}

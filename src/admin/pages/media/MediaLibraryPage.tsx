@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { 
   Upload, 
   Image as ImageIcon, 
@@ -15,6 +15,8 @@ import {
   Download,
   Eye
 } from 'lucide-react';
+import { uploadFile, deleteFile as deleteFromStorage, extractFilePathFromUrl } from '../../../services/supabaseCms';
+import { supabase } from '../../../lib/supabase';
 
 type MediaFile = {
   id: string;
@@ -24,43 +26,83 @@ type MediaFile = {
   size: number;
   uploadedAt: string;
   previewUrl?: string;
+  bucket: 'images' | 'documents' | 'gallery';
+  path: string;
 };
 
-// Mock media storage - will be replaced with Supabase Storage
-const MOCK_MEDIA: MediaFile[] = [
-  {
-    id: '1',
-    name: 'profile-photo.jpg',
-    url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
-    type: 'image',
-    size: 245000,
-    uploadedAt: '2024-01-15T10:30:00Z',
-    previewUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
-  },
-  {
-    id: '2',
-    name: 'project-cover.png',
-    url: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400',
-    type: 'image',
-    size: 512000,
-    uploadedAt: '2024-01-14T14:20:00Z',
-    previewUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400',
-  },
-];
+type StorageBucket = 'images' | 'documents' | 'gallery';
 
 export function MediaLibraryPage() {
-  const [media, setMedia] = useState<MediaFile[]>(MOCK_MEDIA);
+  const [media, setMedia] = useState<MediaFile[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFile, setSelectedFile] = useState<MediaFile | null>(null);
+  const [selectedBucket, setSelectedBucket] = useState<StorageBucket | 'all'>('all');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const filteredMedia = media.filter((file) =>
-    file.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Load files from all Supabase Storage buckets
+  useEffect(() => {
+    loadMediaFiles();
+  }, []);
+
+  const loadMediaFiles = async () => {
+    if (!supabase) {
+      console.warn('Supabase not configured');
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const buckets: StorageBucket[] = ['images', 'documents', 'gallery'];
+      const allFiles: MediaFile[] = [];
+
+      for (const bucket of buckets) {
+        const { data: files, error } = await supabase.storage.from(bucket).list();
+        
+        if (error) {
+          console.error(`Error listing ${bucket}:`, error);
+          continue;
+        }
+
+        if (files) {
+          for (const file of files) {
+            const { data: { publicUrl } } = supabase.storage.from(bucket).getPublicUrl(file.name);
+            
+            const mediaFile: MediaFile = {
+              id: `${bucket}-${file.name}`,
+              name: file.name,
+              url: publicUrl,
+              type: file.metadata?.mimetype?.startsWith('image/') ? 'image' : 
+                    file.metadata?.mimetype?.includes('pdf') ? 'document' : 'other',
+              size: file.metadata?.size || 0,
+              uploadedAt: file.created_at || new Date().toISOString(),
+              previewUrl: file.metadata?.mimetype?.startsWith('image/') ? publicUrl : undefined,
+              bucket,
+              path: file.name,
+            };
+            allFiles.push(mediaFile);
+          }
+        }
+      }
+
+      setMedia(allFiles);
+    } catch (error) {
+      console.error('Failed to load media files:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredMedia = media.filter((file) => {
+    const matchesSearch = file.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesBucket = selectedBucket === 'all' || file.bucket === selectedBucket;
+    return matchesSearch && matchesBucket;
+  });
 
   const formatFileSize = (bytes: number) => {
     if (bytes < 1024) return `${bytes} B`;
@@ -82,30 +124,40 @@ export function MediaLibraryPage() {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const handleFileSelect = useCallback((files: FileList | null) => {
+  const handleFileSelect = useCallback(async (files: FileList | null) => {
     if (!files || files.length === 0) return;
     
     setIsUploading(true);
     
-    // Simulate upload - will be replaced with Supabase Storage
-    Array.from(files).forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const newFile: MediaFile = {
-          id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-          name: file.name,
-          url: e.target?.result as string,
-          type: file.type.startsWith('image/') ? 'image' : file.type.includes('pdf') ? 'document' : 'other',
-          size: file.size,
-          uploadedAt: new Date().toISOString(),
-          previewUrl: file.type.startsWith('image/') ? e.target?.result as string : undefined,
-        };
-        setMedia((prev) => [newFile, ...prev]);
-      };
-      reader.readAsDataURL(file);
-    });
-    
-    setTimeout(() => setIsUploading(false), 1000);
+    try {
+      for (const file of Array.from(files)) {
+        // Determine bucket based on file type
+        let bucket: 'IMAGES' | 'DOCUMENTS' | 'GALLERY';
+        if (file.type.startsWith('image/')) {
+          bucket = 'IMAGES';
+        } else if (file.type.includes('pdf') || file.type.includes('document')) {
+          bucket = 'DOCUMENTS';
+        } else {
+          bucket = 'GALLERY';
+        }
+
+        // Upload to Supabase Storage
+        const timestamp = Date.now();
+        const fileName = `${timestamp}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+        const publicUrl = await uploadFile(bucket, fileName, file);
+
+        console.log('File uploaded successfully:', publicUrl);
+      }
+      
+      // Reload media library
+      await loadMediaFiles();
+      alert('✓ Files uploaded successfully!');
+    } catch (error) {
+      console.error('Upload failed:', error);
+      alert('Failed to upload files. Please try again.');
+    } finally {
+      setIsUploading(false);
+    }
   }, []);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -124,9 +176,30 @@ export function MediaLibraryPage() {
     handleFileSelect(e.dataTransfer.files);
   }, [handleFileSelect]);
 
-  const deleteFile = (id: string) => {
-    setMedia((prev) => prev.filter((file) => file.id !== id));
-    if (selectedFile?.id === id) setSelectedFile(null);
+  const handleDeleteFile = async (file: MediaFile) => {
+    if (!confirm(`Are you sure you want to delete "${file.name}"? This cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      // Map bucket names
+      const bucketMap: Record<StorageBucket, 'IMAGES' | 'DOCUMENTS' | 'GALLERY'> = {
+        'images': 'IMAGES',
+        'documents': 'DOCUMENTS',
+        'gallery': 'GALLERY',
+      };
+
+      await deleteFromStorage(bucketMap[file.bucket], file.path);
+      
+      // Remove from local state
+      setMedia((prev) => prev.filter((f) => f.id !== file.id));
+      if (selectedFile?.id === file.id) setSelectedFile(null);
+      
+      alert('✓ File deleted successfully!');
+    } catch (error) {
+      console.error('Failed to delete file:', error);
+      alert('Failed to delete file. Please try again.');
+    }
   };
 
   return (
@@ -199,28 +272,45 @@ export function MediaLibraryPage() {
             className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0B1320]/60 border border-white/10 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#C77DFF] focus:border-transparent transition-all"
           />
         </div>
-        <div className="flex items-center gap-2 p-1 rounded-xl bg-[#0B1320]/60 border border-white/10">
-          <button
-            onClick={() => setViewMode('grid')}
-            className={`p-2 rounded-lg transition-all ${
-              viewMode === 'grid' ? 'bg-[#C77DFF]/20 text-[#C77DFF]' : 'text-white/60 hover:text-white'
-            }`}
+        <div className="flex items-center gap-2">
+          <select
+            value={selectedBucket}
+            onChange={(e) => setSelectedBucket(e.target.value as typeof selectedBucket)}
+            className="px-3 py-2 rounded-xl bg-[#0B1320]/60 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-[#C77DFF] transition-all"
           >
-            <Grid className="w-5 h-5" />
-          </button>
-          <button
-            onClick={() => setViewMode('list')}
-            className={`p-2 rounded-lg transition-all ${
-              viewMode === 'list' ? 'bg-[#C77DFF]/20 text-[#C77DFF]' : 'text-white/60 hover:text-white'
-            }`}
-          >
-            <List className="w-5 h-5" />
-          </button>
+            <option value="all">All Buckets</option>
+            <option value="images">Images</option>
+            <option value="documents">Documents</option>
+            <option value="gallery">Gallery</option>
+          </select>
+          <div className="flex items-center gap-2 p-1 rounded-xl bg-[#0B1320]/60 border border-white/10">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-2 rounded-lg transition-all ${
+                viewMode === 'grid' ? 'bg-[#C77DFF]/20 text-[#C77DFF]' : 'text-white/60 hover:text-white'
+              }`}
+            >
+              <Grid className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`p-2 rounded-lg transition-all ${
+                viewMode === 'list' ? 'bg-[#C77DFF]/20 text-[#C77DFF]' : 'text-white/60 hover:text-white'
+              }`}
+            >
+              <List className="w-5 h-5" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Media Grid/List */}
-      {filteredMedia.length === 0 ? (
+      {/* Loading State */}
+      {loading ? (
+        <div className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-12 text-center">
+          <div className="w-12 h-12 border-2 border-[#C77DFF] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-white/60">Loading media files...</p>
+        </div>
+      ) : filteredMedia.length === 0 ? (
         <div className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-12 text-center">
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#0B1320]/80 border border-white/10 mx-auto mb-4">
             <FolderOpen className="w-10 h-10 text-white/60" />
@@ -275,7 +365,7 @@ export function MediaLibraryPage() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    deleteFile(file.id);
+                    handleDeleteFile(file);
                   }}
                   className="p-1.5 rounded-lg bg-black/60 text-white hover:bg-red-500 transition-colors"
                 >
@@ -330,7 +420,7 @@ export function MediaLibraryPage() {
                         {copiedId === file.id ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                       </button>
                       <button
-                        onClick={() => deleteFile(file.id)}
+                        onClick={() => handleDeleteFile(file)}
                         className="p-2 rounded-lg text-white/60 hover:text-red-500 hover:bg-red-500/10 transition-all"
                       >
                         <Trash2 className="w-4 h-4" />

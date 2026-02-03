@@ -428,12 +428,20 @@ export async function deleteItem(
   
   const tableName = collectionToTable[key];
   
-  const { error } = await supabase
+  console.log(`[SupabaseCms] Deleting from ${tableName} with id:`, id);
+  
+  const { error, data } = await supabase
     .from(tableName)
     .delete()
-    .eq('id', id);
+    .eq('id', id)
+    .select();
 
-  if (error) throw error;
+  if (error) {
+    console.error(`[SupabaseCms] Delete error:`, error);
+    throw error;
+  }
+  
+  console.log(`[SupabaseCms] Delete successful, deleted rows:`, data);
 }
 
 // ============================================================================
@@ -573,11 +581,36 @@ export async function deleteFile(
   
   const bucketName = STORAGE_BUCKETS[bucket];
   
+  console.log(`[SupabaseCms] Deleting file from ${bucketName}:`, path);
+  
   const { error } = await supabase.storage
     .from(bucketName)
     .remove([path]);
 
-  if (error) throw error;
+  if (error) {
+    console.error(`[SupabaseCms] File delete error:`, error);
+    throw error;
+  }
+  
+  console.log(`[SupabaseCms] File deleted successfully from ${bucketName}`);
+}
+
+/**
+ * Extract file path from Supabase Storage URL
+ * @param url - Full Supabase Storage URL
+ * @param bucket - Storage bucket name
+ * @returns File path or null if invalid URL
+ */
+export function extractFilePathFromUrl(url: string, bucket: keyof typeof STORAGE_BUCKETS): string | null {
+  try {
+    const bucketName = STORAGE_BUCKETS[bucket];
+    const urlObj = new URL(url);
+    // Pattern: /storage/v1/object/public/{bucket}/{filepath}
+    const pathMatch = urlObj.pathname.match(new RegExp(`/${bucketName}/(.+)$`));
+    return pathMatch ? pathMatch[1] : null;
+  } catch {
+    return null;
+  }
 }
 
 // ============================================================================

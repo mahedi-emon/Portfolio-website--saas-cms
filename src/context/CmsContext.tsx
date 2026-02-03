@@ -202,9 +202,12 @@ export function CmsProvider({ children }: { children: ReactNode }) {
     deleteItem: async (key: CollectionKey, id: string) => {
       await wrapOperation(`deleteItem:${key}:${id}`, async () => {
         if (useSupabase) {
+          // Only update local state if Supabase delete succeeds
           await supabaseCms.deleteItem(key, id);
+          localRepo.deleteItem(key, id);
+        } else {
+          localRepo.deleteItem(key, id);
         }
-        localRepo.deleteItem(key, id);
       });
     },
     replaceCollection: async (key: CollectionKey, items: CollectionItem[]) => {
@@ -253,8 +256,32 @@ export function CmsProvider({ children }: { children: ReactNode }) {
       await wrapOperation(`setActiveResume:${resumeId}`, async () => {
         if (useSupabase) {
           await supabaseCms.setActiveResume(resumeId);
+          // Refresh local state after Supabase update
+          const now = new Date().toISOString();
+          setData(prev => ({
+            ...prev,
+            singletons: {
+              ...prev.singletons,
+              resumeSettings: {
+                ...(prev.singletons.resumeSettings as Record<string, unknown>),
+                activeResumeId: resumeId,
+              },
+            },
+            collections: {
+              ...prev.collections,
+              resumes: prev.collections.resumes.map((item: unknown) => {
+                const resume = item as { id: string; status?: string; updatedAt?: string };
+                return {
+                  ...resume,
+                  status: resume.id === resumeId ? 'active' : 'inactive',
+                  updatedAt: now,
+                };
+              }),
+            },
+          }));
+        } else {
+          localRepo.setActiveResume(resumeId);
         }
-        localRepo.setActiveResume(resumeId);
       });
     },
   }), [localRepo, wrapOperation, useSupabase]);
