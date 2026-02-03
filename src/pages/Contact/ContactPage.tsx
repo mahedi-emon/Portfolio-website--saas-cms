@@ -187,26 +187,12 @@ export function ContactPage() {
                 setIsSubmitting(true);
                 setSuccess(null);
                 try {
-                  // Use Netlify Function for contact form submission
-                  const response = await fetch('/.netlify/functions/contact-form', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                      name: formValues.name,
-                      email: formValues.email,
-                      subject: formValues.subject,
-                      message: formValues.message,
-                    }),
+                  await addContactMessage({
+                    name: formValues.name,
+                    email: formValues.email,
+                    subject: formValues.subject,
+                    message: formValues.message,
                   });
-
-                  const result = await response.json();
-
-                  if (!response.ok) {
-                    throw new Error(result.error || 'Failed to send message');
-                  }
-
                   setFormValues({ name: '', email: '', subject: '', message: '' });
                   setErrors({});
                   setSuccess('Message sent successfully!');
