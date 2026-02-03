@@ -205,15 +205,24 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                 // Get storage fields from schema
                 const storageFields = getStorageFields(schema);
                 
+                // Map lowercase bucket names to uppercase for supabaseCms functions
+                const bucketMap: Record<string, 'IMAGES' | 'RESUMES' | 'DOCUMENTS' | 'GALLERY'> = {
+                  'images': 'IMAGES',
+                  'resumes': 'RESUMES',
+                  'documents': 'DOCUMENTS',
+                  'gallery': 'GALLERY',
+                };
+                
                 // Delete files from storage if they exist
                 for (const field of storageFields) {
                   const fileUrl = (row as any)[field.name];
                   if (fileUrl && typeof fileUrl === 'string' && field.storageBucket) {
                     try {
-                      const filePath = extractFilePathFromUrl(fileUrl, field.storageBucket);
+                      const bucket = bucketMap[field.storageBucket] || 'IMAGES';
+                      const filePath = extractFilePathFromUrl(fileUrl, bucket);
                       if (filePath) {
                         console.log(`Deleting ${field.label} from storage:`, filePath);
-                        await deleteFile(field.storageBucket, filePath);
+                        await deleteFile(bucket, filePath);
                       }
                     } catch (fileError) {
                       console.error(`Failed to delete ${field.label}:`, fileError);

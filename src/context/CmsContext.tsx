@@ -269,11 +269,11 @@ export function CmsProvider({ children }: { children: ReactNode }) {
             },
             collections: {
               ...prev.collections,
-              resumes: prev.collections.resumes.map((item: unknown) => {
-                const resume = item as { id: string; status?: string; updatedAt?: string };
+              resumes: prev.collections.resumes.map((item) => {
+                const resume = item as typeof prev.collections.resumes[number];
                 return {
                   ...resume,
-                  status: resume.id === resumeId ? 'active' : 'inactive',
+                  status: resume.id === resumeId ? 'active' as const : 'inactive' as const,
                   updatedAt: now,
                 };
               }),
