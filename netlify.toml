@@ -1,0 +1,11 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[functions]
+  directory = "netlify/functions"
+
+[[scheduled]]
+  # Runs every 5 days at 00:00 UTC
+  cron = "0 0 */5 * *"
+  command = "supabase-keep-alive"
