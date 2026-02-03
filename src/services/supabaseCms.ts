@@ -450,11 +450,15 @@ export async function deleteItem(
 
 /**
  * Add a contact message (public - no auth required).
+ * Uses direct fetch to ensure anon role is used (bypasses any stored session).
  */
 export async function addContactMessage(
   message: Record<string, unknown>
 ): Promise<Record<string, unknown>> {
-  if (!supabase) {
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
+  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
     console.error('[SupabaseCms] addContactMessage: Supabase not configured');
     throw new Error('Supabase not configured');
   }
@@ -473,19 +477,26 @@ export async function addContactMessage(
     status: 'new',
   };
   
-  const { data, error } = await supabase
-    .from(DB_TABLES.CONTACT_MESSAGES)
-    .insert(dbValues)
-    .select()
-    .single();
+  // Use direct fetch with only anon key (no auth session)
+  const response = await fetch(`${supabaseUrl}/rest/v1/${DB_TABLES.CONTACT_MESSAGES}`, {
+    method: 'POST',
+    headers: {
+      'apikey': supabaseAnonKey,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation',
+    },
+    body: JSON.stringify(dbValues),
+  });
 
-  if (error) {
-    console.error('[SupabaseCms] addContactMessage: Insert failed', error);
-    throw error;
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    console.error('[SupabaseCms] addContactMessage: Insert failed', errorData);
+    throw new Error(errorData.message || 'Failed to send message');
   }
   
+  const data = await response.json();
   console.log('[SupabaseCms] addContactMessage: Insert successful', data);
-  return mapRowToFrontend(data as DbRow);
+  return Array.isArray(data) ? mapRowToFrontend(data[0] as DbRow) : mapRowToFrontend(data as DbRow);
 }
 
 /**
