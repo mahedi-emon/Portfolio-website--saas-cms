@@ -253,7 +253,7 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org/):
 
 **Mahedi Hasan Emon**
 
-- GitHub: [@ymahedi-emon](https://github.com/mahedi-emon)
+- GitHub: [@mahedi-emon](https://github.com/mahedi-emon)
 - LinkedIn: (https://www.linkedin.com/in/mahediemon/)
 - Portfolio: [Website](https://yourwebsite.com)
 
