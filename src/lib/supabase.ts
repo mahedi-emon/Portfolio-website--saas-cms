@@ -28,11 +28,21 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undef
  * - This is admin-only auth - no public signup routes exist
  */
 function createSupabaseClient(): SupabaseClientType | null {
+  console.log('[Supabase] Initializing client...', {
+    hasUrl: !!supabaseUrl,
+    hasKey: !!supabaseAnonKey,
+    urlPrefix: supabaseUrl?.substring(0, 30)
+  });
+  
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn('[Supabase] Missing environment variables. Auth will not work.');
+    console.error('[Supabase] Missing environment variables!', {
+      VITE_SUPABASE_URL: supabaseUrl ? 'SET' : 'MISSING',
+      VITE_SUPABASE_ANON_KEY: supabaseAnonKey ? 'SET' : 'MISSING'
+    });
     return null;
   }
 
+  console.log('[Supabase] Client created successfully');
   return createClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       // Persist session in localStorage for cross-refresh persistence

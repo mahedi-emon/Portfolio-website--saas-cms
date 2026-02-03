@@ -187,18 +187,32 @@ export function ContactPage() {
                 setIsSubmitting(true);
                 setSuccess(null);
                 try {
-                  await addContactMessage({
-                    name: formValues.name,
-                    email: formValues.email,
-                    subject: formValues.subject,
-                    message: formValues.message,
+                  // Use Netlify Function for contact form submission
+                  const response = await fetch('/.netlify/functions/contact-form', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      name: formValues.name,
+                      email: formValues.email,
+                      subject: formValues.subject,
+                      message: formValues.message,
+                    }),
                   });
+
+                  const result = await response.json();
+
+                  if (!response.ok) {
+                    throw new Error(result.error || 'Failed to send message');
+                  }
+
                   setFormValues({ name: '', email: '', subject: '', message: '' });
                   setErrors({});
                   setSuccess('Message sent successfully!');
                 } catch (error) {
                   console.error('Failed to send message:', error);
-                  setErrors({ submit: 'Failed to send message. Please try again.' });
+                  setErrors({ submit: error instanceof Error ? error.message : 'Failed to send message. Please try again.' });
                 } finally {
                   setIsSubmitting(false);
                 }
@@ -251,31 +265,42 @@ export function ContactPage() {
                 {errors.message && <p className="mt-1 text-sm text-red-400 animate-slide-up">{errors.message}</p>}
               </div>
               
-              <div className="flex items-center gap-4 pt-2 animate-fade-in" style={{ animationDelay: '550ms' }}>
-                <button 
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#C77DFF] text-[#0B1320] font-semibold rounded-xl shadow-lg shadow-[#C77DFF]/30 hover:shadow-2xl hover:shadow-[#C77DFF]/40 hover:-translate-y-1 hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:scale-100 btn-animated group/btn" 
-                  type="submit" 
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-5 h-5 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
-                      Send Message
-                    </>
-                  )}
-                </button>
-                
-                {success && (
-                  <div className="flex items-center gap-2 text-[#C77DFF] animate-slide-in-left">
-                    <CheckCircle2 className="w-5 h-5 animate-bounce-subtle" />
-                    <span className="font-medium">{success}</span>
+              <div className="flex flex-col gap-3 pt-2 animate-fade-in" style={{ animationDelay: '550ms' }}>
+                {errors.submit && (
+                  <div className="flex items-center gap-2 text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 animate-slide-up">
+                    <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                    <span className="font-medium">{errors.submit}</span>
                   </div>
                 )}
+                
+                <div className="flex items-center gap-4">
+                  <button 
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#C77DFF] text-[#0B1320] font-semibold rounded-xl shadow-lg shadow-[#C77DFF]/30 hover:shadow-2xl hover:shadow-[#C77DFF]/40 hover:-translate-y-1 hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:scale-100 btn-animated group/btn" 
+                    type="submit" 
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                        Send Message
+                      </>
+                    )}
+                  </button>
+                  
+                  {success && (
+                    <div className="flex items-center gap-2 text-[#C77DFF] animate-slide-in-left">
+                      <CheckCircle2 className="w-5 h-5 animate-bounce-subtle" />
+                      <span className="font-medium">{success}</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </form>
           </div>

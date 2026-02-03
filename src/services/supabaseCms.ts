@@ -454,7 +454,16 @@ export async function deleteItem(
 export async function addContactMessage(
   message: Record<string, unknown>
 ): Promise<Record<string, unknown>> {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) {
+    console.error('[SupabaseCms] addContactMessage: Supabase not configured');
+    throw new Error('Supabase not configured');
+  }
+  
+  console.log('[SupabaseCms] addContactMessage: Attempting to insert message', { 
+    name: message.name, 
+    email: message.email, 
+    subject: message.subject 
+  });
   
   const dbValues = {
     name: message.name,
@@ -470,7 +479,12 @@ export async function addContactMessage(
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    console.error('[SupabaseCms] addContactMessage: Insert failed', error);
+    throw error;
+  }
+  
+  console.log('[SupabaseCms] addContactMessage: Insert successful', data);
   return mapRowToFrontend(data as DbRow);
 }
 
