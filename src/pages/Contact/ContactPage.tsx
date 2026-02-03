@@ -6,7 +6,7 @@ import { useCms } from '../../hooks/useCms';
 import { Mail, Phone, MapPin, Send, Sparkles, MessageCircle, CheckCircle2 } from 'lucide-react';
 
 export function ContactPage() {
-  const { data, addContactMessage } = useCms();
+  const { data } = useCms();
   const location = useLocation();
   const contact = data.singletons.contact ?? {};
   const contactInfo = contact.contactInfo ?? {};
@@ -187,12 +187,24 @@ export function ContactPage() {
                 setIsSubmitting(true);
                 setSuccess(null);
                 try {
-                  await addContactMessage({
-                    name: formValues.name,
-                    email: formValues.email,
-                    subject: formValues.subject,
-                    message: formValues.message,
+                  // Use Netlify Function for secure server-side submission
+                  const response = await fetch('/.netlify/functions/contact-form', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      name: formValues.name,
+                      email: formValues.email,
+                      subject: formValues.subject,
+                      message: formValues.message,
+                    }),
                   });
+                  
+                  const result = await response.json();
+                  
+                  if (!response.ok) {
+                    throw new Error(result.error || 'Failed to send message');
+                  }
+                  
                   setFormValues({ name: '', email: '', subject: '', message: '' });
                   setErrors({});
                   setSuccess('Message sent successfully!');

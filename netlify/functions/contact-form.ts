@@ -3,19 +3,34 @@ import type { Handler } from '@netlify/functions';
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 
+const headers = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+};
+
 export const handler: Handler = async (event) => {
+  // Handle preflight
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers, body: '' };
+  }
+
   // Only allow POST
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
+      headers,
       body: JSON.stringify({ error: 'Method not allowed' }),
     };
   }
 
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+    console.error('Missing env vars - SUPABASE_URL:', !!SUPABASE_URL, 'SUPABASE_SERVICE_KEY:', !!SUPABASE_SERVICE_KEY);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Server configuration error' }),
+      headers,
+      body: JSON.stringify({ error: 'Server configuration error. Please contact administrator.' }),
     };
   }
 
@@ -51,17 +66,20 @@ export const handler: Handler = async (event) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || 'Failed to save message');
+      console.error('Supabase error:', data);
+      throw new Error(data.message || data.error || 'Failed to save message');
     }
 
     return {
       statusCode: 200,
+      headers,
       body: JSON.stringify({ success: true, data }),
     };
   } catch (error) {
     console.error('Contact form error:', error);
     return {
       statusCode: 500,
+      headers,
       body: JSON.stringify({
         error: error instanceof Error ? error.message : 'Failed to send message',
       }),
