@@ -179,23 +179,29 @@ export function ContactPage() {
             <form
               id="contact-form"
               className="space-y-5"
-              onSubmit={(event) => {
+              onSubmit={async (event) => {
                 event.preventDefault();
                 const nextErrors = validate();
                 setErrors(nextErrors);
                 if (Object.keys(nextErrors).length > 0) return;
                 setIsSubmitting(true);
                 setSuccess(null);
-                addContactMessage({
-                  name: formValues.name,
-                  email: formValues.email,
-                  subject: formValues.subject,
-                  message: formValues.message,
-                });
-                setFormValues({ name: '', email: '', subject: '', message: '' });
-                setErrors({});
-                setSuccess('Message sent successfully!');
-                setIsSubmitting(false);
+                try {
+                  await addContactMessage({
+                    name: formValues.name,
+                    email: formValues.email,
+                    subject: formValues.subject,
+                    message: formValues.message,
+                  });
+                  setFormValues({ name: '', email: '', subject: '', message: '' });
+                  setErrors({});
+                  setSuccess('Message sent successfully!');
+                } catch (error) {
+                  console.error('Failed to send message:', error);
+                  setErrors({ submit: 'Failed to send message. Please try again.' });
+                } finally {
+                  setIsSubmitting(false);
+                }
               }}
             >
               <div className="grid sm:grid-cols-2 gap-4">

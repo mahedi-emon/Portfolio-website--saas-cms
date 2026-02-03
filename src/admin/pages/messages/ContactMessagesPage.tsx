@@ -74,7 +74,18 @@ export function ContactMessagesPage() {
             columns={columns}
             rows={rows}
             rowKey={(row) => row.id}
-            onDelete={(row) => deleteContactMessage(row.id)}
+            onDelete={async (row) => {
+              if (!confirm(`Are you sure you want to delete message from "${row.name}"?`)) {
+                return;
+              }
+              try {
+                await deleteContactMessage(row.id);
+                alert('✓ Message deleted successfully!');
+              } catch (error) {
+                console.error('Failed to delete message:', error);
+                alert('Failed to delete message. Please try again.');
+              }
+            }}
           />
         </div>
       ) : (
