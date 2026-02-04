@@ -9,7 +9,7 @@ A modern, full-featured portfolio website with an integrated Content Management 
 ![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=flat-square&logo=vite)
 
 ---
-
+- Portfolio Website: [Mahedi Hasan Emon](https://mahedihasanemon.site/)
 ## ✨ Features
 
 ### 🎨 Public Website
@@ -254,8 +254,8 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org/):
 **Mahedi Hasan Emon**
 
 - GitHub: [@mahedi-emon](https://github.com/mahedi-emon)
-- LinkedIn: (https://www.linkedin.com/in/mahediemon/)
-- Portfolio: [Website](https://yourwebsite.com)
+- LinkedIn: [Mahedi Hasan Emon](https://www.linkedin.com/in/mahediemon/)
+- Portfolio: [Website](https://mahedihasanemon.site/)
 
 ---
 
