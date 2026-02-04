@@ -66,7 +66,7 @@ export function DashboardHomePage() {
       icon: FolderKanban, 
       gradient: 'from-[#C77DFF] to-[#9D4EDD]',
       bgGradient: 'from-[#C77DFF]/10 to-[#9D4EDD]/10',
-      href: '/admin/cms/projects'
+      href: '/mhe-control-center/cms/projects'
     },
     { 
       label: 'Blog Posts', 
@@ -74,7 +74,7 @@ export function DashboardHomePage() {
       icon: FileText, 
       gradient: 'from-cyan-500 to-blue-600',
       bgGradient: 'from-cyan-500/10 to-blue-500/10',
-      href: '/admin/cms/blogs'
+      href: '/mhe-control-center/cms/blogs'
     },
     { 
       label: 'Tech Stack', 
@@ -82,7 +82,7 @@ export function DashboardHomePage() {
       icon: Sparkles, 
       gradient: 'from-amber-500 to-orange-600',
       bgGradient: 'from-amber-500/10 to-orange-500/10',
-      href: '/admin/cms/skills'
+      href: '/mhe-control-center/cms/skills'
     },
     { 
       label: 'Messages', 
@@ -90,7 +90,7 @@ export function DashboardHomePage() {
       icon: MessageSquare, 
       gradient: 'from-emerald-500 to-teal-600',
       bgGradient: 'from-emerald-500/10 to-teal-500/10',
-      href: '/admin/messages'
+      href: '/mhe-control-center/messages'
     },
   ];
 
@@ -186,13 +186,13 @@ export function DashboardHomePage() {
           <div className="mt-4 flex flex-wrap gap-2">
             <NavLink 
               className="inline-flex items-center gap-2 rounded-xl bg-white/10 border border-white/20 px-4 py-2 text-sm font-medium hover:bg-white/20 transition-colors" 
-              to="/admin/cms/projects"
+              to="/mhe-control-center/cms/projects"
             >
               <Plus className="w-4 h-4" /> New Project
             </NavLink>
             <NavLink 
               className="inline-flex items-center gap-2 rounded-xl bg-white/10 border border-white/20 px-4 py-2 text-sm font-medium hover:bg-white/20 transition-colors" 
-              to="/admin/cms/blogs"
+              to="/mhe-control-center/cms/blogs"
             >
               <Plus className="w-4 h-4" /> New Blog
             </NavLink>
