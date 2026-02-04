@@ -25,7 +25,7 @@ export function ContactMessageDetailPage() {
     return (
       <div className="rounded border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm">
         <p className="text-sm text-[#C9D1D9]">Message not found.</p>
-        <Link className="mt-3 inline-block text-sm text-[#C77DFF] underline" to="/admin/messages">
+        <Link className="mt-3 inline-block text-sm text-[#C77DFF] underline" to="/mhe-control-center/messages">
           Back
         </Link>
       </div>
@@ -36,7 +36,7 @@ export function ContactMessageDetailPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold text-white">Message Detail</h1>
-        <Link className="mt-2 inline-block text-sm text-[#C77DFF] underline" to="/admin/messages">
+        <Link className="mt-2 inline-block text-sm text-[#C77DFF] underline" to="/mhe-control-center/messages">
           Back to messages
         </Link>
       </div>
@@ -67,7 +67,7 @@ export function ContactMessageDetailPage() {
                 const nextStatus = event.target.value as MessageItem['status'];
                 updateContactMessage(message.id, {
                   status: nextStatus,
-                  handledBy: nextStatus === 'new' ? '' : 'admin',
+                  handledBy: nextStatus === 'new' ? '' : 'mhe-control-center',
                   handledAt: nextStatus === 'new' ? '' : new Date().toISOString(),
                 });
               }}
@@ -96,7 +96,7 @@ export function ContactMessageDetailPage() {
           className="mt-4 rounded border border-red-200 bg-red-50 px-3 py-1 text-xs text-red-600 hover:bg-red-100 transition-colors"
           onClick={() => {
             deleteContactMessage(message.id);
-            navigate('/admin/messages');
+            navigate('/mhe-control-center/messages');
           }}
         >
           Delete message

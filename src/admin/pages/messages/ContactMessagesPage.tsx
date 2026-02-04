@@ -37,7 +37,7 @@ export function ContactMessagesPage() {
               const nextStatus = event.target.value as MessageItem['status'];
               updateContactMessage(row.id, {
                 status: nextStatus,
-                handledBy: nextStatus === 'new' ? '' : 'admin',
+                handledBy: nextStatus === 'new' ? '' : 'mhe-control-center',
                 handledAt: nextStatus === 'new' ? '' : new Date().toISOString(),
               });
             }}
@@ -52,7 +52,7 @@ export function ContactMessagesPage() {
         key: 'id',
         header: 'Detail',
         render: (row: MessageItem) => (
-          <Link className="text-[#C77DFF] underline" to={`/admin/messages/${row.id}`}>
+          <Link className="text-[#C77DFF] underline" to={`/mhe-control-center/messages/${row.id}`}>
             View
           </Link>
         ),
