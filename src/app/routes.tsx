@@ -40,21 +40,22 @@ export function AppRoutes() {
       </Route>
 
       {/* Admin (no Supabase yet; guarded by mock auth context) */}
-      <Route path="admin/login" element={<AdminLoginPage />} />
-      <Route path="admin/auth/callback" element={<AuthCallbackPage />} />
+      <Route path="mhe-control-center/login" element={<AdminLoginPage />} />
+      <Route path="mhe-control-center/auth/callback" element={<AuthCallbackPage />} />
 
-      <Route path="admin" element={<Navigate to="/admin/login" replace />} />
+      <Route path="mhe-control-center" element={<Navigate to="/mhe-control-center/login" replace />} />
 
       <Route
-        path="admin"
+        path="mhe-control-center"
         element={
-          <ProtectedRoute redirectTo="/admin/login">
+          <ProtectedRoute redirectTo="/mhe-control-center/login">
             <AdminOnlyRoute>
               <AdminLayout />
             </AdminOnlyRoute>
           </ProtectedRoute>
         }
       >
+        <Route index element={<Navigate to="/mhe-control-center/dashboard" replace />} />
         <Route path="dashboard" element={<DashboardHomePage />} />
         <Route path="cms/hero" element={<CmsSectionEditor sectionKey="hero" />} />
         <Route path="cms/about" element={<CmsSectionEditor sectionKey="about" />} />

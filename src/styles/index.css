@@ -55,7 +55,6 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    overflow-x: hidden;
   }
   
   body {
@@ -64,7 +63,6 @@
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--bg-primary);
     color: var(--text-secondary);
-    overflow-x: hidden;
     min-height: 100vh;
     position: relative;
   }
@@ -661,6 +659,59 @@
   }
   .card-3d:hover {
     transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) translateZ(20px);
+  }
+
+  /* Profile Card Hover Animation (About Page) */
+  .profile-card-hover {
+    transform-style: preserve-3d;
+  }
+
+  /* Glow effect - transitions on hover */
+  .profile-card-hover .profile-card-glow {
+    transition: all 0.5s ease-out;
+  }
+  .profile-card-hover.is-hovered .profile-card-glow {
+    filter: blur(12px);
+    opacity: 0.18;
+  }
+
+  /* Card inner - lift and border effect */
+  .profile-card-hover .profile-card-inner {
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .profile-card-hover.is-hovered .profile-card-inner {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 25px 50px rgba(199, 125, 255, 0.15);
+  }
+
+  /* Image zoom */
+  .profile-card-hover .profile-card-image img {
+    transition: transform 0.6s ease-out;
+  }
+  .profile-card-hover.is-hovered .profile-card-image img {
+    transform: scale(1.05);
+  }
+
+  /* Shine effect - runs once on hover */
+  .profile-card-hover .profile-shine {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  .profile-card-hover.is-hovered .profile-shine {
+    animation: profile-shine-sweep 0.75s ease-out forwards;
+  }
+
+  @keyframes profile-shine-sweep {
+    0% {
+      transform: translateX(-100%);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
   }
 
   /* Icon Animations */

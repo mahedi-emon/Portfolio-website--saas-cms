@@ -51,7 +51,7 @@ export function AdminSettingsPage() {
   const sections = [
     { id: 'general' as const, label: 'General', icon: Globe },
     { id: 'appearance' as const, label: 'Appearance', icon: Palette },
-    { id: 'notifications' as const, label: 'Notifications', icon: Bell },
+    { id: 'notifications' as const, label: 'Notifications' },
     { id: 'security' as const, label: 'Security', icon: Shield },
     { id: 'database' as const, label: 'Database', icon: Database },
   ];
@@ -93,7 +93,6 @@ export function AdminSettingsPage() {
         <div className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-3 h-fit">
           <nav className="space-y-1">
             {sections.map((section) => {
-              const Icon = section.icon;
               return (
                 <button
                   key={section.id}
@@ -104,7 +103,7 @@ export function AdminSettingsPage() {
                       : 'text-white/60 hover:text-white hover:bg-white/5'
                   }`}
                 >
-                  <Icon className={`w-5 h-5 ${activeSection === section.id ? 'text-[#C77DFF]' : ''}`} />
+                  {section.icon && <section.icon className={`w-5 h-5 ${activeSection === section.id ? 'text-[#C77DFF]' : ''}`} />}
                   {section.label}
                 </button>
               );
@@ -262,7 +261,7 @@ export function AdminSettingsPage() {
             <div className="space-y-6">
               <div className="flex items-center gap-3 pb-4 border-b border-white/10">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#C77DFF]/20">
-                  <Bell className="w-5 h-5 text-[#C77DFF]" />
+                  {/* Bell icon removed */}
                 </div>
                 <div>
                   <h2 className="text-lg font-semibold text-white">Notifications</h2>

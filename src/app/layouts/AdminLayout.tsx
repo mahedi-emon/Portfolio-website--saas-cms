@@ -62,17 +62,17 @@ export function AdminLayout() {
   const mainOffset = isCollapsed ? 'lg:ml-20' : 'lg:ml-72';
 
   const collectionRoutes: Record<string, string> = {
-    projects: '/admin/cms/projects',
-    blogs: '/admin/cms/blogs',
-    publications: '/admin/cms/publications',
-    achievements: '/admin/cms/achievements',
-    services: '/admin/cms/services',
-    education: '/admin/cms/education',
-    testimonials: '/admin/cms/testimonials',
-    clients: '/admin/cms/clients',
-    techStackCategories: '/admin/cms/skills',
-    contactMessages: '/admin/messages',
-    resumes: '/admin/cms/resume',
+    projects: '/mhe-control-center/cms/projects',
+    blogs: '/mhe-control-center/cms/blogs',
+    publications: '/mhe-control-center/cms/publications',
+    achievements: '/mhe-control-center/cms/achievements',
+    services: '/mhe-control-center/cms/services',
+    education: '/mhe-control-center/cms/education',
+    testimonials: '/mhe-control-center/cms/testimonials',
+    clients: '/mhe-control-center/cms/clients',
+    techStackCategories: '/mhe-control-center/cms/skills',
+    contactMessages: '/mhe-control-center/messages',
+    resumes: '/mhe-control-center/cms/resume',
   };
 
   const searchResults = useMemo(() => {
@@ -118,45 +118,45 @@ export function AdminLayout() {
     {
       title: 'Content',
       items: [
-        { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-        { to: '/admin/cms/hero', icon: Home, label: 'Hero' },
-        { to: '/admin/cms/about', icon: Users, label: 'About' },
-        { to: '/admin/cms/contact', icon: Mail, label: 'Contact' },
+        { to: '/mhe-control-center/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+        { to: '/mhe-control-center/cms/hero', icon: Home, label: 'Hero' },
+        { to: '/mhe-control-center/cms/about', icon: Users, label: 'About' },
+        { to: '/mhe-control-center/cms/contact', icon: Mail, label: 'Contact' },
       ],
     },
     {
       title: 'Profile',
       items: [
-        { to: '/admin/cms/education', icon: GraduationCap, label: 'Education' },
-        { to: '/admin/cms/core-skills', icon: Layers, label: 'Core Skills' },
-        { to: '/admin/cms/experience', icon: Briefcase, label: 'Experience' },
-        { to: '/admin/cms/certifications', icon: BadgeCheck, label: 'Certifications' },
-        { to: '/admin/cms/skills', icon: Sparkles, label: 'Tech Stack' },
+        { to: '/mhe-control-center/cms/education', icon: GraduationCap, label: 'Education' },
+        { to: '/mhe-control-center/cms/core-skills', icon: Layers, label: 'Core Skills' },
+        { to: '/mhe-control-center/cms/experience', icon: Briefcase, label: 'Experience' },
+        { to: '/mhe-control-center/cms/certifications', icon: BadgeCheck, label: 'Certifications' },
+        { to: '/mhe-control-center/cms/skills', icon: Sparkles, label: 'Tech Stack' },
       ],
     },
     {
       title: 'Portfolio',
       items: [
-        { to: '/admin/portfolio', icon: FolderKanban, label: 'Overview' },
-        { to: '/admin/cms/projects', icon: SquareStack, label: 'Projects' },
-        { to: '/admin/cms/publications', icon: BookOpen, label: 'Publications' },
-        { to: '/admin/cms/achievements', icon: BadgeCheck, label: 'Achievements' },
+        { to: '/mhe-control-center/portfolio', icon: FolderKanban, label: 'Overview' },
+        { to: '/mhe-control-center/cms/projects', icon: SquareStack, label: 'Projects' },
+        { to: '/mhe-control-center/cms/publications', icon: BookOpen, label: 'Publications' },
+        { to: '/mhe-control-center/cms/achievements', icon: BadgeCheck, label: 'Achievements' },
       ],
     },
     {
       title: 'Engagement',
       items: [
-        { to: '/admin/cms/services', icon: PenLine, label: 'Services' },
-        { to: '/admin/cms/blogs', icon: FileText, label: 'Blogs' },
-        { to: '/admin/cms/testimonials', icon: MessageSquare, label: 'Testimonials' },
-        { to: '/admin/cms/clients', icon: Users, label: 'Clients' },
+        { to: '/mhe-control-center/cms/services', icon: PenLine, label: 'Services' },
+        { to: '/mhe-control-center/cms/blogs', icon: FileText, label: 'Blogs' },
+        { to: '/mhe-control-center/cms/testimonials', icon: MessageSquare, label: 'Testimonials' },
+        { to: '/mhe-control-center/cms/clients', icon: Users, label: 'Clients' },
       ],
     },
     {
       title: 'System',
       items: [
-        { to: '/admin/cms/resume', icon: FileText, label: 'Resume' },
-        { to: '/admin/messages', icon: MessageSquare, label: 'Messages' },
+        { to: '/mhe-control-center/cms/resume', icon: FileText, label: 'Resume' },
+        { to: '/mhe-control-center/messages', icon: MessageSquare, label: 'Messages' },
       ],
     },
   ];
@@ -290,16 +290,7 @@ export function AdminLayout() {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Notifications */}
-            <button
-              type="button"
-              className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 text-[#C9D1D9] hover:bg-white/5 hover:text-white transition-colors"
-            >
-              <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] text-[10px] font-bold text-[#0B1320]">
-                3
-              </span>
-            </button>
+            
 
             {/* User Menu */}
             <div className="relative" ref={menuRef}>
@@ -355,7 +346,7 @@ export function AdminLayout() {
                       className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-[#C77DFF] hover:bg-[#C77DFF]/10 transition-colors"
                       onClick={async () => {
                         await signOut();
-                        navigate('/admin/login');
+                        navigate('/mhe-control-center/login');
                       }}
                     >
                       <LogOut className="h-4 w-4" /> 

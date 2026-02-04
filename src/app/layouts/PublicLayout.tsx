@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Menu, X, ArrowUp } from 'lucide-react';
+import { Menu, X, ArrowUp } from 'lucide-react';
 import { useCms } from '../../hooks/useCms';
 import { Footer } from '../../components/common/Footer';
 import { AuroraMesh } from '../../components/common/AuroraMesh';
@@ -99,7 +99,7 @@ export function PublicLayout() {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden" style={{ backgroundColor: '#0B1320' }}>
+    <div className="relative min-h-screen" style={{ backgroundColor: '#0B1320' }}>
       {/* Animated Particle Network Background */}
       <AuroraMesh variant="dark" />
 
@@ -167,17 +167,6 @@ export function PublicLayout() {
             ))}
           </nav>
 
-          {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-4">
-            <NavLink
-              to="/admin/login"
-              className="group flex items-center gap-2 rounded-xl border border-white/20 bg-transparent px-4 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:border-[#C77DFF]/50 hover:bg-[#C77DFF]/10 hover:shadow-lg hover:shadow-[#C77DFF]/10 hover:-translate-y-0.5 backdrop-blur-sm"
-            >
-              <LayoutDashboard size={18} className="transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110 text-[#C77DFF]" />
-              <span>Admin</span>
-            </NavLink>
-          </div>
-
           {/* Mobile Menu Toggle */}
           <button
             type="button"
@@ -239,13 +228,6 @@ export function PublicLayout() {
                 </NavLink>
               )
             ))}
-            <NavLink
-              to="/admin/login"
-              className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-[#C77DFF] px-4 py-3 text-sm font-medium text-[#0B1320] transition-all duration-300 hover:shadow-lg hover:shadow-[#C77DFF]/30"
-            >
-              <LayoutDashboard size={18} />
-              <span>Admin Panel</span>
-            </NavLink>
           </nav>
         </div>
       </header>

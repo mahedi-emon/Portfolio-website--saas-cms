@@ -186,7 +186,7 @@ export function createMockAuthService(config: AuthServiceConfig = {}): AuthServi
        * const { data, error } = await supabase.auth.signInWithOAuth({
        *   provider,
        *   options: {
-       *     redirectTo: `${window.location.origin}/admin/auth/callback`,
+       *     redirectTo: `${window.location.origin}/mhe-control-center/auth/callback`,
        *   },
        * });
        * ```
@@ -285,7 +285,7 @@ export function getAuthService(): AuthService {
  *     signInWithOAuth: async (provider) => {
  *       const { error } = await supabase.auth.signInWithOAuth({
  *         provider,
- *         options: { redirectTo: `${window.location.origin}/admin/auth/callback` }
+ *         options: { redirectTo: `${window.location.origin}/mhe-control-center/auth/callback` }
  *       });
  *       return { data: undefined, error };
  *     },
