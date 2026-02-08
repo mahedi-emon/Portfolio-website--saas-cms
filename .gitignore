@@ -19,8 +19,13 @@ yarn-error.log*
 .vite/
 
 
-supabase/
 
+# System Files
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
 
+# Supabase
 SUPABASE_READY.md
 supabase/

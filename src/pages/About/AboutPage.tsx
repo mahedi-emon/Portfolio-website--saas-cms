@@ -100,7 +100,7 @@ export function AboutPage() {
             <h1 className="text-4xl lg:text-5xl font-bold mb-6 text-white">
               {about.title ?? 'Hello, I\'m'} <span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent text-shimmer hover:animate-wiggle inline-block">{about.fullName ?? 'Your Name'}</span>
             </h1>
-            <p className="text-lg text-[#C9D1D9] leading-relaxed max-w-4xl animate-slide-up text-justify hyphens-auto">
+            <p className="text-lg text-[#C9D1D9] leading-relaxed max-w-4xl animate-slide-up whitespace-pre-wrap">
               {about.bio ?? 'Your bio goes here...'}
             </p>
             

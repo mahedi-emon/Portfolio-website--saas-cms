@@ -5,6 +5,28 @@ import { useCms } from '../../hooks/useCms';
 import { ResumeViewerModal } from '../../components/common/ResumeViewerModal';
 import { CertificateModal } from '../../components/common/CertificateModal';
 
+const TechToolIcon = ({ tool }: { tool: { name: string; logoUrl: string } }) => {
+  const [imgError, setImgError] = useState(false);
+  const showImage = tool.logoUrl && !imgError;
+
+  return (
+    <div className="relative w-10 h-10">
+      <div className="absolute inset-0 rounded-xl bg-[#0B1320]/50 border border-white/10 flex items-center justify-center">
+        {!showImage && <Code2 className="w-5 h-5 text-white/60" />}
+      </div>
+      {showImage && (
+        <img
+          className="absolute inset-0 w-10 h-10 rounded-xl object-contain p-1 bg-[#0B1320] border border-white/10 group-hover/item:border-[#C77DFF]/50 transition-colors"
+          src={tool.logoUrl}
+          alt={tool.name}
+          loading="lazy"
+          onError={() => setImgError(true)}
+        />
+      )}
+    </div>
+  );
+};
+
 export function HomePage() {
   const { data } = useCms();
   const published = <T extends { status?: string; orderIndex?: number }>(items: T[]) =>
@@ -50,7 +72,15 @@ export function HomePage() {
 
     sectionRefs.current.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [
+    services.length,
+    projects.length,
+    blogs.length,
+    testimonials.length,
+    clients.length,
+    achievements.length,
+    certifications.length
+  ]);
 
   const setSectionRef = (id: string) => (el: HTMLElement | null) => {
     if (el) sectionRefs.current.set(id, el);
@@ -64,8 +94,8 @@ export function HomePage() {
       {/* ═══════════════════════════════════════════════════════════════════════════
           HERO SECTION - Premium Cinematic Landing
           ═══════════════════════════════════════════════════════════════════════════ */}
-      <section 
-        id="hero" 
+      <section
+        id="hero"
         ref={setSectionRef('hero')}
         className={`relative min-h-[85vh] flex items-center ${sectionClass('hero')}`}
       >
@@ -73,7 +103,7 @@ export function HomePage() {
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[radial-gradient(circle_at_center,rgba(199,125,255,0.15),transparent_60%)]" />
           <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[radial-gradient(circle_at_center,rgba(157,78,221,0.1),transparent_60%)]" />
-          
+
           {/* Floating Orbs with slow animation */}
           <div className="absolute top-20 left-[10%] w-4 h-4 rounded-full bg-[#C77DFF]/40 animate-float-slow" />
           <div className="absolute top-40 right-[15%] w-6 h-6 rounded-full bg-[#9D4EDD]/30 animate-float-medium" />
@@ -82,7 +112,7 @@ export function HomePage() {
           <div className="absolute bottom-1/4 right-[10%] w-4 h-4 rounded-full bg-[#C77DFF]/35 animate-float-medium" style={{ animationDelay: '1s' }} />
           <div className="absolute top-[60%] left-[5%] w-3 h-3 rounded-full bg-[#9D4EDD]/40 animate-float-fast" style={{ animationDelay: '3s' }} />
         </div>
-        
+
         <div className="relative grid lg:grid-cols-2 gap-12 lg:gap-8 items-center w-full">
           {/* Content */}
           <div className="space-y-8 lg:pr-8">
@@ -92,11 +122,11 @@ export function HomePage() {
                 {hero.fullName ?? about.fullName ?? 'Full Name'}
               </span>
             </h1>
-            
+
             <p className="text-xl text-[#C9D1D9] max-w-xl leading-relaxed animate-slide-up delay-200 hover:text-white transition-colors">
               {hero.subheadline ?? 'Full-stack engineer focused on scalable web platforms.'}
             </p>
-            
+
             <div className="flex flex-wrap gap-4 animate-slide-up delay-300">
               <Link
                 to={hero.ctaPrimaryHref ?? '/portfolio'}
@@ -134,7 +164,7 @@ export function HomePage() {
           <div className="relative hidden lg:flex justify-center items-center lg:pl-8">
             {/* Background glow with entrance animation */}
             <div className="absolute w-80 h-80 bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] rounded-full opacity-20 blur-3xl animate-hero-glow-entrance" />
-            
+
             <div className="relative animate-hero-entrance">
               {hero.heroImageUrl ? (
                 <div className="relative group">
@@ -147,20 +177,20 @@ export function HomePage() {
                   </div>
                   {/* Inner mask to create border effect */}
                   <div className="absolute -inset-1 bg-[#0B1320] rounded-3xl" />
-                  
+
                   {/* Secondary spinning glow (reverse direction) */}
                   <div className="absolute -inset-4 rounded-3xl overflow-hidden opacity-40 group-hover:opacity-70 transition-opacity">
-                    <div className="absolute inset-0 blur-xl animate-reverse-spin" 
-                         style={{ background: 'conic-gradient(from 180deg, #C77DFF, transparent, #9D4EDD, transparent, #C77DFF)' }} />
+                    <div className="absolute inset-0 blur-xl animate-reverse-spin"
+                      style={{ background: 'conic-gradient(from 180deg, #C77DFF, transparent, #9D4EDD, transparent, #C77DFF)' }} />
                   </div>
-                  
+
                   {/* Gradient glow pulse */}
                   <div className="absolute -inset-6 bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity animate-pulse" />
-                  
-                  <img 
-                    className="relative w-80 h-80 rounded-3xl object-cover border-4 border-white/10 shadow-2xl shadow-[#C77DFF]/20 transition-all duration-500 group-hover:scale-[1.02] group-hover:border-[#C77DFF]/50" 
-                    src={hero.heroImageUrl} 
-                    alt="Profile" 
+
+                  <img
+                    className="relative w-80 h-80 rounded-3xl object-cover border-4 border-white/10 shadow-2xl shadow-[#C77DFF]/20 transition-all duration-500 group-hover:scale-[1.02] group-hover:border-[#C77DFF]/50"
+                    src={hero.heroImageUrl}
+                    alt="Profile"
                   />
                 </div>
               ) : (
@@ -173,7 +203,7 @@ export function HomePage() {
                     />
                   </div>
                   <div className="absolute -inset-1 bg-[#0B1320] rounded-3xl" />
-                  
+
                   <div className="relative w-80 h-80 rounded-3xl bg-gradient-to-br from-[#1a1f35] to-[#0B1320] border-4 border-white/10 shadow-2xl flex items-center justify-center overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-[#C77DFF]/10 to-transparent" />
                     <span className="text-7xl font-bold bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent">
@@ -182,7 +212,7 @@ export function HomePage() {
                   </div>
                 </div>
               )}
-              
+
               {/* Floating Elements with Sparkle Animations */}
               <div className="absolute -top-6 -right-6 p-4 bg-[#0B1320]/80 backdrop-blur-sm border border-[#C77DFF]/30 rounded-2xl shadow-xl shadow-[#C77DFF]/20 animate-sparkle-entrance-1 animate-sparkle-1 hover:scale-110 hover:border-[#C77DFF]/60 transition-all cursor-pointer">
                 <Zap className="w-8 h-8 text-[#C77DFF] drop-shadow-[0_0_8px_rgba(199,125,255,0.5)]" />
@@ -201,8 +231,8 @@ export function HomePage() {
       {/* ═══════════════════════════════════════════════════════════════════════════
           ABOUT SECTION - Ink Purple Theme
           ═══════════════════════════════════════════════════════════════════════════ */}
-      <section 
-        id="about-section" 
+      <section
+        id="about-section"
         ref={setSectionRef('about-section')}
         className={sectionClass('about-section')}
       >
@@ -212,7 +242,7 @@ export function HomePage() {
           </h2>
           <p className="text-white/60 max-w-2xl mx-auto animate-fade-in">Passionate about creating impactful digital experiences</p>
         </div>
-        
+
         <div className="grid lg:grid-cols-[1fr_2fr] gap-12 items-start">
           <div className="relative group">
             {about.profileImageUrl ? (
@@ -220,10 +250,10 @@ export function HomePage() {
                 {/* Animated gradient border */}
                 <div className="absolute -inset-1 bg-gradient-to-r from-[#C77DFF] via-[#E0AAFF] to-[#9D4EDD] rounded-3xl opacity-60 blur-sm group-hover:opacity-100 transition-opacity animate-gradient-border" />
                 <div className="absolute -inset-4 bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] rounded-3xl blur opacity-25 group-hover:opacity-40 transition-all duration-500" />
-                <img 
-                  className="relative w-full aspect-square rounded-3xl object-cover shadow-2xl shadow-[#C77DFF]/20 border-2 border-white/10 transition-all duration-500 group-hover:scale-[1.02] group-hover:border-[#C77DFF]/50" 
-                  src={about.profileImageUrl} 
-                  alt="Profile" 
+                <img
+                  className="relative w-full aspect-square rounded-3xl object-cover shadow-2xl shadow-[#C77DFF]/20 border-2 border-white/10 transition-all duration-500 group-hover:scale-[1.02] group-hover:border-[#C77DFF]/50"
+                  src={about.profileImageUrl}
+                  alt="Profile"
                 />
               </>
             ) : (
@@ -238,14 +268,14 @@ export function HomePage() {
               </div>
             )}
           </div>
-          
+
           <div className="space-y-6">
             <p className="text-lg text-[#C9D1D9] leading-relaxed hover:text-white transition-colors duration-300">
-              {about.bio && about.bio.length > 200 
-                ? `${about.bio.slice(0, 200).trim()}...` 
+              {about.bio && about.bio.length > 200
+                ? `${about.bio.slice(0, 200).trim()}...`
                 : about.bio}
             </p>
-            
+
             <div className="grid sm:grid-cols-2 gap-4">
               {about.currentRole && (
                 <div className="p-4 rounded-2xl bg-[#0B1320]/60 border border-white/10 hover:border-[#C77DFF]/50 transition-all">
@@ -260,7 +290,7 @@ export function HomePage() {
                 </div>
               )}
             </div>
-            
+
             {education.length > 0 && (
               <div className="p-6 rounded-2xl bg-[#0B1320]/60 border border-white/10 hover:border-[#C77DFF]/30 transition-all">
                 <div className="flex items-center gap-3 mb-3">
@@ -284,7 +314,7 @@ export function HomePage() {
             )}
 
             {/* See More Link */}
-            <Link 
+            <Link
               to="/about"
               className="inline-flex items-center gap-2 px-6 py-3 mt-4 rounded-xl bg-[#C77DFF] text-[#0B1320] font-semibold shadow-lg shadow-[#C77DFF]/30 hover:shadow-xl hover:shadow-[#C77DFF]/50 hover:-translate-y-1 transition-all duration-300 group"
             >
@@ -299,8 +329,8 @@ export function HomePage() {
           TECH STACK SECTION
           ═══════════════════════════════════════════════════════════════════════════ */}
       {techStackCategories.length > 0 && (
-        <section 
-          id="skills" 
+        <section
+          id="skills"
           ref={setSectionRef('skills')}
           className={sectionClass('skills')}
         >
@@ -310,11 +340,11 @@ export function HomePage() {
             </h2>
             <p className="text-[#C9D1D9] max-w-2xl mx-auto">Technologies I work with to bring ideas to life</p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {techStackCategories.map((category, catIndex) => (
-              <div 
-                key={category.id} 
+              <div
+                key={category.id}
                 className="group p-6 rounded-3xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out hover:-translate-y-1"
                 style={{ animationDelay: `${catIndex * 100}ms` }}
               >
@@ -324,22 +354,7 @@ export function HomePage() {
                 <div className="space-y-4">
                   {(category.tools ?? []).map((tool: { id: string; name: string; logoUrl: string; proficiencyLevel: number }) => (
                     <div key={tool.id} className="flex items-center gap-4 group/item">
-                      <div className="relative w-10 h-10">
-                        <div className="absolute inset-0 rounded-xl bg-[#0B1320]/50 border border-white/10 flex items-center justify-center">
-                          <Code2 className="w-5 h-5 text-white/60" />
-                        </div>
-                        {tool.logoUrl && (
-                          <img 
-                            className="absolute inset-0 w-10 h-10 rounded-xl object-contain p-1 bg-[#0B1320]/50 border border-white/10 group-hover/item:border-[#C77DFF]/50 transition-colors" 
-                            src={tool.logoUrl} 
-                            alt={tool.name} 
-                            loading="lazy"
-                            onError={(event) => {
-                              event.currentTarget.style.display = 'none';
-                            }}
-                          />
-                        )}
-                      </div>
+                      <TechToolIcon tool={tool} />
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-2">
                           <span className="font-medium text-[#C9D1D9]">{tool.name}</span>
@@ -364,8 +379,8 @@ export function HomePage() {
           SERVICES SECTION
           ═══════════════════════════════════════════════════════════════════════════ */}
       {services.length > 0 && (
-        <section 
-          id="services-section" 
+        <section
+          id="services-section"
           ref={setSectionRef('services-section')}
           className={sectionClass('services-section')}
         >
@@ -375,11 +390,11 @@ export function HomePage() {
             </h2>
             <p className="text-[#C9D1D9] max-w-2xl mx-auto">What I can do for you</p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 gap-6">
             {services.map((service) => (
-              <div 
-                key={service.id} 
+              <div
+                key={service.id}
                 className="group relative p-8 rounded-3xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] overflow-hidden hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out hover:-translate-y-1"
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#C77DFF]/20 to-[#9D4EDD]/20 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700" />
@@ -400,8 +415,8 @@ export function HomePage() {
           FEATURED PROJECTS SECTION
           ═══════════════════════════════════════════════════════════════════════════ */}
       {featuredProjects.length > 0 && (
-        <section 
-          id="projects-section" 
+        <section
+          id="projects-section"
           ref={setSectionRef('projects-section')}
           className={sectionClass('projects-section')}
         >
@@ -416,28 +431,28 @@ export function HomePage() {
               View All <ChevronRight className="w-5 h-5" />
             </Link>
           </div>
-          
+
           <div className="grid md:grid-cols-2 gap-8">
             {featuredProjects
               .slice(0, 4)
               .map((project) => (
-                <article 
-                  key={project.id} 
+                <article
+                  key={project.id}
                   className="group rounded-3xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] overflow-hidden hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out hover:-translate-y-1"
                 >
                   {project.coverImageUrl && (
                     <div className="relative h-56 overflow-hidden">
-                      <img 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                        src={project.coverImageUrl} 
-                        alt={project.title} 
+                      <img
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        src={project.coverImageUrl}
+                        alt={project.title}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       <div className="absolute bottom-4 left-4 right-4 flex gap-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
                         {project.githubUrl && (
-                          <a 
-                            href={project.githubUrl} 
-                            target="_blank" 
+                          <a
+                            href={project.githubUrl}
+                            target="_blank"
                             rel="noreferrer"
                             className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 text-[#0B1320] text-sm font-medium hover:bg-white transition-colors"
                           >
@@ -445,9 +460,9 @@ export function HomePage() {
                           </a>
                         )}
                         {project.liveDemoUrl && (
-                          <a 
-                            href={project.liveDemoUrl} 
-                            target="_blank" 
+                          <a
+                            href={project.liveDemoUrl}
+                            target="_blank"
                             rel="noreferrer"
                             className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#C77DFF] text-white text-sm font-medium hover:bg-[#9D4EDD] transition-colors"
                           >
@@ -466,7 +481,7 @@ export function HomePage() {
                 </article>
               ))}
           </div>
-          
+
           <div className="mt-8 text-center sm:hidden">
             <Link to="/portfolio" className="btn-secondary inline-flex items-center gap-2">
               View All Projects <ChevronRight className="w-5 h-5" />
@@ -479,8 +494,8 @@ export function HomePage() {
           BLOG SECTION
           ═══════════════════════════════════════════════════════════════════════════ */}
       {blogs.length > 0 && (
-        <section 
-          id="blog-section" 
+        <section
+          id="blog-section"
           ref={setSectionRef('blog-section')}
           className={sectionClass('blog-section')}
         >
@@ -495,11 +510,11 @@ export function HomePage() {
               Read More <ChevronRight className="w-5 h-5" />
             </Link>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-6">
             {blogs.slice(0, 3).map((post) => (
-              <article 
-                key={post.id} 
+              <article
+                key={post.id}
                 className="group p-6 rounded-3xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out hover:-translate-y-1"
               >
                 <div className="w-12 h-12 rounded-2xl bg-[#C77DFF]/10 border border-[#C77DFF]/15 flex items-center justify-center mb-5 group-hover:bg-[#C77DFF]/15 group-hover:border-[#C77DFF]/25 transition-all duration-500 ease-out">
@@ -522,8 +537,8 @@ export function HomePage() {
           TESTIMONIALS SECTION
           ═══════════════════════════════════════════════════════════════════════════ */}
       {testimonials.length > 0 && (
-        <section 
-          id="testimonials-section" 
+        <section
+          id="testimonials-section"
           ref={setSectionRef('testimonials-section')}
           className={sectionClass('testimonials-section')}
         >
@@ -533,11 +548,11 @@ export function HomePage() {
             </h2>
             <p className="text-[#C9D1D9] max-w-2xl mx-auto">What people say about working with me</p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 gap-6">
             {testimonials.map((item) => (
-              <blockquote 
-                key={item.id} 
+              <blockquote
+                key={item.id}
                 className="relative p-8 rounded-3xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out"
               >
                 <Quote className="absolute top-6 right-6 w-10 h-10 text-[#C77DFF]/20" />
@@ -560,8 +575,8 @@ export function HomePage() {
           CLIENTS SECTION
           ═══════════════════════════════════════════════════════════════════════════ */}
       {clients.length > 0 && (
-        <section 
-          id="clients-section" 
+        <section
+          id="clients-section"
           ref={setSectionRef('clients-section')}
           className={sectionClass('clients-section')}
         >
@@ -571,7 +586,7 @@ export function HomePage() {
             </h2>
             <p className="text-[#C9D1D9] max-w-2xl mx-auto">Companies I've had the pleasure to work with</p>
           </div>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {clients.map((client, index) => {
               const initials = (client.name ?? '')
@@ -582,12 +597,11 @@ export function HomePage() {
                 .toUpperCase();
 
               const content = (
-                <div 
-                  className={`group relative p-6 rounded-2xl bg-[#0B1320]/80 backdrop-blur-sm border shadow-lg hover:shadow-xl hover:shadow-[#C77DFF]/[0.15] transition-all duration-500 ease-out flex flex-col items-center justify-center h-48 hover:-translate-y-2 overflow-hidden ${
-                    client.featured 
-                      ? 'border-[#C77DFF]/30 shadow-[#C77DFF]/[0.1]' 
-                      : 'border-white/[0.06] shadow-[#C77DFF]/[0.05] hover:border-[#C77DFF]/30'
-                  }`}
+                <div
+                  className={`group relative p-6 rounded-2xl bg-[#0B1320]/80 backdrop-blur-sm border shadow-lg hover:shadow-xl hover:shadow-[#C77DFF]/[0.15] transition-all duration-500 ease-out flex flex-col items-center justify-center h-48 hover:-translate-y-2 overflow-hidden ${client.featured
+                    ? 'border-[#C77DFF]/30 shadow-[#C77DFF]/[0.1]'
+                    : 'border-white/[0.06] shadow-[#C77DFF]/[0.05] hover:border-[#C77DFF]/30'
+                    }`}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   {/* Featured Badge */}
@@ -599,7 +613,7 @@ export function HomePage() {
 
                   {/* Hover Glow Effect */}
                   <div className="absolute inset-0 bg-gradient-to-br from-[#C77DFF]/0 to-[#9D4EDD]/0 group-hover:from-[#C77DFF]/5 group-hover:to-[#9D4EDD]/10 transition-all duration-500" />
-                  
+
                   {/* Logo or Initials */}
                   {client.logoUrl ? (
                     <img
@@ -618,7 +632,7 @@ export function HomePage() {
                       </div>
                     </div>
                   )}
-                  
+
                   {/* Company Name */}
                   <div className="mt-4 text-base font-semibold text-white/90 group-hover:text-white transition-colors duration-300 text-center tracking-wide">
                     {client.name}
@@ -666,8 +680,8 @@ export function HomePage() {
           ACHIEVEMENTS SECTION
           ═══════════════════════════════════════════════════════════════════════════ */}
       {achievements.length > 0 && (
-        <section 
-          id="achievements-section" 
+        <section
+          id="achievements-section"
           ref={setSectionRef('achievements-section')}
           className={sectionClass('achievements-section')}
         >
@@ -677,11 +691,11 @@ export function HomePage() {
             </h2>
             <p className="text-[#C9D1D9] max-w-2xl mx-auto">Recognition and milestones</p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {achievements.map((item) => (
-              <div 
-                key={item.id} 
+              <div
+                key={item.id}
                 className="group p-6 rounded-3xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out hover:-translate-y-1"
               >
                 <div className="flex items-start gap-4">
@@ -694,10 +708,10 @@ export function HomePage() {
                     <div className="text-xs text-white/60 mb-3">{item.year}</div>
                     <p className="text-sm text-[#C9D1D9]">{item.description}</p>
                     {item.externalLink && (
-                      <a 
-                        className="inline-flex items-center gap-1 mt-3 text-[#C77DFF] text-sm font-medium hover:gap-2 transition-all" 
-                        href={item.externalLink} 
-                        target="_blank" 
+                      <a
+                        className="inline-flex items-center gap-1 mt-3 text-[#C77DFF] text-sm font-medium hover:gap-2 transition-all"
+                        href={item.externalLink}
+                        target="_blank"
                         rel="noreferrer"
                       >
                         View <ExternalLink className="w-3 h-3" />
@@ -715,8 +729,8 @@ export function HomePage() {
           CERTIFICATIONS SECTION
           ═══════════════════════════════════════════════════════════════════════════ */}
       {certifications.length > 0 && (
-        <section 
-          id="certifications-section" 
+        <section
+          id="certifications-section"
           ref={setSectionRef('certifications-section')}
           className={sectionClass('certifications-section')}
         >
@@ -726,11 +740,11 @@ export function HomePage() {
             </h2>
             <p className="text-[#C9D1D9] max-w-2xl mx-auto">Verified skills and expertise</p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 gap-6">
             {certifications.map((cert) => (
-              <article 
-                key={cert.id} 
+              <article
+                key={cert.id}
                 className="group p-6 rounded-3xl bg-[#0B1320]/80 backdrop-blur-sm border border-white/[0.06] shadow-lg shadow-[#C77DFF]/[0.05] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out hover:-translate-y-1"
               >
                 <div className="flex items-start gap-5">
@@ -759,9 +773,9 @@ export function HomePage() {
                     )}
                     <div className="flex gap-3 pt-2">
                       {cert.credentialUrl && (
-                        <a 
-                          href={cert.credentialUrl} 
-                          target="_blank" 
+                        <a
+                          href={cert.credentialUrl}
+                          target="_blank"
                           rel="noreferrer"
                           className="inline-flex items-center gap-1 text-sm text-[#C77DFF] font-medium hover:gap-2 transition-all"
                         >
@@ -769,11 +783,11 @@ export function HomePage() {
                         </a>
                       )}
                       {(cert.certificateImageUrl || cert.certificateFileUrl) && (
-                        <button 
+                        <button
                           type="button"
-                          onClick={() => setSelectedCertificate({ 
-                            imageUrl: cert.certificateImageUrl || cert.certificateFileUrl, 
-                            title: cert.certificateTitle 
+                          onClick={() => setSelectedCertificate({
+                            imageUrl: cert.certificateImageUrl || cert.certificateFileUrl,
+                            title: cert.certificateTitle
                           })}
                           className="inline-flex items-center gap-1 text-sm text-[#C9D1D9] hover:text-[#C77DFF] font-medium transition-colors"
                         >
@@ -793,8 +807,8 @@ export function HomePage() {
           RESUME SECTION - Full Width CTA
           ═══════════════════════════════════════════════════════════════════════════ */}
       {activeResume && (
-        <section 
-          id="resume-section" 
+        <section
+          id="resume-section"
           ref={setSectionRef('resume-section')}
           className={`${sectionClass('resume-section')} -mx-4 sm:-mx-6 lg:-mx-8 px-0`}
         >
@@ -805,7 +819,7 @@ export function HomePage() {
               <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#9D4EDD] rounded-full opacity-10 blur-3xl animate-morph floating-delayed" />
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#C77DFF] rounded-full opacity-5 blur-3xl animate-pulse-glow" />
             </div>
-            
+
             <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 animate-slide-up">
                 Want to know more?
@@ -813,11 +827,11 @@ export function HomePage() {
               <p className="text-[#C9D1D9] text-lg sm:text-xl max-w-xl mx-auto mb-8 animate-fade-in" style={{ animationDelay: '200ms' }}>
                 Download my resume to see my full experience, education, and skills
               </p>
-              
+
               <div className="flex flex-wrap justify-center gap-4 animate-slide-up" style={{ animationDelay: '400ms' }}>
-                <button 
+                <button
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-[#C77DFF] text-[#0B1320] font-semibold shadow-xl shadow-[#C77DFF]/30 hover:shadow-2xl hover:shadow-[#C77DFF]/40 hover:-translate-y-1 hover:scale-105 transition-all duration-300 btn-animated group"
-                  type="button" 
+                  type="button"
                   onClick={() => setIsResumeOpen(true)}
                 >
                   View Resume

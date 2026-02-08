@@ -117,7 +117,7 @@ const specialFieldMappings: Record<string, Record<string, string>> = {
 function applySpecialMappingsToDb(tableName: string, data: DbRow): DbRow {
   const mappings = specialFieldMappings[tableName];
   if (!mappings) return data;
-  
+
   const result = { ...data };
   for (const [frontendKey, dbKey] of Object.entries(mappings)) {
     if (frontendKey in result && !frontendKey.includes('_')) {
@@ -133,31 +133,31 @@ function applySpecialMappingsToDb(tableName: string, data: DbRow): DbRow {
  */
 function applySpecialMappingsFromDb(tableName: string, data: Record<string, unknown>): Record<string, unknown> {
   const result = { ...data };
-  
+
   // Handle about table
   if (tableName === 'about' && 'currentJobRole' in result) {
     result.currentRole = result.currentJobRole;
     delete result.currentJobRole;
   }
-  
+
   // Handle experience table
   if (tableName === 'experience' && 'jobRole' in result) {
     result.role = result.jobRole;
     delete result.jobRole;
   }
-  
+
   // Handle publications table
   if (tableName === 'publications' && 'publicationYear' in result) {
     result.year = result.publicationYear;
     delete result.publicationYear;
   }
-  
+
   // Handle achievements table
   if (tableName === 'achievements' && 'awardYear' in result) {
     result.year = result.awardYear;
     delete result.awardYear;
   }
-  
+
   return result;
 }
 
@@ -165,66 +165,47 @@ function applySpecialMappingsFromDb(tableName: string, data: Record<string, unkn
 // Fetch All CMS Data
 // ============================================================================
 
+// ============================================================================
+// Fetch Data (Split Strategy)
+// ============================================================================
+
 /**
- * Fetch all CMS data from Supabase.
- * Returns null if Supabase is not configured (falls back to mock data).
+ * Fetch Critical CMS Data (First Paint)
+ * Includes Singletons and key Collections needed for the Home Page.
  */
-export async function fetchAllCmsData(): Promise<CmsData | null> {
+export async function fetchCriticalCmsData(): Promise<Partial<CmsData> | null> {
   if (!isSupabaseConfigured() || !supabase) {
     console.warn('[SupabaseCms] Not configured - using mock data');
     return null;
   }
 
   try {
-    // Fetch all data in parallel
     const [
       heroResult,
       aboutResult,
       contactResult,
       resumeSettingsResult,
-      educationResult,
-      skillsResult,
-      servicesResult,
-      resumesResult,
       projectsResult,
-      publicationsResult,
-      certificationsResult,
-      experienceResult,
-      blogsResult,
-      testimonialsResult,
-      achievementsResult,
-      clientsResult,
+      servicesResult,
+      skillsResult,
       techStackResult,
-      messagesResult,
     ] = await Promise.all([
       supabase.from(DB_TABLES.HERO).select('*').single(),
       supabase.from(DB_TABLES.ABOUT).select('*').single(),
       supabase.from(DB_TABLES.CONTACT).select('*').single(),
       supabase.from(DB_TABLES.RESUME_SETTINGS).select('*').single(),
-      supabase.from(DB_TABLES.EDUCATION).select('*').order('order_index'),
-      supabase.from(DB_TABLES.SKILLS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.PROJECTS).select('*').order('order_index').limit(6), // Limit initial projects
       supabase.from(DB_TABLES.SERVICES).select('*').order('order_index'),
-      supabase.from(DB_TABLES.RESUMES).select('*'),
-      supabase.from(DB_TABLES.PROJECTS).select('*').order('order_index'),
-      supabase.from(DB_TABLES.PUBLICATIONS).select('*').order('order_index'),
-      supabase.from(DB_TABLES.CERTIFICATIONS).select('*').order('order_index'),
-      supabase.from(DB_TABLES.EXPERIENCE).select('*').order('order_index'),
-      supabase.from(DB_TABLES.BLOGS).select('*').order('order_index'),
-      supabase.from(DB_TABLES.TESTIMONIALS).select('*').order('order_index'),
-      supabase.from(DB_TABLES.ACHIEVEMENTS).select('*').order('order_index'),
-      supabase.from(DB_TABLES.CLIENTS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.SKILLS).select('*').order('order_index'),
       supabase.from(DB_TABLES.TECH_STACK_CATEGORIES).select('*').order('order_index'),
-      supabase.from(DB_TABLES.CONTACT_MESSAGES).select('*').order('created_at', { ascending: false }),
     ]);
 
-    // Transform hero data
+    // Transform Singletons
     const hero = heroResult.data ? mapRowToFrontend(heroResult.data as DbRow) : getDefaultHero();
-    
-    // Transform about data with special field mapping
+
     let about = aboutResult.data ? mapRowToFrontend(aboutResult.data as DbRow) : getDefaultAbout();
     about = applySpecialMappingsFromDb('about', about);
-    
-    // Transform contact data
+
     const contactRow = contactResult.data ? mapRowToFrontend(contactResult.data as DbRow) : getDefaultContact();
     const contact = {
       pageIntroText: contactRow.pageIntroText || '',
@@ -236,9 +217,8 @@ export async function fetchAllCmsData(): Promise<CmsData | null> {
       },
       socialLinks: contactRow.socialLinks || [],
     };
-    
-    // Transform resume settings
-    const resumeSettings = resumeSettingsResult.data 
+
+    const resumeSettings = resumeSettingsResult.data
       ? { activeResumeId: (resumeSettingsResult.data as DbRow).active_resume_id || null }
       : { activeResumeId: null };
 
@@ -262,27 +242,110 @@ export async function fetchAllCmsData(): Promise<CmsData | null> {
         resumeSettings,
       },
       collections: {
-        education: transformCollection(educationResult.data),
-        skills: transformCollection(skillsResult.data),
-        services: transformCollection(servicesResult.data),
-        resumes: transformCollection(resumesResult.data),
         projects: transformCollection(projectsResult.data),
-        publications: transformCollection(publicationsResult.data, 'publications'),
-        certifications: transformCollection(certificationsResult.data),
-        experience: transformCollection(experienceResult.data, 'experience'),
-        blogs: transformCollection(blogsResult.data),
-        testimonials: transformCollection(testimonialsResult.data),
-        achievements: transformCollection(achievementsResult.data, 'achievements'),
-        clients: transformCollection(clientsResult.data),
+        services: transformCollection(servicesResult.data),
+        skills: transformCollection(skillsResult.data),
         techStackCategories: transformCollection(techStackResult.data),
-        contactMessages: transformCollection(messagesResult.data),
-        portfolio: [], // Empty - portfolio data comes from projects
+        // Initialize others as empty arrays
+        education: [],
+        resumes: [],
+        publications: [],
+        certifications: [],
+        experience: [],
+        blogs: [],
+        testimonials: [],
+        achievements: [],
+        clients: [],
+        contactMessages: [],
+        portfolio: [],
       },
-    } as CmsData;
+    } as unknown as Partial<CmsData>;
   } catch (error) {
-    console.error('[SupabaseCms] Failed to fetch CMS data:', error);
+    console.error('[SupabaseCms] Failed to fetch critical CMS data:', error);
     throw error;
   }
+}
+
+/**
+ * Fetch Deferred CMS Data (Background)
+ * Includes secondary collections not immediately visible.
+ */
+export async function fetchDeferredCmsData(): Promise<Partial<CmsData['collections']> | null> {
+  if (!isSupabaseConfigured() || !supabase) return null;
+
+  try {
+    const [
+      educationResult,
+      resumesResult,
+      remainingProjectsResult, // Get rest if needed, or just full fetch
+      publicationsResult,
+      certificationsResult,
+      experienceResult,
+      blogsResult,
+      testimonialsResult,
+      achievementsResult,
+      clientsResult,
+      messagesResult,
+    ] = await Promise.all([
+      supabase.from(DB_TABLES.EDUCATION).select('*').order('order_index'),
+      supabase.from(DB_TABLES.RESUMES).select('*'),
+      supabase.from(DB_TABLES.PROJECTS).select('*').order('order_index'), // Fetch full list to replace partial
+      supabase.from(DB_TABLES.PUBLICATIONS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.CERTIFICATIONS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.EXPERIENCE).select('*').order('order_index'),
+      supabase.from(DB_TABLES.BLOGS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.TESTIMONIALS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.ACHIEVEMENTS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.CLIENTS).select('*').order('order_index'),
+      supabase.from(DB_TABLES.CONTACT_MESSAGES).select('*').order('created_at', { ascending: false }),
+    ]);
+
+    const transformCollection = (rows: DbRow[] | null, tableName?: string) => {
+      if (!rows) return [];
+      return rows.map(row => {
+        let mapped = mapRowToFrontend(row);
+        if (tableName) {
+          mapped = applySpecialMappingsFromDb(tableName, mapped);
+        }
+        return mapped;
+      });
+    };
+
+    // Cast specifically to match CmsData['collections'] structure
+    return {
+      education: transformCollection(educationResult.data),
+      resumes: transformCollection(resumesResult.data),
+      projects: transformCollection(remainingProjectsResult.data),
+      publications: transformCollection(publicationsResult.data, 'publications'),
+      certifications: transformCollection(certificationsResult.data),
+      experience: transformCollection(experienceResult.data, 'experience'),
+      blogs: transformCollection(blogsResult.data),
+      testimonials: transformCollection(testimonialsResult.data),
+      achievements: transformCollection(achievementsResult.data, 'achievements'),
+      clients: transformCollection(clientsResult.data),
+      contactMessages: transformCollection(messagesResult.data),
+    } as unknown as Partial<CmsData['collections']>;
+  } catch (error) {
+    console.error('[SupabaseCms] Failed to fetch deferred CMS data:', error);
+    throw error;
+  }
+}
+
+/**
+ * Legacy support / Full Fetch
+ */
+export async function fetchAllCmsData(): Promise<CmsData | null> {
+  const critical = await fetchCriticalCmsData();
+  if (!critical) return null;
+  const deferred = await fetchDeferredCmsData();
+
+  return {
+    ...critical,
+    collections: {
+      ...critical.collections,
+      ...deferred,
+    }
+  } as CmsData;
 }
 
 // ============================================================================
@@ -297,10 +360,10 @@ export async function updateSingleton(
   values: Record<string, unknown>
 ): Promise<void> {
   if (!supabase) throw new Error('Supabase not configured');
-  
+
   const tableName = singletonToTable[key];
   let dbValues = mapFrontendToRow(values);
-  
+
   // Handle special contact structure
   if (key === 'contact' && values.contactInfo) {
     const contactInfo = values.contactInfo as Record<string, string>;
@@ -312,20 +375,20 @@ export async function updateSingleton(
     };
     delete dbValues.contact_info;
   }
-  
+
   // Handle special about field mapping
   if (key === 'about' && 'current_role' in dbValues) {
     dbValues.current_job_role = dbValues.current_role;
     delete dbValues.current_role;
   }
-  
+
   // Handle resumeSettings
   if (key === 'resumeSettings' && 'active_resume_id' in dbValues) {
     // Already in correct format
   }
-  
+
   dbValues.updated_at = new Date().toISOString();
-  
+
   const { error } = await supabase
     .from(tableName)
     .update(dbValues)
@@ -346,10 +409,10 @@ export async function createItem(
   values: Record<string, unknown>
 ): Promise<Record<string, unknown>> {
   if (!supabase) throw new Error('Supabase not configured');
-  
+
   const tableName = collectionToTable[key];
   let dbValues = mapFrontendToRow(values);
-  
+
   // Apply special field mappings based on collection type
   if (key === 'experience' && 'role' in dbValues) {
     dbValues.job_role = dbValues.role;
@@ -363,10 +426,10 @@ export async function createItem(
     dbValues.award_year = dbValues.year;
     delete dbValues.year;
   }
-  
+
   // Remove id if present (let Supabase generate it)
   delete dbValues.id;
-  
+
   const { data, error } = await supabase
     .from(tableName)
     .insert(dbValues)
@@ -374,7 +437,7 @@ export async function createItem(
     .single();
 
   if (error) throw error;
-  
+
   let result = mapRowToFrontend(data as DbRow);
   result = applySpecialMappingsFromDb(key, result);
   return result;
@@ -389,10 +452,10 @@ export async function updateItem(
   values: Record<string, unknown>
 ): Promise<void> {
   if (!supabase) throw new Error('Supabase not configured');
-  
+
   const tableName = collectionToTable[key];
   let dbValues = mapFrontendToRow(values);
-  
+
   // Apply special field mappings
   if (key === 'experience' && 'role' in dbValues) {
     dbValues.job_role = dbValues.role;
@@ -406,9 +469,9 @@ export async function updateItem(
     dbValues.award_year = dbValues.year;
     delete dbValues.year;
   }
-  
+
   dbValues.updated_at = new Date().toISOString();
-  
+
   const { error } = await supabase
     .from(tableName)
     .update(dbValues)
@@ -425,11 +488,11 @@ export async function deleteItem(
   id: string
 ): Promise<void> {
   if (!supabase) throw new Error('Supabase not configured');
-  
+
   const tableName = collectionToTable[key];
-  
+
   console.log(`[SupabaseCms] Deleting from ${tableName} with id:`, id);
-  
+
   const { error, data } = await supabase
     .from(tableName)
     .delete()
@@ -440,7 +503,7 @@ export async function deleteItem(
     console.error(`[SupabaseCms] Delete error:`, error);
     throw error;
   }
-  
+
   console.log(`[SupabaseCms] Delete successful, deleted rows:`, data);
 }
 
@@ -462,13 +525,13 @@ export async function addContactMessage(
     console.error('[SupabaseCms] addContactMessage: Supabase not configured');
     throw new Error('Supabase not configured');
   }
-  
-  console.log('[SupabaseCms] addContactMessage: Attempting to insert message', { 
-    name: message.name, 
-    email: message.email, 
-    subject: message.subject 
+
+  console.log('[SupabaseCms] addContactMessage: Attempting to insert message', {
+    name: message.name,
+    email: message.email,
+    subject: message.subject
   });
-  
+
   const dbValues = {
     name: message.name,
     email: message.email,
@@ -476,7 +539,7 @@ export async function addContactMessage(
     message: message.message,
     status: 'new',
   };
-  
+
   // Use direct fetch with only anon key (no auth session)
   const response = await fetch(`${supabaseUrl}/rest/v1/${DB_TABLES.CONTACT_MESSAGES}`, {
     method: 'POST',
@@ -493,7 +556,7 @@ export async function addContactMessage(
     console.error('[SupabaseCms] addContactMessage: Insert failed', errorData);
     throw new Error(errorData.message || 'Failed to send message');
   }
-  
+
   const data = await response.json();
   console.log('[SupabaseCms] addContactMessage: Insert successful', data);
   return Array.isArray(data) ? mapRowToFrontend(data[0] as DbRow) : mapRowToFrontend(data as DbRow);
@@ -507,9 +570,9 @@ export async function updateContactMessage(
   values: Record<string, unknown>
 ): Promise<void> {
   if (!supabase) throw new Error('Supabase not configured');
-  
+
   const dbValues = mapFrontendToRow(values);
-  
+
   const { error } = await supabase
     .from(DB_TABLES.CONTACT_MESSAGES)
     .update(dbValues)
@@ -523,7 +586,7 @@ export async function updateContactMessage(
  */
 export async function deleteContactMessage(id: string): Promise<void> {
   if (!supabase) throw new Error('Supabase not configured');
-  
+
   const { error } = await supabase
     .from(DB_TABLES.CONTACT_MESSAGES)
     .delete()
@@ -541,24 +604,24 @@ export async function deleteContactMessage(id: string): Promise<void> {
  */
 export async function setActiveResume(resumeId: string): Promise<void> {
   if (!supabase) throw new Error('Supabase not configured');
-  
+
   // Update all resumes to inactive, then set the selected one to active
   await supabase
     .from(DB_TABLES.RESUMES)
     .update({ status: 'inactive', updated_at: new Date().toISOString() })
     .neq('id', resumeId);
-    
+
   await supabase
     .from(DB_TABLES.RESUMES)
     .update({ status: 'active', updated_at: new Date().toISOString() })
     .eq('id', resumeId);
-  
+
   // Update resume settings
   await supabase
     .from(DB_TABLES.RESUME_SETTINGS)
-    .update({ 
+    .update({
       active_resume_id: resumeId,
-      updated_at: new Date().toISOString() 
+      updated_at: new Date().toISOString()
     })
     .not('id', 'is', null);
 }
@@ -576,9 +639,9 @@ export async function uploadFile(
   file: File
 ): Promise<string> {
   if (!supabase) throw new Error('Supabase not configured');
-  
+
   const bucketName = STORAGE_BUCKETS[bucket];
-  
+
   const { data, error } = await supabase.storage
     .from(bucketName)
     .upload(path, file, {
@@ -587,7 +650,7 @@ export async function uploadFile(
     });
 
   if (error) throw error;
-  
+
   const { data: { publicUrl } } = supabase.storage
     .from(bucketName)
     .getPublicUrl(data.path);
@@ -603,11 +666,11 @@ export async function deleteFile(
   path: string
 ): Promise<void> {
   if (!supabase) throw new Error('Supabase not configured');
-  
+
   const bucketName = STORAGE_BUCKETS[bucket];
-  
+
   console.log(`[SupabaseCms] Deleting file from ${bucketName}:`, path);
-  
+
   const { error } = await supabase.storage
     .from(bucketName)
     .remove([path]);
@@ -616,7 +679,7 @@ export async function deleteFile(
     console.error(`[SupabaseCms] File delete error:`, error);
     throw error;
   }
-  
+
   console.log(`[SupabaseCms] File deleted successfully from ${bucketName}`);
 }
 

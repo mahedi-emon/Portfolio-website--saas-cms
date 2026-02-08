@@ -3,12 +3,15 @@ import { DataTable } from '../../components/DataTable';
 import { EntityForm } from '../../components/EntityForm';
 import { sectionSchemas, getStorageFields } from '../../cms/cmsSchemas';
 import { useCms } from '../../../hooks/useCms';
-import { getToolLogoUrl } from '../../../utils/getToolLogoUrl';
+import { getToolLogoUrl, DEFAULT_LOGO } from '../../../utils/getToolLogoUrl';
 import { deleteFile, extractFilePathFromUrl } from '../../../services/supabaseCms';
 import type { CollectionItem, CollectionKey, SingletonKey } from '../../../context/CmsContext';
 
 export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
   const { data, updateSingleton, createItem, updateItem, deleteItem, replaceCollection } = useCms();
+  // ... (rest of file)
+
+  // ... INSIDE onSubmit ...
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingTool, setEditingTool] = useState<{ categoryId: string; toolId: string } | null>(null);
   const [dragId, setDragId] = useState<string | null>(null);
@@ -18,7 +21,25 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
 
   const tableColumns = useMemo(() => {
     if (!schema) return [];
-    return schema.fields.map((field) => ({ key: field.name, header: field.label }));
+
+    let fields = schema.fields;
+
+    // Filter columns for complex schemas to prevent horizontal blowout (Desktop View)
+    if (schema.key === 'certifications') {
+      fields = schema.fields.filter(f => ['certificateTitle', 'issuer', 'issueDate', 'status'].includes(f.name));
+    } else if (schema.key === 'education') {
+      fields = schema.fields.filter(f => ['institution', 'degree', 'startDate', 'endDate', 'status'].includes(f.name));
+    } else if (schema.key === 'experience') {
+      fields = schema.fields.filter(f => ['company', 'role', 'startDate', 'endDate', 'status'].includes(f.name));
+    } else if (schema.key === 'projects') {
+      fields = schema.fields.filter(f => ['title', 'slug', 'status', 'featured'].includes(f.name));
+    } else if (schema.key === 'clients') {
+      fields = schema.fields.filter(f => ['name', 'industry', 'status', 'featured'].includes(f.name));
+    } else if (schema.key === 'blogs') {
+      fields = schema.fields.filter(f => ['title', 'slug', 'status', 'publishedDate'].includes(f.name));
+    }
+
+    return fields.map((field) => ({ key: field.name, header: field.label }));
   }, [schema]);
 
   const reorderItems = <T extends { id: string }>(items: T[], fromId: string, toId: string) => {
@@ -161,8 +182,145 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
     { name: 'proficiencyLevel', label: 'Proficiency (0-100)', type: 'number' },
   ] as const;
 
+  // Define mobile renderer for complex tables
+  const mobileRenderer = useMemo(() => {
+    // Reusable Mobile Card Component
+    const MobileCard = ({ title, subtitle, status, meta, row, onEdit, onDelete }: any) => (
+      <div className="flex flex-col gap-3">
+        <div className="flex justify-between items-start gap-3">
+          <div className="min-w-0 flex-1">
+            <h3 className="font-bold text-white text-base truncate">{title}</h3>
+            {subtitle && <p className="text-sm text-[#C77DFF] truncate">{subtitle}</p>}
+          </div>
+          {status && (
+            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide shrink-0 ${status === 'published' ? 'bg-green-500/10 text-green-400' : 'bg-white/10 text-white/50'}`}>
+              {status}
+            </span>
+          )}
+        </div>
+
+        {meta && (
+          <div className="text-xs text-white/40 grid grid-cols-2 gap-2 border-t border-white/5 pt-2 mt-1">
+            {meta}
+          </div>
+        )}
+
+        <div className="flex gap-2 pt-3 border-t border-white/10 mt-1">
+          {onEdit && (
+            <button
+              onClick={() => onEdit(row)}
+              className="flex-1 inline-flex justify-center items-center gap-1.5 rounded-lg bg-[#C77DFF]/10 border border-[#C77DFF]/30 px-3 py-2 text-xs font-medium text-[#C77DFF] hover:bg-[#C77DFF]/20 transition-colors"
+            >
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+              Edit
+            </button>
+          )}
+          {onDelete && (
+            <button
+              onClick={() => onDelete(row)}
+              className="flex-1 inline-flex justify-center items-center gap-1.5 rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-100 transition-colors"
+            >
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+              Delete
+            </button>
+          )}
+        </div>
+      </div>
+    );
+
+    if (schema.key === 'certifications') {
+      return (row: any, onEdit: any, onDelete: any) => (
+        <MobileCard
+          title={row.certificateTitle}
+          subtitle={row.issuer}
+          status={row.status}
+          row={row} onEdit={onEdit} onDelete={onDelete}
+          meta={
+            <>
+              <div>
+                <span className="block uppercase tracking-wider text-[10px] mb-0.5 text-white/20">Issued</span>
+                <span className="text-white/60">{row.issueDate}</span>
+              </div>
+              {row.expiryDate && (
+                <div>
+                  <span className="block uppercase tracking-wider text-[10px] mb-0.5 text-white/20">Expires</span>
+                  <span className="text-white/60">{row.expiryDate}</span>
+                </div>
+              )}
+            </>
+          }
+        />
+      );
+    }
+
+    if (schema.key === 'education') {
+      return (row: any, onEdit: any, onDelete: any) => (
+        <MobileCard
+          title={row.institution}
+          subtitle={row.degree}
+          status={row.status}
+          row={row} onEdit={onEdit} onDelete={onDelete}
+          meta={
+            <>
+              <div className="col-span-2">
+                <span className="block uppercase tracking-wider text-[10px] mb-0.5 text-white/20">Period</span>
+                <span className="text-white/60">{row.startDate} — {row.endDate || 'Present'}</span>
+              </div>
+              <div className="col-span-2">
+                <span className="block uppercase tracking-wider text-[10px] mb-0.5 text-white/20">Field</span>
+                <span className="text-white/60">{row.field}</span>
+              </div>
+            </>
+          }
+        />
+      );
+    }
+
+    if (schema.key === 'experience') {
+      return (row: any, onEdit: any, onDelete: any) => (
+        <MobileCard
+          title={row.company}
+          subtitle={row.role}
+          status={row.status}
+          row={row} onEdit={onEdit} onDelete={onDelete}
+          meta={
+            <div className="col-span-2">
+              <span className="block uppercase tracking-wider text-[10px] mb-0.5 text-white/20">Period</span>
+              <span className="text-white/60">{row.startDate} — {row.endDate || 'Present'}</span>
+            </div>
+          }
+        />
+      );
+    }
+
+    if (schema.key === 'projects' || schema.key === 'blogs') {
+      return (row: any, onEdit: any, onDelete: any) => (
+        <MobileCard
+          title={row.title}
+          subtitle={row.slug}
+          status={row.status}
+          row={row} onEdit={onEdit} onDelete={onDelete}
+        />
+      );
+    }
+
+    if (schema.key === 'clients') {
+      return (row: any, onEdit: any, onDelete: any) => (
+        <MobileCard
+          title={row.name}
+          subtitle={row.industry}
+          status={row.status}
+          row={row} onEdit={onEdit} onDelete={onDelete}
+          meta={row.featured && <span className="text-[10px] uppercase font-bold text-amber-400">Featured Client</span>}
+        />
+      );
+    }
+
+    return undefined;
+  }, [schema.key]);
+
   return (
-      <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 animate-fade-in">
       <div>
         <h1 className="text-3xl font-bold text-white">{schema.title}</h1>
         <p className="mt-1 text-white/60">Manage {schema.title.toLowerCase()} entries.</p>
@@ -194,17 +352,18 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
             columns={tableColumns}
             rows={rows}
             rowKey={(row) => row.id}
+            renderMobileItem={mobileRenderer}
             onEdit={(row) => setEditingId(row.id)}
             onDelete={async (row) => {
               const itemTitle = (row as any).title || (row as any).name || (row as any).certificateTitle || 'this item';
               if (!confirm(`Are you sure you want to delete "${itemTitle}"? This will permanently remove it from the database.`)) {
                 return;
               }
-              
+
               try {
                 // Get storage fields from schema
                 const storageFields = getStorageFields(schema);
-                
+
                 // Map lowercase bucket names to uppercase for supabaseCms functions
                 const bucketMap: Record<string, 'IMAGES' | 'RESUMES' | 'DOCUMENTS' | 'GALLERY'> = {
                   'images': 'IMAGES',
@@ -212,7 +371,7 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                   'documents': 'DOCUMENTS',
                   'gallery': 'GALLERY',
                 };
-                
+
                 // Delete files from storage if they exist
                 for (const field of storageFields) {
                   const fileUrl = (row as any)[field.name];
@@ -230,7 +389,7 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                     }
                   }
                 }
-                
+
                 // Delete database record
                 await deleteItem(collectionKey, row.id);
                 alert('✓ Item deleted successfully!');
@@ -331,7 +490,51 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
       {isTechStack && (
         <div className="space-y-6">
           <div className="rounded-2xl border border-white/10 bg-[#0B1320]/80 p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-white">Create Category</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-white">Create Category</h2>
+              <button
+                onClick={async () => {
+                  if (!confirm('This will scan all tools and auto-correct their logos. Continue?')) return;
+
+                  let updateCount = 0;
+
+                  for (const category of rows) {
+                    const cat = category as { id: string; tools?: any[] };
+                    const tools = cat.tools || [];
+                    let hasChanges = false;
+
+                    const updatedTools = tools.map((tool: any) => {
+                      const currentLogo = tool.logoUrl || '';
+                      const autoLogo = getToolLogoUrl(tool.name);
+
+                      const isDefaultOrEmpty = !currentLogo ||
+                        currentLogo === DEFAULT_LOGO ||
+                        currentLogo.includes('data:image');
+
+                      // Fix weak matches (broken simpleicons urls) and force overrides
+                      const isWeakLogo = currentLogo.includes('simpleicons.org') && currentLogo !== autoLogo;
+
+                      if ((isDefaultOrEmpty || isWeakLogo) && autoLogo !== DEFAULT_LOGO) {
+                        hasChanges = true;
+                        return { ...tool, logoUrl: autoLogo };
+                      }
+                      return tool;
+                    });
+
+                    if (hasChanges) {
+                      await updateItem(collectionKey, cat.id, { ...category, tools: updatedTools });
+                      updateCount++;
+                    }
+                  }
+
+                  alert(`Fixed logos in ${updateCount} categories!`);
+                }}
+                className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors"
+                title="Auto-detect and fix logos for all tools"
+              >
+                <span>✨ Auto-Correct Logos</span>
+              </button>
+            </div>
             <div className="mt-4">
               <EntityForm
                 fields={schema.fields}
@@ -453,29 +656,45 @@ export function CmsSectionEditor({ sectionKey }: { sectionKey: string }) {
                             initialValues={editingToolRow}
                             submitLabel={editingToolId ? 'Update Tool' : 'Add Tool'}
                             onSubmit={(values) => {
-                              const resolvedLogoUrl =
-                                String(values.logoUrl ?? '').trim() ||
-                                getToolLogoUrl(String(values.name ?? ''));
+                              const currentLogo = String(values.logoUrl ?? '').trim();
+                              // Check if it's empty, explicitly the default fallback, OR a generic data URI (which our default is)
+                              const isDefaultOrEmpty = !currentLogo ||
+                                currentLogo === DEFAULT_LOGO ||
+                                currentLogo.includes('data:image') ||
+                                currentLogo.includes('%3C%2F%3E'); // Checks for encoded </> just in case
+
+                              // Always try to get a fresh auto logo based on the name
+                              const autoLogo = getToolLogoUrl(String(values.name ?? ''));
+
+                              // DETECT "WEAK" LOGOS:
+                              // If the current logo is from simpleicons but doesn't match our new best guess,
+                              // it might be a broken slug from before (e.g. .../agilesoftwaredev... vs .../jira).
+                              // We should offer to replace it.
+                              const isWeakLogo = currentLogo.includes('simpleicons.org') && currentLogo !== autoLogo;
+
+                              const shouldUpdate = isDefaultOrEmpty || isWeakLogo;
+
+                              const resolvedLogoUrl = (shouldUpdate && autoLogo !== DEFAULT_LOGO) ? autoLogo : (currentLogo || autoLogo);
                               const nextTools = editingToolId
                                 ? toolRows.map((tool) =>
-                                    tool.id === editingToolId
-                                      ? {
-                                          ...tool,
-                                          ...values,
-                                          logoUrl: resolvedLogoUrl,
-                                          proficiencyLevel: Number(values.proficiencyLevel ?? tool.proficiencyLevel ?? 0),
-                                        }
-                                      : tool
-                                  )
-                                : [
-                                    ...toolRows,
-                                    {
-                                      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-                                      name: String(values.name ?? ''),
+                                  tool.id === editingToolId
+                                    ? {
+                                      ...tool,
+                                      ...values,
                                       logoUrl: resolvedLogoUrl,
-                                      proficiencyLevel: Number(values.proficiencyLevel ?? 0),
-                                    },
-                                  ];
+                                      proficiencyLevel: Number(values.proficiencyLevel ?? tool.proficiencyLevel ?? 0),
+                                    }
+                                    : tool
+                                )
+                                : [
+                                  ...toolRows,
+                                  {
+                                    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+                                    name: String(values.name ?? ''),
+                                    logoUrl: resolvedLogoUrl,
+                                    proficiencyLevel: Number(values.proficiencyLevel ?? 0),
+                                  },
+                                ];
 
                               updateItem(collectionKey, category.id, {
                                 ...category,

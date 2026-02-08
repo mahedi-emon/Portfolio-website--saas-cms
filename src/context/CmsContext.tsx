@@ -80,12 +80,12 @@ export function CmsProvider({ children }: { children: ReactNode }) {
    * Falls back to in-memory mock data if Supabase is not configured.
    */
   const useSupabase = isSupabaseConfigured();
-  
+
   /**
    * CMS Data State
    */
   const [data, setData] = useState<CmsData>(() => cmsMock);
-  
+
   /**
    * Loading State
    */
@@ -94,7 +94,7 @@ export function CmsProvider({ children }: { children: ReactNode }) {
     isMutating: false,
     mutatingOperation: null,
   });
-  
+
   /**
    * Error State
    */
@@ -115,20 +115,47 @@ export function CmsProvider({ children }: { children: ReactNode }) {
       }
 
       try {
-        console.log('[CmsContext] Fetching data from Supabase...');
-        const supabaseData = await supabaseCms.fetchAllCmsData();
-        if (supabaseData) {
-          setData(supabaseData);
-          console.log('[CmsContext] Supabase data loaded successfully');
+        console.log('[CmsContext] Fetching CRITICAL data from Supabase...');
+        // 1. Fetch Critical Data (Fastest possible paint)
+        const criticalData = await supabaseCms.fetchCriticalCmsData();
+
+        if (criticalData) {
+          setData(prev => ({
+            ...prev,
+            singletons: criticalData.singletons!,
+            collections: {
+              ...prev.collections,
+              ...criticalData.collections!,
+            }
+          }));
+          console.log('[CmsContext] Critical data loaded.');
         }
+
+        // 2. Hide Loader Immediately
+        setLoadingState(prev => ({ ...prev, isLoading: false }));
+
+        // 3. Fetch Deferred Data (Background)
+        console.log('[CmsContext] Fetching DEFERRED data...');
+        const deferredCollections = await supabaseCms.fetchDeferredCmsData();
+
+        if (deferredCollections) {
+          setData(prev => ({
+            ...prev,
+            collections: {
+              ...prev.collections,
+              ...deferredCollections,
+            }
+          }));
+          console.log('[CmsContext] Deferred data loaded.');
+        }
+
       } catch (err) {
         console.error('[CmsContext] Failed to fetch from Supabase:', err);
-        setErrorState({ 
-          error: err instanceof Error ? err.message : 'Failed to load data', 
-          errorOperation: 'initialLoad' 
+        setErrorState({
+          error: err instanceof Error ? err.message : 'Failed to load data',
+          errorOperation: 'initialLoad'
         });
-        // Keep mock data as fallback
-      } finally {
+        // On critical error, stop loading so user isn't stuck
         setLoadingState(prev => ({ ...prev, isLoading: false }));
       }
     }
@@ -146,7 +173,7 @@ export function CmsProvider({ children }: { children: ReactNode }) {
   const wrapOperation = useCallback(async (operation: string, fn: () => Promise<void> | void) => {
     setLoadingState((prev) => ({ ...prev, isMutating: true, mutatingOperation: operation }));
     setErrorState({ error: null, errorOperation: null });
-    
+
     try {
       await fn();
     } catch (err) {
