@@ -51,7 +51,7 @@ export function ContactPage() {
   return (
     <div className="space-y-16 pb-16">
       {/* Hero Section */}
-      <section className="relative pt-8 text-center">
+      <section className="relative pt-8 text-center overflow-hidden">
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] rounded-full opacity-10 blur-3xl animate-morph floating" />
           <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] rounded-full opacity-10 blur-3xl animate-morph floating-delayed" />
@@ -62,7 +62,7 @@ export function ContactPage() {
           <MessageCircle className="w-4 h-4 text-[#C77DFF] animate-bounce-subtle" />
           <span className="text-sm font-medium text-[#C77DFF]">Get in Touch</span>
         </div>
-        
+
         <h1 className="text-4xl lg:text-5xl font-bold mb-6 animate-fade-in text-white">
           Let's <span className="gradient-text text-shimmer hover:animate-wiggle inline-block">Connect</span>
         </h1>
@@ -85,10 +85,10 @@ export function ContactPage() {
                 </div>
                 <h2 className="text-lg font-bold text-white group-hover:text-[#C77DFF] transition-colors">Contact Info</h2>
               </div>
-              
+
               <div className="space-y-4">
                 {contactInfo.email && (
-                  <a 
+                  <a
                     href={`mailto:${contactInfo.email}`}
                     className="flex items-center gap-4 p-3 rounded-xl hover:bg-[#0B1320]/50 hover:-translate-x-1 transition-all duration-300 group/item"
                   >
@@ -101,9 +101,9 @@ export function ContactPage() {
                     </div>
                   </a>
                 )}
-                
+
                 {contactInfo.phone && (
-                  <a 
+                  <a
                     href={`tel:${contactInfo.phone}`}
                     className="flex items-center gap-4 p-3 rounded-xl hover:bg-[#0B1320]/50 hover:-translate-x-1 transition-all duration-300 group/item"
                   >
@@ -116,7 +116,7 @@ export function ContactPage() {
                     </div>
                   </a>
                 )}
-                
+
                 {contactInfo.location && (
                   <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-[#0B1320]/50 transition-colors group/item">
                     <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#C77DFF]/20 text-[#C77DFF] group-hover/item:scale-110 transition-transform">
@@ -198,13 +198,13 @@ export function ContactPage() {
                       message: formValues.message,
                     }),
                   });
-                  
+
                   const result = await response.json();
-                  
+
                   if (!response.ok) {
                     throw new Error(result.error || 'Failed to send message');
                   }
-                  
+
                   setFormValues({ name: '', email: '', subject: '', message: '' });
                   setErrors({});
                   setSuccess('Message sent successfully!');
@@ -239,7 +239,7 @@ export function ContactPage() {
                   {errors.email && <p className="mt-1 text-sm text-red-400 animate-slide-up">{errors.email}</p>}
                 </div>
               </div>
-              
+
               <div className="animate-fade-in" style={{ animationDelay: '450ms' }}>
                 <label className="block text-sm font-medium text-[#C9D1D9] mb-1.5">Subject</label>
                 <input
@@ -250,7 +250,7 @@ export function ContactPage() {
                 />
                 {errors.subject && <p className="mt-1 text-sm text-red-400 animate-slide-up">{errors.subject}</p>}
               </div>
-              
+
               <div className="animate-fade-in" style={{ animationDelay: '500ms' }}>
                 <label className="block text-sm font-medium text-[#C9D1D9] mb-1.5">Message</label>
                 <textarea
@@ -262,7 +262,7 @@ export function ContactPage() {
                 />
                 {errors.message && <p className="mt-1 text-sm text-red-400 animate-slide-up">{errors.message}</p>}
               </div>
-              
+
               <div className="flex flex-col gap-3 pt-2 animate-fade-in" style={{ animationDelay: '550ms' }}>
                 {errors.submit && (
                   <div className="flex items-center gap-2 text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 animate-slide-up">
@@ -272,11 +272,11 @@ export function ContactPage() {
                     <span className="font-medium">{errors.submit}</span>
                   </div>
                 )}
-                
+
                 <div className="flex items-center gap-4">
-                  <button 
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#C77DFF] text-[#0B1320] font-semibold rounded-xl shadow-lg shadow-[#C77DFF]/30 hover:shadow-2xl hover:shadow-[#C77DFF]/40 hover:-translate-y-1 hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:scale-100 btn-animated group/btn" 
-                    type="submit" 
+                  <button
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#C77DFF] text-[#0B1320] font-semibold rounded-xl shadow-lg shadow-[#C77DFF]/30 hover:shadow-2xl hover:shadow-[#C77DFF]/40 hover:-translate-y-1 hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:scale-100 btn-animated group/btn"
+                    type="submit"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
@@ -291,7 +291,7 @@ export function ContactPage() {
                       </>
                     )}
                   </button>
-                  
+
                   {success && (
                     <div className="flex items-center gap-2 text-[#C77DFF] animate-slide-in-left">
                       <CheckCircle2 className="w-5 h-5 animate-bounce-subtle" />

@@ -16,7 +16,7 @@ export function BlogListPage() {
   return (
     <div className="space-y-16 pb-16">
       {/* Hero Section */}
-      <section className="relative pt-8 text-center">
+      <section className="relative pt-8 text-center overflow-hidden">
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] rounded-full opacity-10 blur-3xl animate-morph floating" />
           <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-gradient-to-br from-[#C77DFF] to-[#9D4EDD] rounded-full opacity-10 blur-3xl animate-morph floating-delayed" />
@@ -27,7 +27,7 @@ export function BlogListPage() {
           <BookOpen className="w-4 h-4 text-[#C77DFF] animate-bounce-subtle" />
           <span className="text-sm font-medium text-[#C77DFF]">My Blog</span>
         </div>
-        
+
         <h1 className="text-4xl lg:text-5xl font-bold mb-6 animate-fade-in text-white leading-tight overflow-visible">
           Thoughts & <span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] bg-clip-text text-transparent text-shimmer hover:animate-wiggle inline-block pb-1">Insights</span>
         </h1>
@@ -41,7 +41,7 @@ export function BlogListPage() {
         <section className="animate-fade-in" style={{ animationDelay: '200ms' }}>
           <div className="relative">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] rounded-3xl blur-sm opacity-[0.06]" />
-            
+
             <div className="relative flex flex-col items-center justify-center py-20 px-8 bg-[#0B1320]/80 backdrop-blur-sm rounded-2xl border border-white/[0.06] text-center">
               <div className="relative mb-6">
                 <div className="absolute inset-0 bg-[#C77DFF]/20 rounded-full blur-xl animate-pulse-glow" />
@@ -49,14 +49,14 @@ export function BlogListPage() {
                   <BookOpen className="w-12 h-12 text-[#C77DFF] animate-bounce-subtle" />
                 </div>
               </div>
-              
+
               <h2 className="text-2xl font-bold text-white mb-3">
                 No Blog Posts Yet
               </h2>
               <p className="text-[#C9D1D9] max-w-md mb-6 leading-relaxed">
                 I'm currently working on some exciting content. Check back soon for articles on technology, development insights, and creative explorations.
               </p>
-              
+
               <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#C77DFF]/10 border border-[#C77DFF]/20">
                 <Sparkles className="w-4 h-4 text-[#C77DFF] animate-spin-slow" />
                 <span className="text-sm text-[#C77DFF] font-medium">Coming Soon</span>
@@ -73,18 +73,18 @@ export function BlogListPage() {
             <Sparkles className="w-3 h-3 animate-spin-slow" />
             Featured Article
           </div>
-          
+
           <article className="group relative">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] rounded-3xl blur-sm opacity-[0.06] group-hover:blur-md group-hover:opacity-[0.14] transition-all duration-600 ease-out" />
-            
+
             <div className="relative grid lg:grid-cols-2 gap-8 bg-[#0B1320]/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg shadow-[#C77DFF]/[0.05] border border-white/[0.06] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:-translate-y-1 hover:border-white/[0.12] transition-all duration-600 ease-out card-animated">
               {/* Cover Image */}
               {featuredPost.coverImageUrl ? (
                 <div className="relative h-64 lg:h-auto overflow-hidden img-hover-shine">
-                  <img 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-                    src={featuredPost.coverImageUrl} 
-                    alt={featuredPost.title} 
+                  <img
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    src={featuredPost.coverImageUrl}
+                    alt={featuredPost.title}
                   />
                 </div>
               ) : (
@@ -98,8 +98,8 @@ export function BlogListPage() {
                 {Array.isArray(featuredPost.tags) && featuredPost.tags.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-4">
                     {featuredPost.tags.slice(0, 3).map((tag: string, index: number) => (
-                      <span 
-                        key={tag} 
+                      <span
+                        key={tag}
                         className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-[#C77DFF]/20 text-[#C77DFF] text-xs font-medium hover:bg-[#C77DFF]/30 hover:-translate-y-0.5 transition-all duration-300"
                         style={{ animationDelay: `${index * 50}ms` }}
                       >
@@ -132,7 +132,7 @@ export function BlogListPage() {
                   )}
                 </div>
 
-                <Link 
+                <Link
                   to={`/blog/${featuredPost.slug}`}
                   className="inline-flex items-center gap-2 text-[#C77DFF] font-semibold hover:gap-4 transition-all duration-300 btn-animated w-fit group/link"
                 >
@@ -149,24 +149,24 @@ export function BlogListPage() {
       {otherPosts.length > 0 && (
         <section>
           <h2 className="text-2xl font-bold text-white mb-8 hover:text-[#C77DFF] transition-colors">More Articles</h2>
-          
+
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {otherPosts.map((post, index) => (
-              <article 
-                key={post.id} 
+              <article
+                key={post.id}
                 className="group relative animate-fade-in"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] rounded-2xl blur-sm opacity-[0.06] group-hover:blur-md group-hover:opacity-[0.14] transition-all duration-600 ease-out" />
-                
+
                 <div className="relative h-full bg-[#0B1320]/80 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg shadow-[#C77DFF]/[0.05] border border-white/[0.06] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:-translate-y-1 hover:border-white/[0.12] transition-all duration-600 ease-out card-animated">
                   {/* Cover Image */}
                   {post.coverImageUrl ? (
                     <div className="relative h-44 overflow-hidden img-hover-shine">
-                      <img 
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-                        src={post.coverImageUrl} 
-                        alt={post.title} 
+                      <img
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        src={post.coverImageUrl}
+                        alt={post.title}
                       />
                     </div>
                   ) : (
@@ -180,8 +180,8 @@ export function BlogListPage() {
                     {Array.isArray(post.tags) && post.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1 mb-3">
                         {post.tags.slice(0, 2).map((tag: string) => (
-                          <span 
-                            key={tag} 
+                          <span
+                            key={tag}
                             className="px-2 py-0.5 rounded bg-[#0B1320]/50 text-[#C9D1D9] text-xs hover:bg-[#C77DFF]/20 hover:text-[#C77DFF] transition-colors"
                           >
                             {tag}
@@ -203,7 +203,7 @@ export function BlogListPage() {
                           {post.publishedDate}
                         </span>
                       )}
-                      <Link 
+                      <Link
                         to={`/blog/${post.slug}`}
                         className="inline-flex items-center gap-1 text-sm font-medium text-[#C77DFF] hover:gap-3 transition-all duration-300 group/link"
                       >
