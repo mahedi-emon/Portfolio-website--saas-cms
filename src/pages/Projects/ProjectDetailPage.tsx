@@ -15,7 +15,7 @@ export function ProjectDetailPage() {
 
   useDocumentHead({
     title: project?.title ?? 'Project',
-    description: project?.shortDescription ?? project?.description ?? 'Explore this project by Mahedi Hasan Emon.',
+    description: project?.summary ?? project?.description ?? 'Explore this project by Mahedi Hasan Emon.',
     path: `/projects/${slug}`,
     image: project?.coverImageUrl,
   });
