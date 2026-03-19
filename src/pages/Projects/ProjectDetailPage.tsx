@@ -1,6 +1,7 @@
-﻿import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Github, ExternalLink, FolderGit2, Sparkles, Code2 } from 'lucide-react';
 import { useCms } from '../../hooks/useCms';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
 
 export function ProjectDetailPage() {
   const { slug } = useParams();
@@ -11,6 +12,13 @@ export function ProjectDetailPage() {
     .slice()
     .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0))
     .find((item) => item.slug === slug);
+
+  useDocumentHead({
+    title: project?.title ?? 'Project',
+    description: project?.shortDescription ?? project?.description ?? 'Explore this project by Mahedi Hasan Emon.',
+    path: `/projects/${slug}`,
+    image: project?.coverImageUrl,
+  });
 
   if (!project) {
     return (

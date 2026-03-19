@@ -1,7 +1,9 @@
-﻿import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, BookOpen, Calendar, Clock, Tag, User } from 'lucide-react';
 import { useCms } from '../../hooks/useCms';
 import { sanitizeHtml } from '../../utils/sanitizeHtml';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
+import { JsonLd } from '../../components/common/JsonLd';
 
 export function BlogPostPage() {
   const { slug } = useParams();
@@ -12,6 +14,14 @@ export function BlogPostPage() {
     .slice()
     .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0))
     .find((item) => item.slug === slug);
+
+  useDocumentHead({
+    title: post?.title ?? 'Blog Post',
+    description: post?.excerpt ?? 'Read this article on mahedihasanemon.site.',
+    path: `/blog/${slug}`,
+    image: post?.coverImageUrl,
+    type: 'article',
+  });
 
   if (!post) {
     return (

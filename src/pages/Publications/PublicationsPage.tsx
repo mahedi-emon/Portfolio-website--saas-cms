@@ -1,5 +1,6 @@
 import { BookOpen, Sparkles, FileText, ExternalLink, Users } from 'lucide-react';
 import { useCms } from '../../hooks/useCms';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
 
 export function PublicationsPage() {
   const { data } = useCms();
@@ -7,6 +8,12 @@ export function PublicationsPage() {
     .filter((item) => item.status === 'published')
     .slice()
     .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
+
+  useDocumentHead({
+    title: 'Publications',
+    description: 'Academic publications, research papers, and scholarly contributions by Mahedi Hasan Emon.',
+    path: '/publications',
+  });
 
   return (
     <div className="space-y-16 pb-16">

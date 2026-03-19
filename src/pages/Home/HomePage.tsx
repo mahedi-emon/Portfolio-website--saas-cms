@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Download, ExternalLink, Github, Quote, Award, ChevronRight, Sparkles, Zap, Code2, Rocket } from 'lucide-react';
 import { useCms } from '../../hooks/useCms';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
+import { JsonLd } from '../../components/common/JsonLd';
 import { ResumeViewerModal } from '../../components/common/ResumeViewerModal';
 import { CertificateModal } from '../../components/common/CertificateModal';
 
@@ -89,7 +91,39 @@ export function HomePage() {
   const sectionClass = (id: string) =>
     `transition-all duration-1000 ${visibleSections.has(id) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`;
 
+  // SEO
+  const fullName = hero.fullName ?? about.fullName ?? 'Mahedi Hasan Emon';
+  const headline = hero.subheadline ?? 'Full-stack engineer focused on scalable web platforms.';
+  useDocumentHead({
+    title: `${fullName} — Full-Stack Developer & Portfolio`,
+    description: `${fullName} — ${headline} Explore projects, services, blog, and publications.`,
+    path: '/',
+  });
+
+  // Structured data: Person
+  const contact = data.singletons.contact ?? {};
+  const socialLinks: string[] = Array.isArray(contact.socialLinks)
+    ? contact.socialLinks.map((l: { url?: string }) => String(l.url ?? '')).filter(Boolean)
+    : [];
+
   return (
+    <>
+      <JsonLd data={{
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: fullName,
+        url: 'https://mahedihasanemon.site',
+        jobTitle: about.currentRole ?? 'Full-Stack Developer',
+        description: headline,
+        sameAs: socialLinks,
+      }} />
+      <JsonLd data={{
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: fullName,
+        url: 'https://mahedihasanemon.site',
+        description: `Portfolio website of ${fullName}`,
+      }} />
     <div className="space-y-32">
       {/* ═══════════════════════════════════════════════════════════════════════════
           HERO SECTION - Premium Cinematic Landing
@@ -858,5 +892,6 @@ export function HomePage() {
         onClose={() => setSelectedCertificate(null)}
       />
     </div>
+    </>
   );
 }

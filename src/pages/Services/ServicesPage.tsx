@@ -1,5 +1,6 @@
 import { Sparkles, Zap, ArrowRight, Inbox } from 'lucide-react';
 import { useCms } from '../../hooks/useCms';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
 
 const gradients = [
   'from-[#C77DFF] to-[#9D4EDD]',
@@ -16,6 +17,12 @@ export function ServicesPage() {
     .filter((item) => item.status === 'published')
     .slice()
     .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
+
+  useDocumentHead({
+    title: 'Services',
+    description: 'Professional web development, software engineering, and creative technology services offered by Mahedi Hasan Emon.',
+    path: '/services',
+  });
 
   return (
     <div className="space-y-16 pb-16">

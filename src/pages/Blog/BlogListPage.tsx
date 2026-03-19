@@ -1,6 +1,7 @@
 import { Sparkles, BookOpen, Calendar, Clock, ArrowRight, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCms } from '../../hooks/useCms';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
 
 export function BlogListPage() {
   const { data } = useCms();
@@ -12,6 +13,12 @@ export function BlogListPage() {
   // Featured post is the first one
   const featuredPost = blogs[0];
   const otherPosts = blogs.slice(1);
+
+  useDocumentHead({
+    title: 'Blog',
+    description: 'Articles, tutorials, and insights on web development, software engineering, and technology by Mahedi Hasan Emon.',
+    path: '/blog',
+  });
 
   return (
     <div className="space-y-16 pb-16">

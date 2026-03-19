@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useCms } from '../../hooks/useCms';
 import { Sparkles, FolderGit2, BookOpen, Trophy, Award, ExternalLink, Github, FileText, Eye, Inbox } from 'lucide-react';
 import { CertificateModal } from '../../components/common/CertificateModal';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
 
 const tabs = ['projects', 'publications', 'achievements'] as const;
 
@@ -18,6 +19,12 @@ export function PortfolioPage() {
   const [activeTab, setActiveTab] = useState<TabKey>('projects');
   const [certModalOpen, setCertModalOpen] = useState(false);
   const [certModalImage, setCertModalImage] = useState('');
+
+  useDocumentHead({
+    title: 'Portfolio',
+    description: 'Browse projects, publications, and achievements by Mahedi Hasan Emon — a curated collection of professional work.',
+    path: '/portfolio',
+  });
 
   const projects = (data.collections.projects ?? [])
     .filter((item) => item.status === 'published')

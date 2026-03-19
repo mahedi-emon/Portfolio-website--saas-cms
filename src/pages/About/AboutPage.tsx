@@ -1,5 +1,6 @@
 import { User, GraduationCap, Briefcase, Award, Code2, Sparkles, MapPin, Mail } from 'lucide-react';
 import { useCms } from '../../hooks/useCms';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
 
 export function AboutPage() {
   const { data } = useCms();
@@ -14,6 +15,12 @@ export function AboutPage() {
   const education = published(data.collections.education ?? []);
   const experience = published(data.collections.experience ?? []);
   const certifications = published(data.collections.certifications ?? []);
+
+  useDocumentHead({
+    title: 'About',
+    description: `Learn about Mahedi Hasan Emon — ${about.currentRole ?? 'Full-Stack Developer'}. Skills, experience, education, and certifications.`,
+    path: '/about',
+  });
 
   return (
     <div className="pb-16">

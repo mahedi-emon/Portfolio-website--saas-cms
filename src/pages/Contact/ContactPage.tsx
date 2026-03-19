@@ -4,6 +4,7 @@ import { detectSocialPlatform, formatPlatformLabel } from '../../utils/detectSoc
 import { iconMap } from '../../utils/iconMap';
 import { useCms } from '../../hooks/useCms';
 import { Mail, Phone, MapPin, Send, Sparkles, MessageCircle, CheckCircle2 } from 'lucide-react';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
 
 export function ContactPage() {
   const { data } = useCms();
@@ -11,6 +12,13 @@ export function ContactPage() {
   const contact = data.singletons.contact ?? {};
   const contactInfo = contact.contactInfo ?? {};
   const socialLinks = Array.isArray(contact.socialLinks) ? contact.socialLinks : [];
+
+  useDocumentHead({
+    title: 'Contact',
+    description: 'Get in touch with Mahedi Hasan Emon for collaborations, freelance work, or inquiries. Reach out via email or social media.',
+    path: '/contact',
+  });
+
   const [formValues, setFormValues] = useState({
     name: '',
     email: '',
