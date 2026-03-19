@@ -17,8 +17,8 @@ export function AboutPage() {
   const certifications = published(data.collections.certifications ?? []);
 
   useDocumentHead({
-    title: 'About',
-    description: `Learn about Mahedi Hasan Emon — ${about.currentRole ?? 'Full-Stack Developer'}. Skills, experience, education, and certifications.`,
+    title: 'About Mahedi Hasan Emon',
+    description: `Mahedi Hasan Emon — ${about.currentRole ?? 'Full-Stack Developer'}. Learn about his skills, experience, education, and professional certifications.`,
     path: '/about',
   });
 

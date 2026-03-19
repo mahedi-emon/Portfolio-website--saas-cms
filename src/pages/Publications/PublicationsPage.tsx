@@ -10,8 +10,8 @@ export function PublicationsPage() {
     .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
 
   useDocumentHead({
-    title: 'Publications',
-    description: 'Academic publications, research papers, and scholarly contributions by Mahedi Hasan Emon.',
+    title: 'Publications — Mahedi Hasan Emon',
+    description: 'Research publications, papers, and academic work by Mahedi Hasan Emon in software engineering and web development.',
     path: '/publications',
   });
 

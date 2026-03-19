@@ -21,8 +21,8 @@ export function PortfolioPage() {
   const [certModalImage, setCertModalImage] = useState('');
 
   useDocumentHead({
-    title: 'Portfolio',
-    description: 'Browse projects, publications, and achievements by Mahedi Hasan Emon — a curated collection of professional work.',
+    title: 'Portfolio — Mahedi Hasan Emon',
+    description: 'Explore the portfolio of Mahedi Hasan Emon — featured projects, case studies, and web development work.',
     path: '/portfolio',
   });
 

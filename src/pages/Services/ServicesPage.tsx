@@ -19,8 +19,8 @@ export function ServicesPage() {
     .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
 
   useDocumentHead({
-    title: 'Services',
-    description: 'Professional web development, software engineering, and creative technology services offered by Mahedi Hasan Emon.',
+    title: 'Services — Mahedi Hasan Emon',
+    description: 'Professional web development services by Mahedi Hasan Emon. Full-stack development, UI/UX design, and custom software solutions.',
     path: '/services',
   });
 

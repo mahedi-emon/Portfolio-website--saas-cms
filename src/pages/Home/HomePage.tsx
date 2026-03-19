@@ -106,23 +106,42 @@ export function HomePage() {
     ? contact.socialLinks.map((l: { url?: string }) => String(l.url ?? '')).filter(Boolean)
     : [];
 
+  const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': 'https://mahedihasanemon.site/#person',
+    name: 'Mahedi Hasan Emon',
+    givenName: 'Mahedi Hasan',
+    familyName: 'Emon',
+    alternateName: ['Mahedi Emon', 'MH Emon'],
+    url: 'https://mahedihasanemon.site',
+    image: about.profileImageUrl ?? 'https://mahedihasanemon.site/favicon.png',
+    jobTitle: about.currentRole ?? 'Full-Stack Developer',
+    description: `${fullName} is a Full-Stack Developer specializing in scalable web platforms, React, Node.js, and modern cloud solutions.`,
+    nationality: { '@type': 'Country', name: 'Bangladesh' },
+    knowsAbout: ['Web Development', 'React', 'Node.js', 'TypeScript', 'Full-Stack Development', 'Software Engineering'],
+    sameAs: socialLinks,
+  };
+
   return (
     <>
+      <JsonLd data={personSchema} />
       <JsonLd data={{
         '@context': 'https://schema.org',
-        '@type': 'Person',
-        name: fullName,
+        '@type': 'ProfilePage',
+        '@id': 'https://mahedihasanemon.site/#profilepage',
+        name: `${fullName} — Portfolio`,
         url: 'https://mahedihasanemon.site',
-        jobTitle: about.currentRole ?? 'Full-Stack Developer',
-        description: headline,
-        sameAs: socialLinks,
+        mainEntity: { '@id': 'https://mahedihasanemon.site/#person' },
+        description: `Official portfolio website of ${fullName} — Full-Stack Developer.`,
       }} />
       <JsonLd data={{
         '@context': 'https://schema.org',
         '@type': 'WebSite',
-        name: fullName,
+        name: `${fullName} — Portfolio`,
         url: 'https://mahedihasanemon.site',
-        description: `Portfolio website of ${fullName}`,
+        description: `Official portfolio website of ${fullName} — Full-Stack Developer building scalable web platforms.`,
+        author: { '@id': 'https://mahedihasanemon.site/#person' },
       }} />
     <div className="space-y-32">
       {/* ═══════════════════════════════════════════════════════════════════════════
