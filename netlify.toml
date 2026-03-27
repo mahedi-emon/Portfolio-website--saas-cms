@@ -11,7 +11,37 @@
   to = "/index.html"
   status = 200
 
+# Edge function for SEO - injects unique meta tags per route
+[[edge_functions]]
+  function = "seo"
+  path = "/"
+
+[[edge_functions]]
+  function = "seo"
+  path = "/about"
+
+[[edge_functions]]
+  function = "seo"
+  path = "/portfolio"
+
+[[edge_functions]]
+  function = "seo"
+  path = "/services"
+
+[[edge_functions]]
+  function = "seo"
+  path = "/blog"
+
+[[edge_functions]]
+  function = "seo"
+  path = "/contact"
+
+[[edge_functions]]
+  function = "seo"
+  path = "/publications"
+
 [[scheduled]]
   # Runs every 5 days at 00:00 UTC
   cron = "0 0 */5 * *"
   command = "supabase-keep-alive"
+

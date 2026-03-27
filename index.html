@@ -14,15 +14,8 @@
     <meta name="theme-color" content="#0B1320" />
     <link rel="icon" type="image/png" href="/favicon.png" />
 
-    <!-- Instant canonical URL for SPA - runs before React loads -->
+    <!-- Default canonical (Netlify Edge Function replaces this server-side per route) -->
     <link rel="canonical" href="https://mahedihasanemon.site/" />
-    <script>
-      (function() {
-        var path = window.location.pathname;
-        var url = 'https://mahedihasanemon.site' + (path === '/' ? '/' : path.replace(/\/+$/, ''));
-        document.querySelector('link[rel="canonical"]').href = url;
-      })();
-    </script>
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -32,13 +25,6 @@
     <meta property="og:description" content="Explore the portfolio, services, blog, and publications of Mahedi Hasan Emon — a Full-Stack Developer building scalable web platforms." />
     <meta property="og:url" content="https://mahedihasanemon.site/" />
     <meta property="og:image" content="https://mahedihasanemon.site/favicon.png" />
-    <script>
-      (function() {
-        var path = window.location.pathname;
-        var url = 'https://mahedihasanemon.site' + (path === '/' ? '/' : path.replace(/\/+$/, ''));
-        document.querySelector('meta[property="og:url"]').content = url;
-      })();
-    </script>
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
