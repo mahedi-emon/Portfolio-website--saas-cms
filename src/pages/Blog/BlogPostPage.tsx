@@ -32,7 +32,7 @@ export function BlogPostPage() {
           </div>
           <h1 className="text-2xl font-bold text-white mb-2">Blog post not found</h1>
           <p className="text-[#C9D1D9] mb-6">We couldn't find the post you're looking for.</p>
-          <Link 
+          <Link
             to="/blog"
             className="inline-flex items-center gap-2 px-6 py-3 bg-[#C77DFF] text-[#0B1320] font-semibold rounded-xl shadow-lg shadow-[#C77DFF]/20 hover:shadow-xl hover:shadow-[#C77DFF]/30 hover:-translate-y-1 transition-all duration-300 btn-animated group"
           >
@@ -46,7 +46,7 @@ export function BlogPostPage() {
 
   return (
     <article className="max-w-4xl mx-auto pb-16">
-      <Link 
+      <Link
         to="/blog"
         className="inline-flex items-center gap-2 text-[#C9D1D9] hover:text-[#C77DFF] hover:-translate-x-1 transition-all duration-300 mb-8 animate-fade-in group"
       >
@@ -63,8 +63,8 @@ export function BlogPostPage() {
         {Array.isArray(post.tags) && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
             {post.tags.map((tag: string, index: number) => (
-              <span 
-                key={tag} 
+              <span
+                key={tag}
                 className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#C77DFF]/20 text-[#C77DFF] text-sm font-medium hover:bg-[#C77DFF]/30 hover:-translate-y-0.5 transition-all duration-300"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
@@ -105,10 +105,10 @@ export function BlogPostPage() {
         <div className="relative group mb-12 animate-fade-in" style={{ animationDelay: '300ms' }}>
           <div className="absolute -inset-2 bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] rounded-3xl blur-sm opacity-[0.06] group-hover:blur-md group-hover:opacity-[0.14] transition-all duration-600 ease-out" />
           <div className="relative overflow-hidden rounded-2xl img-hover-shine">
-            <img 
-              className="relative w-full rounded-2xl shadow-xl border border-white/10 group-hover:scale-[1.02] transition-transform duration-700" 
-              src={post.coverImageUrl} 
-              alt={post.title} 
+            <img
+              className="relative w-full rounded-2xl shadow-xl border border-white/10 group-hover:scale-[1.02] transition-transform duration-700"
+              src={post.coverImageUrl}
+              alt={post.title}
             />
           </div>
         </div>
@@ -120,7 +120,7 @@ export function BlogPostPage() {
             {post.excerpt}
           </p>
         )}
-        
+
         {post.content && (
           <div className="bg-[#0B1320]/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg shadow-[#C77DFF]/[0.05] border border-white/[0.06] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out card-animated">
             {/* 
@@ -128,7 +128,7 @@ export function BlogPostPage() {
               TODO [SUPABASE]: Install DOMPurify for production-grade sanitization:
               npm install dompurify && npm install -D @types/dompurify
             */}
-            <div className="text-[#C9D1D9]" dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
+            <div className="text-[#C9D1D9] whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
           </div>
         )}
       </div>
