@@ -1,9 +1,9 @@
+import { Suspense, lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { AdminLayout } from './layouts/AdminLayout';
 import { PublicLayout } from './layouts/PublicLayout';
 import { AdminOnlyRoute } from './guards/AdminOnlyRoute';
 import { ProtectedRoute } from './guards/ProtectedRoute';
-import { HomePage } from '../pages/Home/HomePage';
 import { AboutPage } from '../pages/About/AboutPage';
 import { PortfolioPage } from '../pages/Portfolio/PortfolioPage';
 import { BlogListPage } from '../pages/Blog/BlogListPage';
@@ -13,6 +13,9 @@ import { ContactPage } from '../pages/Contact/ContactPage';
 import { ProjectDetailPage } from '../pages/Projects/ProjectDetailPage';
 import { PublicationsPage } from '../pages/Publications/PublicationsPage';
 import { NotFoundPage } from '../pages/NotFound/NotFoundPage';
+
+// Lazy load the heavyweight HomePage (917 lines) to prevent main thread blocking
+const HomePage = lazy(() => import('../pages/Home/HomePage').then(m => ({ default: m.HomePage })));
 import { AdminLoginPage } from '../admin/pages/Login/AdminLoginPage';
 import { AuthCallbackPage } from '../admin/pages/AuthCallback/AuthCallbackPage';
 import { DashboardHomePage } from '../admin/pages/Dashboard/DashboardHomePage';
@@ -27,7 +30,7 @@ export function AppRoutes() {
     <Routes>
       {/* Public */}
       <Route element={<PublicLayout />}>
-        <Route index element={<HomePage />} />
+        <Route index element={<Suspense fallback={null}><HomePage /></Suspense>} />
         <Route path="about" element={<AboutPage />} />
         <Route path="portfolio" element={<PortfolioPage />} />
         <Route path="portfolio/:slug" element={<ProjectDetailPage />} />
