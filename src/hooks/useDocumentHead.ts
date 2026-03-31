@@ -14,8 +14,8 @@ interface DocumentHeadOptions {
 }
 
 function setMeta(nameOrProperty: string, content: string) {
-  const isOg = nameOrProperty.startsWith('og:') || nameOrProperty.startsWith('twitter:');
-  const attr = isOg ? 'property' : 'name';
+  const isOgProperty = nameOrProperty.startsWith('og:');
+  const attr = isOgProperty ? 'property' : 'name';
   let el = document.querySelector(`meta[${attr}="${nameOrProperty}"]`) as HTMLMetaElement | null;
   if (!el) {
     el = document.createElement('meta');

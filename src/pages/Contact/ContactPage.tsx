@@ -14,8 +14,8 @@ export function ContactPage() {
   const socialLinks = Array.isArray(contact.socialLinks) ? contact.socialLinks : [];
 
   useDocumentHead({
-    title: 'Contact Mahedi Hasan Emon',
-    description: 'Get in touch with Mahedi Hasan Emon for web development projects, freelance work, or collaboration opportunities. Reach out via email or social media.',
+    title: 'Contact Mahedi Hasan Emon — Get in Touch',
+    description: 'Contact Mahedi Hasan Emon for web development projects, freelance work, collaboration opportunities, or general inquiries.',
     path: '/contact',
   });
 

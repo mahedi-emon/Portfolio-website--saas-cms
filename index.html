@@ -5,33 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="jlxjOwW1WGQ6By_J7WrR4gfgktjiUKWfWseV2-U86Ng" />
 
-    <!-- Primary SEO -->
+    <!-- Primary SEO (Netlify Edge Function replaces all meta tags server-side per route) -->
     <title>Mahedi Hasan Emon — Full-Stack Developer & Portfolio</title>
     <meta name="description" content="Mahedi Hasan Emon — Full-Stack Developer specializing in scalable web platforms, React, Node.js, and modern cloud solutions. Explore my portfolio, services, blog, and publications." />
-    <meta name="keywords" content="Mahedi Hasan Emon, full-stack developer, web developer, portfolio, React, Node.js, software engineer, Bangladesh, freelance developer, web development services" />
+    <meta name="keywords" content="Mahedi Hasan Emon, full-stack developer, portfolio, React developer, Node.js developer, software engineer Bangladesh, web development" />
     <meta name="author" content="Mahedi Hasan Emon" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="theme-color" content="#0B1320" />
     <link rel="icon" type="image/png" href="/favicon.png" />
 
-    <!-- Default canonical (Netlify Edge Function replaces this server-side per route) -->
-    <link rel="canonical" href="https://mahedihasanemon.site/" />
+    <!-- Canonical URL (Edge Function replaces this per route) -->
+    <link rel="canonical" href="https://mahedihasanemon.site" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Mahedi Hasan Emon" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:title" content="Mahedi Hasan Emon — Full-Stack Developer & Portfolio" />
-    <meta property="og:description" content="Explore the portfolio, services, blog, and publications of Mahedi Hasan Emon — a Full-Stack Developer building scalable web platforms." />
-    <meta property="og:url" content="https://mahedihasanemon.site/" />
+    <meta property="og:description" content="Mahedi Hasan Emon — Full-Stack Developer specializing in scalable web platforms, React, Node.js, and modern cloud solutions." />
+    <meta property="og:url" content="https://mahedihasanemon.site" />
     <meta property="og:image" content="https://mahedihasanemon.site/favicon.png" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Mahedi Hasan Emon — Full-Stack Developer & Portfolio" />
-    <meta name="twitter:description" content="Explore the portfolio, services, blog, and publications of Mahedi Hasan Emon — a Full-Stack Developer building scalable web platforms." />
+    <meta name="twitter:description" content="Mahedi Hasan Emon — Full-Stack Developer specializing in scalable web platforms, React, Node.js, and modern cloud solutions." />
     <meta name="twitter:image" content="https://mahedihasanemon.site/favicon.png" />
-    <!-- Structured Data: Person -->
+
+    <!-- Structured Data (Edge Function replaces with page-specific schemas) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -56,8 +57,6 @@
       ]
     }
     </script>
-
-    <!-- Structured Data: ProfilePage -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -69,12 +68,11 @@
       "description": "Official portfolio website of Mahedi Hasan Emon — Full-Stack Developer."
     }
     </script>
-
-    <!-- Structured Data: WebSite -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
+      "@id": "https://mahedihasanemon.site/#website",
       "name": "Mahedi Hasan Emon — Portfolio",
       "url": "https://mahedihasanemon.site",
       "description": "Official portfolio website of Mahedi Hasan Emon — Full-Stack Developer building scalable web platforms.",

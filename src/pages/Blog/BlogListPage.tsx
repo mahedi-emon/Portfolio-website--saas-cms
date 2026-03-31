@@ -15,8 +15,8 @@ export function BlogListPage() {
   const otherPosts = blogs.slice(1);
 
   useDocumentHead({
-    title: 'Blog — Mahedi Hasan Emon',
-    description: 'Articles, tutorials, and insights on web development, React, Node.js, and software engineering by Mahedi Hasan Emon.',
+    title: 'Blog — Articles & Tutorials | Mahedi Hasan Emon',
+    description: 'Read articles, tutorials, and insights on web development, React, Node.js, TypeScript, and software engineering by Mahedi Hasan Emon.',
     path: '/blog',
   });
 
