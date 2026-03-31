@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Download, ExternalLink, Github, Quote, Award, ChevronRight, Sparkles, Zap, Code2, Rocket } from 'lucide-react';
 import { useCms } from '../../hooks/useCms';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
-import { JsonLd } from '../../components/common/JsonLd';
+// JSON-LD structured data is injected server-side by the Netlify edge function
 import { ResumeViewerModal } from '../../components/common/ResumeViewerModal';
 import { CertificateModal } from '../../components/common/CertificateModal';
 
@@ -100,49 +100,7 @@ export function HomePage() {
     path: '/',
   });
 
-  // Structured data: Person
-  const contact = data.singletons.contact ?? {};
-  const socialLinks: string[] = Array.isArray(contact.socialLinks)
-    ? contact.socialLinks.map((l: { url?: string }) => String(l.url ?? '')).filter(Boolean)
-    : [];
-
-  const personSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    '@id': 'https://mahedihasanemon.site/#person',
-    name: 'Mahedi Hasan Emon',
-    givenName: 'Mahedi Hasan',
-    familyName: 'Emon',
-    alternateName: ['Mahedi Emon', 'MH Emon'],
-    url: 'https://mahedihasanemon.site',
-    image: about.profileImageUrl ?? 'https://mahedihasanemon.site/favicon.png',
-    jobTitle: about.currentRole ?? 'Full-Stack Developer',
-    description: `${fullName} is a Full-Stack Developer specializing in scalable web platforms, React, Node.js, and modern cloud solutions.`,
-    nationality: { '@type': 'Country', name: 'Bangladesh' },
-    knowsAbout: ['Web Development', 'React', 'Node.js', 'TypeScript', 'Full-Stack Development', 'Software Engineering'],
-    sameAs: socialLinks,
-  };
-
   return (
-    <>
-      <JsonLd data={personSchema} />
-      <JsonLd data={{
-        '@context': 'https://schema.org',
-        '@type': 'ProfilePage',
-        '@id': 'https://mahedihasanemon.site/#profilepage',
-        name: `${fullName} — Portfolio`,
-        url: 'https://mahedihasanemon.site',
-        mainEntity: { '@id': 'https://mahedihasanemon.site/#person' },
-        description: `Official portfolio website of ${fullName} — Full-Stack Developer.`,
-      }} />
-      <JsonLd data={{
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
-        name: `${fullName} — Portfolio`,
-        url: 'https://mahedihasanemon.site',
-        description: `Official portfolio website of ${fullName} — Full-Stack Developer building scalable web platforms.`,
-        author: { '@id': 'https://mahedihasanemon.site/#person' },
-      }} />
     <div className="space-y-32">
       {/* ═══════════════════════════════════════════════════════════════════════════
           HERO SECTION - Premium Cinematic Landing
@@ -911,6 +869,5 @@ export function HomePage() {
         onClose={() => setSelectedCertificate(null)}
       />
     </div>
-    </>
   );
 }

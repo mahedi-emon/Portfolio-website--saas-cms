@@ -3,7 +3,6 @@ import { ArrowLeft, BookOpen, Calendar, Clock, Tag, User } from 'lucide-react';
 import { useCms } from '../../hooks/useCms';
 import { sanitizeHtml } from '../../utils/sanitizeHtml';
 import { useDocumentHead } from '../../hooks/useDocumentHead';
-import { JsonLd } from '../../components/common/JsonLd';
 
 export function BlogPostPage() {
   const { slug } = useParams();
@@ -123,11 +122,6 @@ export function BlogPostPage() {
 
         {post.content && (
           <div className="bg-[#0B1320]/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg shadow-[#C77DFF]/[0.05] border border-white/[0.06] hover:shadow-xl hover:shadow-[#C77DFF]/[0.12] hover:border-white/[0.12] transition-all duration-600 ease-out card-animated">
-            {/* 
-              HTML content is sanitized using sanitizeHtml utility.
-              TODO [SUPABASE]: Install DOMPurify for production-grade sanitization:
-              npm install dompurify && npm install -D @types/dompurify
-            */}
             <div className="text-[#C9D1D9] whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
           </div>
         )}

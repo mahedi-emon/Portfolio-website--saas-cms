@@ -1,7 +1,29 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Home, ArrowLeft, Search, Sparkles } from 'lucide-react';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
 
 export function NotFoundPage() {
+  useDocumentHead({
+    title: 'Page Not Found',
+    description: 'The page you are looking for does not exist or has been moved.',
+    path: '/404',
+  });
+
+  // Tell search engines not to index this page
+  useEffect(() => {
+    let meta = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', 'robots');
+      document.head.appendChild(meta);
+    }
+    const prevContent = meta.getAttribute('content') || '';
+    meta.setAttribute('content', 'noindex, nofollow');
+    return () => {
+      meta!.setAttribute('content', prevContent);
+    };
+  }, []);
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4">
       {/* Background Effects */}

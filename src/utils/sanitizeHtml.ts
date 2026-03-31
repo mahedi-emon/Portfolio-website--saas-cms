@@ -2,7 +2,7 @@
  * HTML Sanitization Utility
  * 
  * Provides safe HTML rendering for user-generated content.
- * CRITICAL for security when displaying content from CMS/database.
+ * Uses DOMPurify for production-grade XSS protection.
  * 
  * USAGE:
  *   import { sanitizeHtml, stripHtml } from '../utils/sanitizeHtml';
@@ -12,10 +12,9 @@
  *   
  *   // For plain text extraction:
  *   <p>{stripHtml(content)}</p>
- * 
- * TODO [SUPABASE]: This utility is REQUIRED when real user data is stored.
- * Install DOMPurify: npm install dompurify && npm install -D @types/dompurify
  */
+
+import DOMPurify from 'dompurify';
 
 // ============================================================================
 // Configuration
@@ -62,21 +61,8 @@ const ALLOWED_PROTOCOLS = ['http', 'https', 'mailto', 'tel'];
 // ============================================================================
 
 /**
- * Check if DOMPurify is available.
- * Returns false during SSR or if not installed.
- */
-function isDOMPurifyAvailable(): boolean {
-  return typeof window !== 'undefined' && 'DOMPurify' in window;
-}
-
-/**
  * Sanitize HTML content for safe rendering.
- * 
- * IMPORTANT: Install DOMPurify for production use:
- *   npm install dompurify
- *   npm install -D @types/dompurify
- * 
- * Then uncomment the DOMPurify import and implementation below.
+ * Uses DOMPurify for production-grade XSS protection.
  * 
  * @param html - Raw HTML string from CMS/database
  * @returns Sanitized HTML safe for dangerouslySetInnerHTML
@@ -87,75 +73,22 @@ export function sanitizeHtml(html: string | null | undefined): string {
   // Trim whitespace
   const trimmed = html.trim();
   if (!trimmed) return '';
-  
-  /**
-   * PRODUCTION IMPLEMENTATION (uncomment when DOMPurify is installed):
-   * 
-   * import DOMPurify from 'dompurify';
-   * 
-   * return DOMPurify.sanitize(trimmed, {
-   *   ALLOWED_TAGS,
-   *   ALLOWED_ATTR: ALLOWED_ATTRS,
-   *   ALLOWED_URI_REGEXP: new RegExp(`^(?:${ALLOWED_PROTOCOLS.join('|')}):`, 'i'),
-   *   KEEP_CONTENT: true,
-   *   RETURN_DOM: false,
-   *   RETURN_DOM_FRAGMENT: false,
-   * });
-   */
-  
-  /**
-   * FALLBACK IMPLEMENTATION (basic sanitization without DOMPurify)
-   * 
-   * WARNING: This is NOT as secure as DOMPurify. Use only for development
-   * with trusted mock data. Install DOMPurify before going to production!
-   */
-  return basicSanitize(trimmed);
-}
 
-/**
- * Basic HTML sanitization fallback.
- * 
- * WARNING: This is a minimal implementation for development only.
- * It does NOT provide the same level of security as DOMPurify.
- * DO NOT rely on this for production with untrusted user content.
- */
-function basicSanitize(html: string): string {
-  // Create a temporary element to parse HTML
-  if (typeof document === 'undefined') {
-    // SSR fallback - strip all HTML
-    return stripHtml(html);
+  // SSR fallback - strip all HTML when document is not available
+  if (typeof window === 'undefined') {
+    return stripHtml(trimmed);
   }
   
-  const temp = document.createElement('div');
-  temp.innerHTML = html;
-  
-  // Remove script tags and event handlers
-  const scripts = temp.querySelectorAll('script, style, iframe, object, embed, form');
-  scripts.forEach(el => el.remove());
-  
-  // Remove event handlers from all elements
-  const allElements = temp.querySelectorAll('*');
-  allElements.forEach(el => {
-    // Remove event handler attributes
-    const attrs = Array.from(el.attributes);
-    attrs.forEach(attr => {
-      const name = attr.name.toLowerCase();
-      // Remove on* event handlers
-      if (name.startsWith('on')) {
-        el.removeAttribute(attr.name);
-      }
-      // Remove javascript: URLs
-      if (name === 'href' || name === 'src' || name === 'action') {
-        const value = attr.value.toLowerCase().trim();
-        if (value.startsWith('javascript:') || value.startsWith('data:')) {
-          el.removeAttribute(attr.name);
-        }
-      }
-    });
+  // Use DOMPurify for production-grade sanitization
+  return DOMPurify.sanitize(trimmed, {
+    ALLOWED_TAGS,
+    ALLOWED_ATTR: ALLOWED_ATTRS,
+    ALLOWED_URI_REGEXP: new RegExp(`^(?:${ALLOWED_PROTOCOLS.join('|')}):`, 'i'),
+    KEEP_CONTENT: true,
   });
-  
-  return temp.innerHTML;
 }
+
+
 
 /**
  * Strip all HTML tags and return plain text.
