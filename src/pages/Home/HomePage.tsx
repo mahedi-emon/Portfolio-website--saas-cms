@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Download, ExternalLink, Github, Quote, Award, ChevronRight, Sparkles, Zap, Code2, Rocket } from 'lucide-react';
 import { useCms } from '../../hooks/useCms';
@@ -29,38 +29,32 @@ const TechToolIcon = ({ tool }: { tool: { name: string; logoUrl: string } }) => 
   );
 };
 
-function published<T extends { status?: string; orderIndex?: number }>(items: T[]): T[] {
-  return items
-    .filter((item) => item.status === 'published')
-    .slice()
-    .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
-}
-
 export function HomePage() {
   const { data } = useCms();
+  const published = <T extends { status?: string; orderIndex?: number }>(items: T[]) =>
+    items
+      .filter((item) => item.status === 'published')
+      .slice()
+      .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
   const hero = data.singletons.hero ?? {};
+  const services = published(data.collections.services ?? []);
+  const projects = published(data.collections.projects ?? []);
+  const featuredProjects = projects.filter((project) => project.featured);
+  const blogs = published(data.collections.blogs ?? []);
+  const testimonials = published(data.collections.testimonials ?? []);
+  const clients = published(data.collections.clients ?? []);
+  const achievements = published(data.collections.achievements ?? []);
+  const certifications = published(data.collections.certifications ?? []);
   const about = data.singletons.about ?? {};
-
-  // Memoize all data derivations to prevent recalculation on re-renders
-  const collections = data.collections;
-  const services = useMemo(() => published(collections.services ?? []), [collections.services]);
-  const projects = useMemo(() => published(collections.projects ?? []), [collections.projects]);
-  const featuredProjects = useMemo(() => projects.filter((project) => project.featured), [projects]);
-  const blogs = useMemo(() => published(collections.blogs ?? []), [collections.blogs]);
-  const testimonials = useMemo(() => published(collections.testimonials ?? []), [collections.testimonials]);
-  const clients = useMemo(() => published(collections.clients ?? []), [collections.clients]);
-  const achievements = useMemo(() => published(collections.achievements ?? []), [collections.achievements]);
-  const certifications = useMemo(() => published(collections.certifications ?? []), [collections.certifications]);
-  const education = useMemo(() => published(collections.education ?? []), [collections.education]);
-  const techStackCategories = useMemo(() => published(collections.techStackCategories ?? []), [collections.techStackCategories]);
-  const resumes = collections.resumes ?? [];
+  const education = published(data.collections.education ?? []);
+  const resumes = data.collections.resumes ?? [];
   const resumeSettings = data.singletons.resumeSettings ?? {};
-  const activeResume = useMemo(() =>
+  const activeResume =
     resumes.find((item) => item.id === resumeSettings.activeResumeId && item.status === 'active') ??
-    resumes.find((item) => item.status === 'active'),
-  [resumes, resumeSettings.activeResumeId]);
+    resumes.find((item) => item.status === 'active');
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [selectedCertificate, setSelectedCertificate] = useState<{ imageUrl: string; title: string } | null>(null);
+  const techStackCategories = published(data.collections.techStackCategories ?? []);
 
   // Intersection Observer for scroll animations
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
@@ -69,40 +63,30 @@ export function HomePage() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        const newlyVisible: string[] = [];
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            newlyVisible.push(entry.target.id);
+            setVisibleSections((prev) => new Set([...prev, entry.target.id]));
           }
         });
-        if (newlyVisible.length > 0) {
-          setVisibleSections((prev) => {
-            // Only create a new Set if there are actually new sections
-            const allAlreadyVisible = newlyVisible.every((id) => prev.has(id));
-            if (allAlreadyVisible) return prev; // Return same reference — no re-render
-            const next = new Set(prev);
-            newlyVisible.forEach((id) => next.add(id));
-            return next;
-          });
-        }
       },
       { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     );
 
-    // Small delay to let the DOM settle before observing
-    const timeoutId = setTimeout(() => {
-      sectionRefs.current.forEach((el) => observer.observe(el));
-    }, 50);
+    sectionRefs.current.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [
+    services.length,
+    projects.length,
+    blogs.length,
+    testimonials.length,
+    clients.length,
+    achievements.length,
+    certifications.length
+  ]);
 
-    return () => {
-      clearTimeout(timeoutId);
-      observer.disconnect();
-    };
-  }, []); // Empty deps — observer only needs to be set up once
-
-  const setSectionRef = useCallback((id: string) => (el: HTMLElement | null) => {
+  const setSectionRef = (id: string) => (el: HTMLElement | null) => {
     if (el) sectionRefs.current.set(id, el);
-  }, []);
+  };
 
   const sectionClass = (id: string) =>
     `transition-all duration-1000 ${visibleSections.has(id) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`;
