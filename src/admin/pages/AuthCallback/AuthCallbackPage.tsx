@@ -51,7 +51,7 @@ export function AuthCallbackPage() {
             setMessage('Authentication successful! Redirecting...');
             
             setTimeout(() => {
-              navigate('/admin/dashboard', { replace: true });
+              navigate('/mhe-control-center/dashboard', { replace: true });
             }, 1500);
           } else {
             // No session found - might still be processing
@@ -64,7 +64,7 @@ export function AuthCallbackPage() {
               setStatus('success');
               setMessage('Authentication successful! Redirecting...');
               setTimeout(() => {
-                navigate('/admin/dashboard', { replace: true });
+                navigate('/mhe-control-center/dashboard', { replace: true });
               }, 1500);
             } else {
               setStatus('error');
@@ -97,7 +97,7 @@ export function AuthCallbackPage() {
       setStatus('success');
       setMessage('Authentication successful! Redirecting...');
       setTimeout(() => {
-        navigate('/admin/dashboard', { replace: true });
+        navigate('/mhe-control-center/dashboard', { replace: true });
       }, 1500);
     }
   }, [isAuthenticated, isLoading, navigate, status]);
@@ -162,7 +162,7 @@ export function AuthCallbackPage() {
           {status === 'error' && (
             <div className="space-y-3">
               <button
-                onClick={() => navigate('/admin/login')}
+                onClick={() => navigate('/mhe-control-center/login')}
                 className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] text-white font-semibold rounded-xl shadow-lg shadow-[#C77DFF]/30 hover:shadow-xl hover:shadow-[#C77DFF]/40 transition-all duration-300"
               >
                 Try Again

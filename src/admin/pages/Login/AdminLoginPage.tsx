@@ -29,7 +29,7 @@ export function AdminLoginPage() {
     const { success, error: signInError } = await signIn(email, password);
     
     if (success) {
-      const next = new URLSearchParams(location.search).get('next') ?? '/admin/dashboard';
+      const next = new URLSearchParams(location.search).get('next') ?? '/mhe-control-center/dashboard';
       navigate(next, { replace: true });
     } else if (signInError) {
       setLocalError(signInError);
